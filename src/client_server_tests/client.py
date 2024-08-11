@@ -65,7 +65,7 @@ def main():
         0,
         100,
         100,
-        (0, 255, 0),
+        (255, 0, 0),
     )
 
     clock = pygame.time.Clock()
