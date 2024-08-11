@@ -7,8 +7,10 @@ class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.address = (SERVER, PORT)
-        self.id = self.connect()
-        print(self.id)
+        self.position = self.connect()
+
+    def get_position(self):
+        return self.position
 
     def connect(self):
         try:
@@ -24,9 +26,3 @@ class Network:
             return self.client.recv(2048).decode()
         except socket.error as e:
             print(e)
-
-
-if __name__ == "__main__":
-    network = Network()
-    print(network.send("hello"))
-    print(network.send("tout marche bien navette"))
