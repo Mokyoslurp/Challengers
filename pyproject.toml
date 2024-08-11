@@ -1,0 +1,68 @@
+[tool.poetry]
+name = "Challengers"
+version = "0"
+readme = "README.md"
+description = ""
+authors = [
+    "Marien GIORDANI <giordanimarien@gmail.com>",
+]
+exclude = ["**/tests/**"]
+
+keywords = [
+    "game",
+    "tournament",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "Natural Language :: English",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+
+[tool.poetry.dependencies]
+# IMPORTANT: when modifying this list, docs/requirements.txt must be updated for
+# ReadTheDocs to be able to compile the documentation.
+# A pre-commit hook has been added to do this task. As a result, any modification
+# of poetry.lock file will modify docs/requirements.txt and make
+# the commit fail because "files were modified by this hook". In that case,
+# doing again the commit including changes in docs/requirements.txt will succeed.
+python = ">=3.11, <=3.12"
+pygame = "2.6.0"
+
+
+[tool.poetry.group.lint.dependencies]
+pre-commit = "^3.5.0"
+ruff = "0.5.7"
+
+[tool.poetry.group.doc.dependencies]
+sphinx = "^4.1.2"
+sphinx-rtd-theme = "^1.0"
+sphinxcontrib-bibtex = "^2.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E4", "E7", "E9", "F"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
