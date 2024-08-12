@@ -1,48 +1,37 @@
 import socket
+import pickle
 from _thread import start_new_thread
+
+from player import Player
 
 # Set here your local ip address
 SERVER = "192.168.0.102"
 # Set here an unused port
 PORT = 5050
 
-
-positions = [(0, 0), (100, 100)]
-
-
-def read_position(string: str):
-    string = string.split(",")
-    return int(string[0]), int(string[1])
-
-
-def make_position(position: tuple[int, int]):
-    return str(position[0]) + "," + str(position[1])
+players = [Player(0, 0, 50, 50, (255, 0, 0)), Player(100, 100, 50, 50, (0, 255, 0))]
 
 
 def threaded_client(connection: socket.socket, player_id: int):
-    connection.send(
-        str.encode(
-            make_position(positions[player_id]),
-        )
-    )
+    connection.send(pickle.dumps(players[player_id]))
     reply = ""
     while True:
         try:
             # Argument is amount of information you want to receive (bits)
-            data = read_position(connection.recv(2048).decode())
-            positions[player_id] = data
+            data = pickle.loads(connection.recv(2048))
+            players[player_id] = data
 
             if not data:
                 print("Disconnected")
                 break
             else:
-                # Replies the other player's position
-                reply = positions[abs(player_id - 1)]
+                # Replies the other player's data
+                reply = players[abs(player_id - 1)]
 
-                print("Received: ", reply)
+                print("Received: ", data)
                 print("Sending: ", reply)
 
-            connection.sendall(str.encode(make_position(reply)))
+            connection.sendall(pickle.dumps(reply))
         except:  # noqa: E722
             break
 
