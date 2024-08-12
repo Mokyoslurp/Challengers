@@ -91,6 +91,31 @@ def redraw_window(game: Game, player_id: int):
     pygame.display.update()
 
 
+def menu_screen():
+    run = True
+    clock = pygame.time.Clock()
+
+    while run:
+        clock.tick(60)
+        window.fill((128, 128, 128))
+
+        font = pygame.font.SysFont("comicsans", 60)
+        text = font.render("Click to play", 1, (255, 0, 0))
+        window.blit(text, (100, 200))
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                run = False
+
+    main()
+
+
 def main():
     run = True
     clock = pygame.time.Clock()
@@ -165,5 +190,5 @@ if __name__ == "__main__":
         Button(Moves.PAPER, 250, 500, (0, 255, 0)),
         Button(Moves.ROCK, 450, 500, (0, 0, 255)),
     ]
-
-    main()
+    while True:
+        menu_screen()
