@@ -18,6 +18,17 @@ class Player:
 
         self.tournament_plan: list[int] = []
 
+    def __str__(self):
+        string = "Player " + str(self.id) + ", " + self.name + ":\n\t"
+        string += "Total fans: " + str(self.get_total_fans()) + "\n"
+        string += "\n\tDeck:\n\t\t"
+        for card in self.deck:
+            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
+        string += "\n\tExhaust:\n\t\t"
+        for card in self.exhaust:
+            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
+        return string
+
     def get_total_fans(self) -> int:
         total_fans = self.fans
         for trophy in self.trophies:
