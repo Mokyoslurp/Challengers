@@ -28,6 +28,18 @@ class Card:
         self.level = level
         self.is_starter = is_starter
 
+    def __str__(self):
+        return (
+            "Card "
+            + str(self.id)
+            + ":\n\t"
+            + self.name
+            + ", "
+            + self.set.name
+            + ", "
+            + self.level.name
+        )
+
     @classmethod
     def create(
         cls,
