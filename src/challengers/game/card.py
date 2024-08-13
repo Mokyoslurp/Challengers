@@ -13,20 +13,20 @@ class Set(Enum):
 
 
 class Level(Enum):
-    A = 0
-    B = 1
-    C = 2
+    S = 0
+    A = 1
+    B = 2
+    C = 3
 
 
 class Card:
     cards: list[Self] = []
 
-    def __init__(self, id: int, name: str, set: Set, level: Level, is_starter: bool = False):
+    def __init__(self, id: int, name: str, set: Set, level: Level):
         self.id = id
         self.name = name
         self.set = set
         self.level = level
-        self.is_starter = is_starter
 
     def __str__(self):
         return (
@@ -47,11 +47,10 @@ class Card:
         name: str,
         set: Set,
         level: Level,
-        is_starter: bool = False,
         amount: int = 1,
     ):
         cards = []
         for _ in range(amount):
-            cards.append(Card(id, name, set, level, is_starter))
+            cards.append(Card(id, name, set, level))
         cls.cards += cards
         return cards
