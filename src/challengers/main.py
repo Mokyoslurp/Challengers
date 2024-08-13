@@ -8,8 +8,8 @@ from game import (
 
 
 def load_cards():
-    cards1 = Card.create(0, "Test1", Set.CITY, Level.A, amount=4)
-    cards2 = Card.create(1, "Test2", Set.HAUNTED_HOUSE, Level.A, amount=2)
+    cards1 = Card.create(0, "Test1", Set.CITY, Level.A, power=3, amount=4)
+    cards2 = Card.create(1, "Test2", Set.HAUNTED_HOUSE, Level.A, power=5, amount=2)
     print(cards1[0])
     print(cards2[0])
 

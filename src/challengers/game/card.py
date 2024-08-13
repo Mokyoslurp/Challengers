@@ -22,11 +22,12 @@ class Level(Enum):
 class Card:
     cards: list[Self] = []
 
-    def __init__(self, id: int, name: str, set: Set, level: Level):
+    def __init__(self, id: int, name: str, set: Set, level: Level, power: int = 0):
         self.id = id
         self.name = name
         self.set = set
         self.level = level
+        self.power = power
 
     def __str__(self):
         return (
@@ -38,6 +39,8 @@ class Card:
             + self.set.name
             + ", "
             + self.level.name
+            + "\n\tPower: "
+            + str(self.power)
         )
 
     @classmethod
@@ -47,10 +50,11 @@ class Card:
         name: str,
         set: Set,
         level: Level,
+        power: int = 0,
         amount: int = 1,
     ):
         cards = []
         for _ in range(amount):
-            cards.append(Card(id, name, set, level))
+            cards.append(Card(id, name, set, level, power))
         cls.cards += cards
         return cards
