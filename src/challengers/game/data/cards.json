@@ -1,0 +1,18 @@
+{
+    "cards": [
+        {
+            "id": "0",
+            "name": "Test",
+            "set": "City",
+            "level": "A",
+            "amount": "4"
+        },
+        {
+            "id": "1",
+            "name": "Test2",
+            "set": "City",
+            "level": "B",
+            "amount": "2"
+        }
+    ]
+}
