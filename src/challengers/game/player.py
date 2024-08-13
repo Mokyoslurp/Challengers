@@ -80,3 +80,19 @@ class Player:
     def set_defense(self):
         for _ in range(len(self.played_cards) - 1):
             self.used_cards.append(self.played_cards.pop(0))
+
+    def reset_deck(self) -> list[Card]:
+        list_bench = []
+        for card_id in self.bench:
+            list_bench += self.bench[card_id]
+
+        for card in self.exhaust + self.used_cards + self.played_cards + list_bench:
+            self.deck.append(card)
+
+        self.exhaust = []
+        self.used_cards = []
+        self.played_cards = []
+        self.bench = {}
+
+        self.shuffle_deck()
+        return self.deck
