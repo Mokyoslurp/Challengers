@@ -85,6 +85,7 @@ class Player:
             else:
                 self.bench[card.id] = [card]
         self.played_cards = []
+        self.used_cards = []
 
     def set_defense(self):
         for _ in range(len(self.played_cards) - 1):
