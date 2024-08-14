@@ -69,6 +69,13 @@ class Player:
             total_power += card.power
         return total_power
 
+    def get_score(self) -> int:
+        # Factors 1, 10, 100 are to have a coherent score that reflects independently all this criteria in one integer
+        fans = self.get_total_fans() * 100
+        max_trophies = len(self.trophies) * 10
+        max_round = max([trophy.round for trophy in self.trophies])
+        return fans + max_trophies + max_round
+
     def bench_cards(self):
         for card in self.played_cards + self.used_cards:
             if card.id in self.bench:
