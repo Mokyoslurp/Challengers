@@ -108,6 +108,9 @@ class Tournament:
         park.assign_players(finalists[0], finalists[1])
         winner = park.play_game()
 
+        for player in finalists:
+            player.reset_deck()
+
         if DEBUG:
             print(winner, " won the tournament!")
 
