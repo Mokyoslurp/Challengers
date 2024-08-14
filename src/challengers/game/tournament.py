@@ -1,3 +1,6 @@
+import random
+
+
 from .player import Player
 from .park import Park
 from .tray import Tray
@@ -66,7 +69,12 @@ class Tournament:
         finalists: list[Player] = []
         for _ in range(2):
             max_score = max(scores.values())
-            finalists.append([player for player in self.players if scores[player] == max_score][0])
+            # This will avoid the case of 3 or more players with the same score. If the list of
+            # possible finalists contain more than 3, only 2 will eventually be chosen, if there
+            # is less the code will have the same behavior
+            possible_finalists = [player for player in self.players if scores[player] == max_score]
+            finalists.append(random.choice(possible_finalists))
+
             # Avoid having the first finalist counted to be also the second finalist
             scores[finalists[-1]] = -1
 
