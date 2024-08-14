@@ -1,18 +1,18 @@
-{
-    "cards": [
-        {
-            "id": "0",
-            "name": "Test",
-            "set": "City",
-            "level": "A",
-            "amount": "4"
-        },
-        {
-            "id": "1",
-            "name": "Test2",
-            "set": "City",
-            "level": "B",
-            "amount": "2"
-        }
-    ]
-}
+[
+    {
+        "id": "0",
+        "name": "Test",
+        "set": "City",
+        "level": "A",
+        "power": "3",
+        "amount": "4"
+    },
+    {
+        "id": "1",
+        "name": "Test2",
+        "set": "City",
+        "level": "B",
+        "power": "4",
+        "amount": "2"
+    }
+]
