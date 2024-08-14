@@ -67,3 +67,5 @@ if __name__ == "__main__":
             player.shuffle_deck()
 
     winner = tournament.play()
+
+    tournament.print_scores()

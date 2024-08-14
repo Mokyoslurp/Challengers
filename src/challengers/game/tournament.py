@@ -24,10 +24,12 @@ class Tournament:
             self.parks: list[Park] = [Park(i) for i in range((self.number_of_players + 1) // 2)]
 
             self.trays: dict[Level, Tray] = {}
+
+            self.scores: dict[Player, int] = {}
         else:
             raise ValueError
 
-    def initialize_trays(self):
+    def initialize_trays(self) -> list[Tray]:
         for level in [Level.A, Level.B, Level.C]:
             tray = Tray(level)
             tray.prepare()
@@ -39,17 +41,27 @@ class Tournament:
 
         return self.trays
 
-    def set_new_player(self, player: Player):
+    def set_new_player(self, player: Player) -> list[Player]:
         if len(self.players) < self.number_of_players:
             self.players.append(player)
             return self.players
 
         return None
 
-    def get_finalists(self):
-        scores: dict[Player, int] = {}
+    def get_scores(self) -> dict[Player, int]:
         for player in self.players:
-            scores[player] = player.get_score()
+            self.scores[player] = player.get_score()
+
+        return self.scores.copy()
+
+    def print_scores(self):
+        scores = self.get_scores()
+
+        for player in self.players:
+            print(player, "\nScore = ", scores[player], "\n")
+
+    def get_finalists(self) -> list[Player]:
+        scores = self.get_scores()
 
         finalists: list[Player] = []
         for _ in range(2):
@@ -60,7 +72,7 @@ class Tournament:
 
         return finalists
 
-    def play(self):
+    def play(self) -> Player:
         # Set a robot player if there is an odd number of players
         if len(self.players) % 2 == 1:
             self.set_new_player(Player(0, ROBOT_PLAYER_NAME))
