@@ -73,7 +73,9 @@ class Player:
         # Factors 1, 10, 100 are to have a coherent score that reflects independently all this criteria in one integer
         fans = self.get_total_fans() * 100
         max_trophies = len(self.trophies) * 10
-        max_round = max([trophy.round for trophy in self.trophies])
+        # 0 is added in case the player did not win any round, to avoid error with 'max' method
+        max_round = max([trophy.round for trophy in self.trophies] + [0])
+
         return fans + max_trophies + max_round
 
     def bench_cards(self):
