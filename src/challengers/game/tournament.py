@@ -89,7 +89,7 @@ class Tournament:
             for player in self.players:
                 print(player)
 
-        for round in range(NUMBER_OF_ROUNDS):
+        for round in range(1, NUMBER_OF_ROUNDS + 1):
             winners: list[Player] = [-1] * len(self.parks)
             for park in self.parks:
                 # TODO: Make appropriate players assignments in parks
@@ -103,7 +103,7 @@ class Tournament:
 
             for winner in winners:
                 # TODO: Have a prepared list of trophies with different number of fans
-                winner.trophies.append(Trophy(round, round))
+                winner.trophies.append(Trophy.draw_trophy(round))
 
             for player in self.players:
                 player.reset_deck()

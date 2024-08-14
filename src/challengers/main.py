@@ -4,8 +4,19 @@ from game import (
     Set,
     Player,
     Tournament,
+    Trophy,
 )
 
+# Key is the round, and the list following is all the possible fans for a trophy of this round.
+TROPHIES: dict[int, list[int]] = {
+    1: [1, 1, 2, 2],
+    2: [2, 2, 3, 3],
+    3: [3, 3, 4, 5],
+    4: [4, 4, 5, 6],
+    5: [5, 6, 7, 7],
+    6: [6, 7, 7, 8],
+    7: [7, 8, 9, 10],
+}
 
 PLAYERS = [
     Player(1, "P1"),
@@ -17,6 +28,14 @@ PLAYERS = [
     Player(7, "P7"),
     Player(8, "P8"),
 ]
+
+
+def load_trophies(tournament: Tournament):
+    for round in TROPHIES:
+        for park in range(len(tournament.parks)):
+            Trophy.create(round, TROPHIES[round][park])
+
+    Trophy.shuffle_trophies()
 
 
 # 48 cards =  6*8
@@ -55,6 +74,8 @@ if __name__ == "__main__":
     load_cards()
 
     tournament = Tournament(8)
+
+    load_trophies(tournament)
 
     for player in PLAYERS:
         tournament.set_new_player(player)
