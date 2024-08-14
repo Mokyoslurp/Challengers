@@ -30,4 +30,7 @@ class Tray:
         random.shuffle(self.pile)
 
     def draw(self):
-        return self.pile.pop()
+        if self.pile:
+            return self.pile.pop()
+        else:
+            return None

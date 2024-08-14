@@ -52,7 +52,8 @@ class Player:
 
     def draw_card(self, tray: Tray) -> Card:
         card = tray.draw()
-        self.deck.append(card)
+        if card:
+            self.deck.append(card)
         return card
 
     def shuffle_deck(self):
