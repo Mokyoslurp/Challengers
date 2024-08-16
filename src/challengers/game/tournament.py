@@ -1,5 +1,5 @@
 import random
-
+from typing import Self
 
 from .player import Player
 from .park import Park
@@ -89,15 +89,18 @@ class Tournament:
             for player in self.players:
                 print(player)
 
-        for round in range(1, NUMBER_OF_ROUNDS + 1):
+        TournamentPlan.generate_plans(self.number_of_players, self.players)
+
+        for round in range(NUMBER_OF_ROUNDS):
             winners: list[Player] = [-1] * len(self.parks)
+
             for park in self.parks:
-                # TODO: Make appropriate players assignments in parks
-                park.assign_players(self.players[2 * park.id], self.players[2 * park.id + 1])
+                park_players = TournamentPlan.get_players(round, park.id)
+                park.assign_players(park_players[0], park_players[1])
 
                 # TODO: Launch threads for each game
                 if DEBUG:
-                    print("\nRound ", round, ", park ", park.id, " started.")
+                    print("\nRound ", round + 1, ", park ", park.id, " started.")
 
                 winners[park.id] = park.play_game()
 
@@ -123,3 +126,71 @@ class Tournament:
             print(winner, " won the tournament!")
 
         return winner
+
+
+class TournamentPlan:
+    CARDS_TO_DRAW = {
+        0: {Level.A: 2},
+        1: {Level.A: 2},
+        2: {Level.A: 2, Level.B: 1},
+        3: {Level.A: 2, Level.B: 2},
+        4: {Level.B: 2},
+        5: {Level.B: 2, Level.C: 1},
+        6: {Level.C: 2},
+    }
+
+    plans: dict[Player, Self] = {}
+
+    def __init__(self, park_ids: list[int]):
+        if len(park_ids) == NUMBER_OF_ROUNDS:
+            self.park_ids = park_ids.copy()
+
+    @classmethod
+    def get_players(cls, round: int, park_id: int) -> list[Player]:
+        players: list[Player] = []
+        for player in cls.plans:
+            if cls.plans[player].park_ids[round] == park_id:
+                players.append(player)
+
+        return players
+
+    @classmethod
+    def generate_plans(cls, number_of_players: int, players: list[Player]):
+        plans: list[Self] = []
+
+        plans.append(TournamentPlan([0, 0, 0, 0, 0, 0, 0]))
+
+        if 1 <= number_of_players <= 2:
+            plans.append(TournamentPlan([0, 0, 0, 0, 0, 0, 0]))
+
+        elif 3 <= number_of_players <= 4:
+            plans.append(TournamentPlan([1, 0, 1, 1, 0, 1, 1]))
+            plans.append(TournamentPlan([1, 1, 0, 1, 1, 0, 1]))
+            plans.append(TournamentPlan([0, 1, 1, 0, 1, 1, 0]))
+
+        elif 5 <= number_of_players <= 6:
+            plans.append(TournamentPlan([0, 2, 2, 1, 0, 1, 1]))
+            plans.append(TournamentPlan([1, 0, 1, 1, 2, 2, 2]))
+            plans.append(TournamentPlan([1, 1, 2, 2, 1, 1, 0]))
+            plans.append(TournamentPlan([2, 2, 0, 2, 2, 0, 2]))
+            plans.append(TournamentPlan([2, 1, 1, 0, 1, 2, 1]))
+
+        elif 7 <= number_of_players <= 8:
+            plans.append(TournamentPlan([3, 3, 0, 1, 1, 2, 2]))
+            plans.append(TournamentPlan([1, 3, 3, 0, 3, 3, 3]))
+            plans.append(TournamentPlan([1, 1, 2, 2, 1, 1, 0]))
+            plans.append(TournamentPlan([2, 1, 1, 1, 0, 3, 1]))
+            plans.append(TournamentPlan([2, 2, 2, 3, 3, 0, 2]))
+            plans.append(TournamentPlan([0, 2, 1, 2, 2, 2, 3]))
+            plans.append(TournamentPlan([3, 0, 3, 3, 2, 1, 1]))
+
+        else:
+            return ValueError
+
+        # Random plan assignement
+        for player in players:
+            plan = random.choice(plans)
+            cls.plans[player] = plan
+            plans.remove(plan)
+
+        return cls.plans
