@@ -5,7 +5,7 @@
         "set": "CITY",
         "level": "A",
         "power": 3,
-        "amount": 4
+        "amount": 8
     },
     {
         "id": 2,
@@ -13,7 +13,7 @@
         "set": "HAUNTED_HOUSE",
         "level": "A",
         "power": 5,
-        "amount": 4
+        "amount": 8
     },
     {
         "id": 3,
@@ -21,7 +21,7 @@
         "set": "OUTER_SPACE",
         "level": "A",
         "power": 4,
-        "amount": 3
+        "amount": 8
     },
     {
         "id": 4,
@@ -29,7 +29,7 @@
         "set": "SHIPWRECK",
         "level": "A",
         "power": 1,
-        "amount": 5
+        "amount": 8
     },
     {
         "id": 5,
@@ -37,7 +37,7 @@
         "set": "CASTLE",
         "level": "A",
         "power": 2,
-        "amount": 2
+        "amount": 8
     },
     {
         "id": 6,
@@ -45,7 +45,7 @@
         "set": "FILM_STUDIO",
         "level": "A",
         "power": 2,
-        "amount": 3
+        "amount": 8
     },
     {
         "id": 7,
@@ -53,7 +53,7 @@
         "set": "FUNFAIR",
         "level": "A",
         "power": 3,
-        "amount": 3
+        "amount": 8
     },
     {
         "id": 8,
@@ -61,54 +61,438 @@
         "set": "SHIPWRECK",
         "level": "A",
         "power": 4,
-        "amount": 4
+        "amount": 8
     },
     {
         "id": 9,
-        "name": "Test8",
+        "name": "Test9",
         "set": "CITY",
         "level": "A",
         "power": 4,
-        "amount": 2
+        "amount": 8
     },
     {
         "id": 10,
-        "name": "Test8",
+        "name": "Test10",
         "set": "CASTLE",
         "level": "A",
         "power": 2,
-        "amount": 7
+        "amount": 8
     },
     {
         "id": 11,
-        "name": "Test8",
+        "name": "Test11",
         "set": "OUTER_SPACE",
         "level": "A",
         "power": 2,
-        "amount": 3
+        "amount": 8
     },
     {
         "id": 12,
-        "name": "Test8",
+        "name": "Test12",
         "set": "OUTER_SPACE",
         "level": "A",
         "power": 3,
-        "amount": 2
+        "amount": 8
     },
     {
         "id": 13,
-        "name": "Test8",
+        "name": "Test13",
         "set": "FILM_STUDIO",
         "level": "A",
         "power": 5,
-        "amount": 3
+        "amount": 8
     },
     {
         "id": 14,
-        "name": "Test8",
+        "name": "Test14",
         "set": "FUNFAIR",
         "level": "A",
         "power": 6,
-        "amount": 3
+        "amount": 8
+    },
+    {
+        "id": 1,
+        "name": "Test15",
+        "set": "CITY",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 16,
+        "name": "Test16",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 17,
+        "name": "Test17",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 18,
+        "name": "Test18",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": 1,
+        "amount": 8
+    },
+    {
+        "id": 19,
+        "name": "Test19",
+        "set": "CASTLE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 20,
+        "name": "Test20",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 21,
+        "name": "Test21",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 22,
+        "name": "Test22",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 23,
+        "name": "Test23",
+        "set": "CITY",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 24,
+        "name": "Test24",
+        "set": "CASTLE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 25,
+        "name": "Test25",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 26,
+        "name": "Test26",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 27,
+        "name": "Test27",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 28,
+        "name": "Test28",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": 6,
+        "amount": 8
+    },
+    {
+        "id": 15,
+        "name": "Test15",
+        "set": "CITY",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 16,
+        "name": "Test16",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 17,
+        "name": "Test17",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 18,
+        "name": "Test18",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": 1,
+        "amount": 8
+    },
+    {
+        "id": 19,
+        "name": "Test19",
+        "set": "CASTLE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 20,
+        "name": "Test20",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 21,
+        "name": "Test21",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 22,
+        "name": "Test22",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 23,
+        "name": "Test23",
+        "set": "CITY",
+        "level": "B",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 24,
+        "name": "Test24",
+        "set": "CASTLE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 25,
+        "name": "Test25",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 26,
+        "name": "Test26",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 27,
+        "name": "Test27",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 28,
+        "name": "Test28",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": 6,
+        "amount": 8
+    },
+    {
+        "id": 29,
+        "name": "Test29",
+        "set": "CITY",
+        "level": "C",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 30,
+        "name": "Test30",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 31,
+        "name": "Test31",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 32,
+        "name": "Test32",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": 1,
+        "amount": 8
+    },
+    {
+        "id": 33,
+        "name": "Test33",
+        "set": "CASTLE",
+        "level": "C",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 34,
+        "name": "Test34",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 35,
+        "name": "Test35",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 36,
+        "name": "Test36",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 37,
+        "name": "Test37",
+        "set": "CITY",
+        "level": "C",
+        "power": 4,
+        "amount": 8
+    },
+    {
+        "id": 38,
+        "name": "Test38",
+        "set": "CASTLE",
+        "level": "C",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 39,
+        "name": "Test39",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": 2,
+        "amount": 8
+    },
+    {
+        "id": 40,
+        "name": "Test40",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 41,
+        "name": "Test41",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": 5,
+        "amount": 8
+    },
+    {
+        "id": 42,
+        "name": "Test42",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": 6,
+        "amount": 8
+    },
+    {
+        "id": 43,
+        "name": "Start1",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 44,
+        "name": "Start2",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 45,
+        "name": "Start3",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 46,
+        "name": "Start4",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 47,
+        "name": "Start5",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
+    },
+    {
+        "id": 48,
+        "name": "Start6",
+        "set": "CITY",
+        "level": "S",
+        "power": 3,
+        "amount": 8
     }
 ]
