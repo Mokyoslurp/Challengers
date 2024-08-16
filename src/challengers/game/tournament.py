@@ -105,7 +105,6 @@ class Tournament:
                 winners[park.id] = park.play_game()
 
             for winner in winners:
-                # TODO: Have a prepared list of trophies with different number of fans
                 winner.trophies.append(Trophy.draw_trophy(round))
 
             for player in self.players:
@@ -187,7 +186,7 @@ class TournamentPlan:
         else:
             return ValueError
 
-        # Random plan assignement
+        # Random plan assignment
         for player in players:
             plan = random.choice(plans)
             cls.plans[player] = plan
