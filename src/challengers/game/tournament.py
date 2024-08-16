@@ -110,7 +110,20 @@ class Tournament:
             for player in self.players:
                 player.reset_deck()
 
-            # TODO: Add tray draw and deck management
+                possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[round].keys())
+
+                # TODO: Player action here: choose from which tray to draw
+                chosen_tray_level = random.choice(possible_tray_levels)
+
+                for _ in range(TournamentPlan.CARDS_TO_DRAW[round][chosen_tray_level]):
+                    player.draw_card(self.trays[chosen_tray_level])
+                player.shuffle_deck()
+
+                # TODO: Player action here: select cards to discard
+                copy_deck = player.deck.copy()
+                for card in copy_deck:
+                    if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
+                        player.discard(card, self.trays[chosen_tray_level])
 
         finalists = self.get_finalists()
 
