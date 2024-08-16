@@ -74,13 +74,13 @@ class CardSerializer:
     ) -> list[Card]:
         try:
             if use_serialized_amount:
-                amount = dict_card["amount"]
+                amount = int(dict_card["amount"])
 
-            id = dict_card["id"]
+            id = int(dict_card["id"])
             name = dict_card["name"]
-            set = dict_card["set"]
-            level = dict_card["level"]
-            power = dict_card["power"]
+            set = Set[dict_card["set"]]
+            level = Level[dict_card["level"]]
+            power = int(dict_card["power"])
 
             cards = Card.create(id, name, set, level, power, amount)
             return cards
@@ -92,7 +92,7 @@ class CardSerializer:
     def load_cards(list_cards: list[dict]) -> list[Card]:
         cards = []
         for dict_card in list_cards:
-            cards.append(CardSerializer.load_card(dict_card))
+            cards += CardSerializer.load_card(dict_card)
         return cards
 
     @staticmethod
@@ -105,12 +105,12 @@ class CardSerializer:
     @staticmethod
     def dump_card(card: Card, amount: int = 1) -> dict:
         dict_card = {
-            "id": str(card.id),
+            "id": card.id,
             "name": card.name,
             "set": card.set.name,
             "level": card.level.name,
-            "power": str(card.power),
-            "amount": str(amount),
+            "power": card.power,
+            "amount": amount,
         }
         return dict_card
 
