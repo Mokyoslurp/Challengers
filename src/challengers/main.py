@@ -17,13 +17,13 @@ CARD_DATA_FILE_PATH = GAME_DATA_PATH / CARD_DATA_FILE
 
 # Key is the round, and the list following is all the possible fans for a trophy of this round.
 TROPHIES: dict[int, list[int]] = {
-    1: [2, 2, 2, 3],
-    2: [2, 2, 3, 3],
-    3: [3, 3, 4, 4],
-    4: [4, 5, 6, 6],
-    5: [6, 6, 6, 7],
-    6: [7, 7, 7, 8],
-    7: [9, 9, 10, 10],
+    0: [2, 2, 2, 3],
+    1: [2, 2, 3, 3],
+    2: [3, 3, 4, 4],
+    3: [4, 5, 6, 6],
+    4: [6, 6, 6, 7],
+    5: [7, 7, 7, 8],
+    6: [9, 9, 10, 10],
 }
 
 PLAYERS = [
