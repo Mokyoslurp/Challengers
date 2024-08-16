@@ -56,6 +56,13 @@ class Player:
             self.deck.append(card)
         return card
 
+    def discard(self, card: Card, tray: Tray) -> Card:
+        if card in self.deck:
+            self.deck.remove(card)
+            tray.discard.append(card)
+            return card
+        return None
+
     def shuffle_deck(self):
         random.shuffle(self.deck)
 
