@@ -1,4 +1,4 @@
-from game import (
+from .game import (
     Card,
     Level,
     Set,
