@@ -92,12 +92,14 @@ class CardSerializer:
     def load_cards(list_cards: list[dict]) -> list[Card]:
         cards = []
         for dict_card in list_cards:
-            cards += CardSerializer.load_card(dict_card)
+            cards.append(CardSerializer.load_card(dict_card))
         return cards
 
     @staticmethod
     def load_cards_from_file(file_path: str) -> list[Card]:
-        list_cards = json.load(file_path)
+        file = open(file_path, "r")
+        list_cards = json.load(file)
+        file.close()
         return CardSerializer.load_cards(list_cards)
 
     @staticmethod
@@ -118,10 +120,12 @@ class CardSerializer:
             amounts = [1] * len(cards)
         list_cards = []
         for i in range(len(cards)):
-            list_cards += CardSerializer.dump_card(cards[i], amounts[i])
+            list_cards.append(CardSerializer.dump_card(cards[i], amounts[i]))
         return list_cards
 
     @staticmethod
     def dump_cards_into_file(cards: list[Card], file_path: str):
         list_cards = CardSerializer.dump_cards(cards)
-        json.dump(list_cards, file_path)
+        file = open(file_path, "w")
+        json.dump(list_cards, file)
+        file.close()
