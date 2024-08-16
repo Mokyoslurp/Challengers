@@ -53,8 +53,8 @@ class Card:
         level: Level,
         power: int = 0,
         amount: int = 1,
-    ):
-        cards = []
+    ) -> list[Self]:
+        cards: list[Self] = []
         for _ in range(amount):
             cards.append(Card(id, name, set, level, power))
         cls.cards += cards
