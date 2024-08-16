@@ -1,18 +1,114 @@
 [
     {
-        "id": "0",
-        "name": "Test",
-        "set": "City",
+        "id": 1,
+        "name": "Test1",
+        "set": "CITY",
         "level": "A",
-        "power": "3",
-        "amount": "4"
+        "power": 3,
+        "amount": 4
     },
     {
-        "id": "1",
+        "id": 2,
         "name": "Test2",
-        "set": "City",
-        "level": "B",
-        "power": "4",
-        "amount": "2"
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": 5,
+        "amount": 4
+    },
+    {
+        "id": 3,
+        "name": "Test3",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": 4,
+        "amount": 3
+    },
+    {
+        "id": 4,
+        "name": "Test4",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": 1,
+        "amount": 5
+    },
+    {
+        "id": 5,
+        "name": "Test5",
+        "set": "CASTLE",
+        "level": "A",
+        "power": 2,
+        "amount": 2
+    },
+    {
+        "id": 6,
+        "name": "Test6",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": 2,
+        "amount": 3
+    },
+    {
+        "id": 7,
+        "name": "Test7",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": 3,
+        "amount": 3
+    },
+    {
+        "id": 8,
+        "name": "Test8",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": 4,
+        "amount": 4
+    },
+    {
+        "id": 9,
+        "name": "Test8",
+        "set": "CITY",
+        "level": "A",
+        "power": 4,
+        "amount": 2
+    },
+    {
+        "id": 10,
+        "name": "Test8",
+        "set": "CASTLE",
+        "level": "A",
+        "power": 2,
+        "amount": 7
+    },
+    {
+        "id": 11,
+        "name": "Test8",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": 2,
+        "amount": 3
+    },
+    {
+        "id": 12,
+        "name": "Test8",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": 3,
+        "amount": 2
+    },
+    {
+        "id": 13,
+        "name": "Test8",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": 5,
+        "amount": 3
+    },
+    {
+        "id": 14,
+        "name": "Test8",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": 6,
+        "amount": 3
     }
 ]
