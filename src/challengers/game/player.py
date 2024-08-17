@@ -42,7 +42,16 @@ class Player:
             total_fans += trophy.fans
         return total_fans
 
-    def get_starter_cards(self): ...
+    def get_starter_cards(self, tray: Tray) -> list[Card]:
+        added_cards_ids: list[int] = []
+        tray_pile_copy = tray.pile.copy()
+        for card in tray_pile_copy:
+            if card.id not in added_cards_ids:
+                self.deck.append(card)
+                tray.pile.remove(card)
+                added_cards_ids.append(card.id)
+        self.shuffle_deck()
+        return self.deck
 
     def get_higher_round_win(self) -> int:
         if not self.trophies:
