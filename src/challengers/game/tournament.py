@@ -7,9 +7,7 @@ from .tray import Tray
 from .card import Level
 from .trophy import Trophy
 
-
-DEBUG = True
-
+from .data import DEBUG, AUTO
 
 NUMBER_OF_ROUNDS = 7
 MAX_NUMBER_OF_PLAYERS = 8
@@ -113,17 +111,23 @@ class Tournament:
                 possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[round].keys())
 
                 # TODO: Player action here: choose from which tray to draw
-                chosen_tray_level = random.choice(possible_tray_levels)
+                if AUTO:
+                    chosen_tray_level = random.choice(possible_tray_levels)
+                else:
+                    ...
 
                 for _ in range(TournamentPlan.CARDS_TO_DRAW[round][chosen_tray_level]):
                     player.draw_card(self.trays[chosen_tray_level])
                 player.shuffle_deck()
 
                 # TODO: Player action here: select cards to discard
-                copy_deck = player.deck.copy()
-                for card in copy_deck:
-                    if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
-                        player.discard(card, self.trays[chosen_tray_level])
+                if AUTO:
+                    copy_deck = player.deck.copy()
+                    for card in copy_deck:
+                        if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
+                            player.discard(card, self.trays[chosen_tray_level])
+                else:
+                    ...
 
         finalists = self.get_finalists()
 

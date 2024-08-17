@@ -2,8 +2,7 @@ import random
 
 from .player import Player
 
-
-DEBUG = True
+from .data import DEBUG
 
 
 BENCH_SIZE = 6
