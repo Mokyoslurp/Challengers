@@ -1,14 +1,12 @@
-import random
-
-from .card import Card, Level
+from .card import Level, CardList
 
 
 class Tray:
     def __init__(self, level: Level):
         self.level = level
 
-        self.pile: list[Card] = []
-        self.discard: list[Card] = []
+        self.pile = CardList()
+        self.discard = CardList()
 
     def __str__(self):
         string = "Tray " + self.level.name + ":\n\tPile:\n\t\t"
@@ -19,18 +17,14 @@ class Tray:
             string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
         return string
 
-    def prepare(self):
-        self.pile = []
-        for card in Card.cards:
+    def prepare(self, game_cards: CardList):
+        for card in game_cards:
             if card.level == self.level:
                 self.pile.append(card)
         self.shuffle()
 
     def shuffle(self):
-        random.shuffle(self.pile)
+        self.pile.shuffle()
 
     def draw(self):
-        if self.pile:
-            return self.pile.pop()
-        else:
-            return None
+        return self.pile.draw()

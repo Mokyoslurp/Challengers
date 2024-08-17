@@ -1,12 +1,7 @@
 from pathlib import Path
 
 
-from game import (
-    Player,
-    Tournament,
-    Trophy,
-    CardSerializer,
-)
+from game import Player, Tournament, Trophy
 
 
 GAME_DATA_PATH = Path(__file__).parent / "game" / "data"
@@ -46,9 +41,9 @@ def load_trophies(tournament: Tournament):
 
 
 if __name__ == "__main__":
-    CardSerializer.load_cards_from_file(CARD_DATA_FILE_PATH)
-
     tournament = Tournament(8)
+
+    tournament.load_game_cards(CARD_DATA_FILE_PATH)
 
     load_trophies(tournament)
 

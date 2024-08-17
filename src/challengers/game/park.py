@@ -36,7 +36,7 @@ class Park:
 
         attacking_player = self.player_1 if self.flag_owner == self.player_2 else self.player_2
 
-        played_card = self.flag_owner.play_card()
+        played_card = self.flag_owner.play()
         if DEBUG:
             print(self.flag_owner.name + ", Defending: " + str(played_card))
 
@@ -49,7 +49,7 @@ class Park:
                 len(attacking_player.deck) > 0
                 and attacking_player.get_power() < self.flag_owner.get_power()
             ):
-                played_card = attacking_player.play_card()
+                played_card = attacking_player.play()
                 if DEBUG:
                     print(attacking_player.name + ": " + str(played_card))
 

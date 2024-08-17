@@ -1,7 +1,5 @@
-import random
-
 from .trophy import Trophy
-from .card import Card
+from .card import Card, CardList
 from .tray import Tray
 
 
@@ -10,17 +8,17 @@ class Player:
         self.id = id
         self.name = name
 
-        self.deck: list[Card] = []
-        self.exhaust: list[Card] = []
+        self.deck = CardList()
+        self.exhaust = CardList()
 
         self.trophies: list[Trophy] = []
         self.fans = 0
 
         self.tournament_plan: list[int] = []
 
-        self.played_cards: list[Card] = []
-        self.used_cards: list[Card] = []
-        self.bench: dict[int, list[Card]] = {}
+        self.played_cards = CardList()
+        self.used_cards = CardList()
+        self.bench: dict[int, CardList] = {}
 
     def __str__(self):
         string = "Player " + str(self.id) + ", " + self.name + ":\n\t"
@@ -42,14 +40,14 @@ class Player:
             total_fans += trophy.fans
         return total_fans
 
-    def get_starter_cards(self, tray: Tray) -> list[Card]:
-        added_cards_ids: list[int] = []
-        tray_pile_copy = tray.pile.copy()
-        for card in tray_pile_copy:
-            if card.id not in added_cards_ids:
+    def get_starter_cards(self, tray: Tray) -> CardList:
+        for card in tray.pile:
+            if card not in self.deck:
                 self.deck.append(card)
-                tray.pile.remove(card)
-                added_cards_ids.append(card.id)
+
+        for card in self.deck:
+            tray.pile.remove(card)
+
         self.shuffle_deck()
         return self.deck
 
@@ -59,7 +57,7 @@ class Player:
         else:
             return self.trophies[-1].round
 
-    def draw_card(self, tray: Tray) -> Card:
+    def draw(self, tray: Tray) -> Card:
         card = tray.draw()
         if card:
             self.deck.append(card)
@@ -67,18 +65,18 @@ class Player:
 
     def discard(self, card: Card, tray: Tray) -> Card:
         if card in self.deck:
-            self.deck.remove(card)
             tray.discard.append(card)
+            self.deck.remove(card)
             return card
-        return None
 
     def shuffle_deck(self):
-        random.shuffle(self.deck)
+        self.deck.shuffle()
 
-    def play_card(self) -> Card:
-        played_card = self.deck.pop()
-        self.played_cards.append(played_card)
-        return played_card
+    def play(self) -> Card:
+        played_card = self.deck.draw()
+        if played_card:
+            self.played_cards.append(played_card)
+            return played_card
 
     def get_power(self) -> int:
         total_power = 0
@@ -100,25 +98,27 @@ class Player:
             if card.id in self.bench:
                 self.bench[card.id].append(card)
             else:
-                self.bench[card.id] = [card]
-        self.played_cards = []
-        self.used_cards = []
+                self.bench[card.id] = CardList([card])
+
+        self.played_cards.clear()
+        self.used_cards.clear()
 
     def set_defense(self):
-        for _ in range(len(self.played_cards) - 1):
-            self.used_cards.append(self.played_cards.pop(0))
+        for card in self.played_cards[:-1]:
+            self.used_cards.append(card)
+            self.played_cards.remove(card)
 
-    def reset_deck(self) -> list[Card]:
-        list_bench = []
+    def reset_deck(self) -> CardList:
+        list_bench = CardList()
         for card_id in self.bench:
             list_bench += self.bench[card_id]
 
         for card in self.exhaust + self.used_cards + self.played_cards + list_bench:
             self.deck.append(card)
 
-        self.exhaust = []
-        self.used_cards = []
-        self.played_cards = []
+        self.exhaust.clear()
+        self.used_cards.clear()
+        self.played_cards.clear()
         self.bench = {}
 
         self.shuffle_deck()

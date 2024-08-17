@@ -6,6 +6,7 @@ from .park import Park
 from .tray import Tray
 from .card import Level
 from .trophy import Trophy
+from .card import CardList, CardSerializer
 
 from .data import DEBUG, AUTO
 
@@ -27,13 +28,18 @@ class Tournament:
             self.trays: dict[Level, Tray] = {}
 
             self.scores: dict[Player, int] = {}
+
+            self.game_cards: CardList
         else:
             raise ValueError
+
+    def load_game_cards(self, game_cards_file_path: str):
+        self.game_cards = CardSerializer.load_cards_from_file(game_cards_file_path)
 
     def initialize_trays(self) -> list[Tray]:
         for level in [Level.A, Level.B, Level.C, Level.S]:
             tray = Tray(level)
-            tray.prepare()
+            tray.prepare(self.game_cards)
             self.trays[level] = tray
 
         if DEBUG:
@@ -126,13 +132,12 @@ class Tournament:
                     ...
 
                 for _ in range(TournamentPlan.CARDS_TO_DRAW[round][chosen_tray_level]):
-                    player.draw_card(self.trays[chosen_tray_level])
+                    player.draw(self.trays[chosen_tray_level])
                 player.shuffle_deck()
 
                 # TODO: Player action here: select cards to discard
                 if AUTO:
-                    copy_deck = player.deck.copy()
-                    for card in copy_deck:
+                    for card in player.deck[:]:
                         if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
                             player.discard(card, self.trays[chosen_tray_level])
                 else:
