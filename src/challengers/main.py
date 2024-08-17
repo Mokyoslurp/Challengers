@@ -1,8 +1,7 @@
 from pathlib import Path
 
 
-from challengers.game import (
-    Level,
+from game import (
     Player,
     Tournament,
     Trophy,
@@ -55,13 +54,6 @@ if __name__ == "__main__":
 
     for player in PLAYERS:
         tournament.set_new_player(player)
-
-    tournament.initialize_trays()
-
-    for player in tournament.players:
-        for _ in range(6):
-            player.draw_card(tournament.trays[Level.A])
-            player.shuffle_deck()
 
     winner = tournament.play()
 

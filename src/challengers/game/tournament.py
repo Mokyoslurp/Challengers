@@ -31,7 +31,7 @@ class Tournament:
             raise ValueError
 
     def initialize_trays(self) -> list[Tray]:
-        for level in [Level.A, Level.B, Level.C]:
+        for level in [Level.A, Level.B, Level.C, Level.S]:
             tray = Tray(level)
             tray.prepare()
             self.trays[level] = tray
@@ -88,6 +88,15 @@ class Tournament:
                 print(player)
 
         TournamentPlan.generate_plans(self.number_of_players, self.players)
+
+        self.initialize_trays()
+
+        for player in self.players:
+            player.get_starter_cards(self.trays[Level.S])
+
+        if DEBUG:
+            for player in self.players:
+                print(player)
 
         for round in range(NUMBER_OF_ROUNDS):
             winners: list[Player] = [-1] * len(self.parks)
