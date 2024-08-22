@@ -1,7 +1,8 @@
 import json
-from typing import Self
+from typing import Self, MutableMapping, Any
 from enum import Enum
 import random
+from dataclasses import dataclass, fields, replace
 
 
 class Set(Enum):
@@ -21,35 +22,59 @@ class Level(Enum):
     C = 3
 
 
+@dataclass
 class Card:
-    def __init__(self, id: int, name: str, set: Set, level: Level, power: int = 0):
-        self.id = id
-        self.name = name
-        self.set = set
-        self.level = level
-        self.power = power
+    id: int = 0
+    name: str = ""
+    set: Set = Set.CITY
+    level: Level = Level.S
+    power: int = 0
+    text: str = ""
 
-    def __str__(self):
-        return (
-            "Card "
-            + str(self.id)
-            + ":\n\t"
+    def __str__(self) -> str:
+        string = (
+            self.level.name
+            + ", "
+            + self.set.name.replace("_", " ").capitalize()
+            + ", "
             + self.name
-            + ", "
-            + self.set.name
-            + ", "
-            + self.level.name
-            + "\n\tPower: "
+            + ": "
+            + "Power = "
             + str(self.power)
         )
+        if self.text:
+            string += "\n\t" + self.text
+        return string
 
-    def __eq__(self, other: Self) -> bool:
-        # TODO: Put other attributes too ?
-        return self.id == other.id
+    @classmethod
+    def get_fields(cls):
+        return [field for field in fields(cls) if not field.name.startswith("_")]
 
-    def copy(self):
-        new_card = Card(self.id, self.name, self.set, self.level, self.power)
-        return new_card
+    def as_dict(self) -> dict:
+        data: dict = {}
+        for field in Card.get_fields():
+            value = getattr(self, field.name)
+            if field.type == Set or field.type == Level:
+                value = value.name
+            else:
+                value = str(value)
+            data[field.name] = value
+        return data
+
+    @staticmethod
+    def from_dict(data: dict) -> Self:
+        init_values: MutableMapping[str, Any] = {}
+        for field in Card.get_fields():
+            value = data[field.name]
+            if field.type is int:
+                value = int(value)
+            elif field.type is Set:
+                value = Set[value]
+            elif field.type is Level:
+                value = Level[value]
+            init_values[field.name] = value
+        card = Card(**init_values)
+        return card
 
 
 class CardList:
@@ -92,7 +117,7 @@ class CardList:
 
         self.elements.append(card)
         for _ in range(amount - 1):
-            self.elements.append(card.copy())
+            self.elements.append(replace(card))
 
     def clear(self):
         self.elements = []
@@ -111,62 +136,39 @@ class CardList:
 
 class CardSerializer:
     @staticmethod
-    def load_card(dict_card: dict, use_serialized_amount: bool = True, amount: int = 1) -> CardList:
-        try:
-            if use_serialized_amount:
-                amount = int(dict_card["amount"])
-
-            id = int(dict_card["id"])
-            name = dict_card["name"]
-            set = Set[dict_card["set"]]
-            level = Level[dict_card["level"]]
-            power = int(dict_card["power"])
-
-            loaded_cards = CardList()
-            loaded_cards.append(Card(id, name, set, level, power), amount)
-            return loaded_cards
-
-        except ValueError as error:
-            print(error, ": Wrong json object or wrong types used")
+    def load_card(data: dict) -> Card:
+        card = Card.from_dict(data)
+        return card
 
     @staticmethod
-    def load_cards(list_cards: list[dict]) -> CardList:
+    def load_cards(data: list[dict]) -> CardList:
         cards = CardList()
-        for dict_card in list_cards:
-            cards += CardSerializer.load_card(dict_card)
+        for card_data in data:
+            cards.append(CardSerializer.load_card(card_data))
         return cards
 
     @staticmethod
     def load_cards_from_file(file_path: str) -> CardList:
         file = open(file_path, "r")
-        list_cards = json.load(file)
+        data = json.load(file)
         file.close()
-        return CardSerializer.load_cards(list_cards)
+        return CardSerializer.load_cards(data)
 
     @staticmethod
-    def dump_card(card: Card, amount: int = 1) -> dict:
-        dict_card = {
-            "id": card.id,
-            "name": card.name,
-            "set": card.set.name,
-            "level": card.level.name,
-            "power": card.power,
-            "amount": amount,
-        }
-        return dict_card
+    def dump_card(card: Card) -> dict:
+        data = card.as_dict()
+        return data
 
     @staticmethod
-    def dump_cards(cards: CardList, amounts: list[int] = None) -> list[dict]:
-        if not amounts or len(cards) != len(amounts):
-            amounts = [1] * len(cards)
-        list_cards = []
+    def dump_cards(cards: CardList) -> list[dict]:
+        data = []
         for i in range(len(cards)):
-            list_cards.append(CardSerializer.dump_card(cards[i], amounts[i]))
-        return list_cards
+            data.append(CardSerializer.dump_card(cards[i]))
+        return data
 
     @staticmethod
     def dump_cards_into_file(cards: CardList, file_path: str):
-        list_cards = CardSerializer.dump_cards(cards)
+        data = CardSerializer.dump_cards(cards)
         file = open(file_path, "w")
-        json.dump(list_cards, file)
+        json.dump(data, file)
         file.close()
