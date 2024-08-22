@@ -6,6 +6,9 @@ description = ""
 authors = [
     "Marien GIORDANI <giordanimarien@gmail.com>",
 ]
+packages = [
+    { include = "challengers", from = "src" },
+]
 exclude = ["**/tests/**"]
 
 keywords = [
