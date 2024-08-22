@@ -45,6 +45,9 @@ class Card:
             string += "\n\t" + self.text
         return string
 
+    def __hash__(self) -> int:
+        return hash(self.name)
+
     @classmethod
     def get_fields(cls):
         return [field for field in fields(cls) if not field.name.startswith("_")]

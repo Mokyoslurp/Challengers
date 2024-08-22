@@ -18,7 +18,7 @@ class Player:
 
         self.played_cards = CardList()
         self.used_cards = CardList()
-        self.bench: dict[int, CardList] = {}
+        self.bench: dict[Card, int] = {}
 
     def __str__(self):
         string = "Player " + str(self.id) + ", " + self.name + ":\n\t"
@@ -95,10 +95,10 @@ class Player:
 
     def bench_cards(self):
         for card in self.played_cards + self.used_cards:
-            if card.id in self.bench:
-                self.bench[card.id].append(card)
+            if card in self.bench:
+                self.bench[card] += 1
             else:
-                self.bench[card.id] = CardList([card])
+                self.bench[card] = 1
 
         self.played_cards.clear()
         self.used_cards.clear()
@@ -110,8 +110,9 @@ class Player:
 
     def reset_deck(self) -> CardList:
         list_bench = CardList()
-        for card_id in self.bench:
-            list_bench += self.bench[card_id]
+        for card in self.bench:
+            for _ in range(self.bench[card]):
+                list_bench.append(card)
 
         for card in self.exhaust + self.used_cards + self.played_cards + list_bench:
             self.deck.append(card)
