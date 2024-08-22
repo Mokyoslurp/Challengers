@@ -5,7 +5,7 @@ from .player import Player
 from .park import Park
 from .tray import Tray
 from .card import Level
-from .trophy import Trophy
+from .trophy import TrophyDict, TrophySerializer
 from .card import CardList, CardSerializer
 
 from .data import DEBUG, AUTO
@@ -30,11 +30,16 @@ class Tournament:
             self.scores: dict[Player, int] = {}
 
             self.game_cards: CardList
+            self.game_trophies = TrophyDict()
+
         else:
             raise ValueError
 
     def load_game_cards(self, game_cards_file_path: str):
         self.game_cards = CardSerializer.load_cards_from_file(game_cards_file_path)
+
+    def load_game_trophies(self, game_trophies_file_path: str):
+        self.game_trophies = TrophySerializer.load_trophies_from_file(game_trophies_file_path)
 
     def initialize_trays(self) -> list[Tray]:
         for level in [Level.A, Level.B, Level.C, Level.S]:
@@ -118,7 +123,7 @@ class Tournament:
                 winners[park.id] = park.play_game()
 
             for winner in winners:
-                winner.trophies.append(Trophy.draw_trophy(round))
+                winner.trophies.append(self.game_trophies.draw(round))
 
             for player in self.players:
                 player.reset_deck()

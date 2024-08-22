@@ -1,24 +1,15 @@
 from pathlib import Path
 
 
-from game import Player, Tournament, Trophy
+from game import Player, Tournament
 
 
 GAME_DATA_PATH = Path(__file__).parent / "game" / "data"
 CARD_DATA_FILE = "cards.json"
+TROPHY_DATA_FILE = "trophies.json"
 
 CARD_DATA_FILE_PATH = GAME_DATA_PATH / CARD_DATA_FILE
-
-# Key is the round, and the list following is all the possible fans for a trophy of this round.
-TROPHIES: dict[int, list[int]] = {
-    0: [2, 2, 2, 3],
-    1: [2, 2, 3, 3],
-    2: [3, 3, 4, 4],
-    3: [4, 5, 6, 6],
-    4: [6, 6, 6, 7],
-    5: [7, 7, 7, 8],
-    6: [9, 9, 10, 10],
-}
+TROPHY_DATA_FILE_PATH = GAME_DATA_PATH / TROPHY_DATA_FILE
 
 PLAYERS = [
     Player(1, "P1"),
@@ -31,21 +22,11 @@ PLAYERS = [
     Player(8, "P8"),
 ]
 
-
-def load_trophies(tournament: Tournament):
-    for round in TROPHIES:
-        for park in range(len(tournament.parks)):
-            Trophy.create(round, TROPHIES[round][park])
-
-    Trophy.shuffle_trophies()
-
-
 if __name__ == "__main__":
     tournament = Tournament(8)
 
     tournament.load_game_cards(CARD_DATA_FILE_PATH)
-
-    load_trophies(tournament)
+    tournament.load_game_trophies(TROPHY_DATA_FILE_PATH)
 
     for player in PLAYERS:
         tournament.set_new_player(player)
