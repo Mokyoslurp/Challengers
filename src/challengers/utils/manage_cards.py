@@ -11,7 +11,7 @@ JSON_CARD_FILE_NAME = "cards.json"
 JSON_CARD_FILE_PATH = Path(__file__).parent.parent / "game" / "data" / JSON_CARD_FILE_NAME
 
 
-def generate_cards_to_dump():
+def _generate_cards_to_dump():
     cards_A = [
         Card(1, "Test1", Set.CITY, Level.A, power=3),
         Card(2, "Test2", Set.HAUNTED_HOUSE, Level.A, power=5),
@@ -90,15 +90,15 @@ def generate_cards_to_dump():
     return cards
 
 
-def print_cards_file(file_path):
+def _print_cards_file(file_path):
     cards: list[Card] = CardSerializer.load_cards_from_file(file_path)
     for card in cards:
         print(card)
 
 
-if __name__ == "__main__":
-    cards = generate_cards_to_dump()
+def manage_cards():
+    cards = _generate_cards_to_dump()
 
     CardSerializer.dump_cards_into_file(cards, JSON_CARD_FILE_PATH)
 
-    print_cards_file(JSON_CARD_FILE_PATH)
+    _print_cards_file(JSON_CARD_FILE_PATH)
