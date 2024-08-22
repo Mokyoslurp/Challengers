@@ -24,7 +24,6 @@ class Level(Enum):
 
 @dataclass
 class Card:
-    id: int = 0
     name: str = ""
     set: Set = Set.CITY
     level: Level = Level.S
