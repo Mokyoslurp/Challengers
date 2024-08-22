@@ -205,10 +205,10 @@ class TournamentPlan:
 
         elif 5 <= number_of_players <= 6:
             plans.append(TournamentPlan([0, 2, 2, 1, 0, 1, 1]))
-            plans.append(TournamentPlan([1, 0, 1, 1, 2, 2, 2]))
+            plans.append(TournamentPlan([1, 0, 1, 1, 1, 2, 2]))
             plans.append(TournamentPlan([1, 1, 2, 2, 1, 1, 0]))
             plans.append(TournamentPlan([2, 2, 0, 2, 2, 0, 2]))
-            plans.append(TournamentPlan([2, 1, 1, 0, 1, 2, 1]))
+            plans.append(TournamentPlan([2, 1, 1, 0, 2, 2, 1]))
 
         elif 7 <= number_of_players <= 8:
             plans.append(TournamentPlan([3, 3, 0, 1, 1, 2, 2]))
