@@ -96,7 +96,7 @@ def _print_cards_file(file_path):
         print(card)
 
 
-def manage_cards():
+if __name__ == "__main__":
     cards = _generate_cards_to_dump()
 
     CardSerializer.dump_cards_into_file(cards, JSON_CARD_FILE_PATH)

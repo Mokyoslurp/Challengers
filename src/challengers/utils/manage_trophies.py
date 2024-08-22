@@ -35,7 +35,7 @@ def _print_trophy_file(file_path):
         print(trophies[round])
 
 
-def manage_trophies():
+if __name__ == "__main__":
     trophies = _generate_trophies_to_dump()
 
     TrophySerializer.dump_trophies_into_file(trophies, JSON_TROPHY_FILE_PATH)

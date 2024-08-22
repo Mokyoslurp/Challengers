@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-from game import Player, Tournament
+from challengers.game import Player, Tournament
 
 
 GAME_DATA_PATH = Path(__file__).parent / "game" / "data"
