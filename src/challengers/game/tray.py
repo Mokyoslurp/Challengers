@@ -9,12 +9,15 @@ class Tray:
         self.discard = CardList()
 
     def __str__(self):
-        string = "Tray " + self.level.name + ":\n\tPile:\n\t\t"
-        for card in self.pile:
-            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
-        string += "\n\tDiscard:\n\t\t"
-        for card in self.discard:
-            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
+        string = (
+            "Tray "
+            + self.level.name
+            + ":\n\tPile:\n\t\t"
+            + str(self.pile).replace("\n", "\n\t\t")
+            + "\n\t\t"
+            + "\n\tDiscard:\n\t\t"
+            + str(self.discard).replace("\n", "\n\t\t")
+        )
         return string
 
     def prepare(self, game_cards: CardList):

@@ -21,17 +21,27 @@ class Player:
         self.bench: dict[Card, int] = {}
 
     def __str__(self):
-        string = "Player " + str(self.id) + ", " + self.name + ":\n\t"
-        string += "Total fans: " + str(self.get_total_fans()) + "\n"
-        string += "\n\tDeck:\n\t\t"
-        for card in self.deck:
-            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
-        string += "\n\tExhaust:\n\t\t"
-        for card in self.exhaust:
-            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
-        string += "\n\tBench:\n\t\t"
+        string = (
+            " P"
+            + str(self.id)
+            + ", "
+            + self.name
+            + ":\n\t"
+            + "Total fans: "
+            + str(self.get_total_fans())
+            + "\n"
+            + "\n\tDeck:\n\t\t"
+            + str(self.deck).replace("\n", "\n\t\t")
+            + "\n\t\t"
+            + "\n\tExhaust:\n\t\t"
+            + str(self.exhaust).replace("\n", "\n\t\t")
+            + "\n\t\t"
+            + "\n\tBench:\n\t\t"
+        )
         for card in self.bench:
-            string += str(card).replace("\n", "\n\t\t") + "\n\t\t"
+            string += (
+                str(card).replace("\n", "\n\t\t") + ", (x" + str(self.bench[card]) + ")" + "\n\t\t"
+            )
         return string
 
     def get_total_fans(self) -> int:
