@@ -22,17 +22,17 @@ def _generate_trophies_to_dump():
         6: [9, 9, 10, 10],
     }
 
-    trophies = {
-        round: [Trophy(round, fans) for fans in trophies_dict[round]] for round in trophies_dict
-    }
+    trophies = TrophyDict()
+    for round in trophies_dict:
+        for fans in trophies_dict[round]:
+            trophies.append(Trophy(round, fans))
 
     return trophies
 
 
 def _print_trophy_file(file_path):
     trophies: TrophyDict = TrophySerializer.load_trophies_from_file(file_path)
-    for round in trophies:
-        print(trophies[round])
+    print(trophies)
 
 
 if __name__ == "__main__":
