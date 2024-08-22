@@ -12,81 +12,122 @@ JSON_CARD_FILE_PATH = Path(__file__).parent.parent / "game" / "data" / JSON_CARD
 
 
 def _generate_cards_to_dump():
-    cards_A = [
-        Card(1, "Test1", Set.CITY, Level.A, power=3),
-        Card(2, "Test2", Set.HAUNTED_HOUSE, Level.A, power=5),
-        Card(3, "Test3", Set.OUTER_SPACE, Level.A, power=4),
-        Card(4, "Test4", Set.SHIPWRECK, Level.A, power=1),
-        Card(5, "Test5", Set.CASTLE, Level.A, power=2),
-        Card(6, "Test6", Set.FILM_STUDIO, Level.A, power=2),
-        Card(7, "Test7", Set.FUNFAIR, Level.A, power=3),
-        Card(8, "Test8", Set.SHIPWRECK, Level.A, power=4),
-        Card(9, "Test9", Set.CITY, Level.A, power=4),
-        Card(10, "Test10", Set.CASTLE, Level.A, power=2),
-        Card(11, "Test11", Set.OUTER_SPACE, Level.A, power=2),
-        Card(12, "Test12", Set.OUTER_SPACE, Level.A, power=3),
-        Card(13, "Test13", Set.FILM_STUDIO, Level.A, power=5),
-        Card(14, "Test14", Set.FUNFAIR, Level.A, power=6),
-    ]
+    current_set = Set.CITY
+    cards_S = (
+        3 * [Card("Recrue", current_set, Level.S, power=1)]
+        + [Card("Capitaine", current_set, Level.S, power=2)]
+        + [Card("Chien", current_set, Level.S, power=3)]
+        + [Card("Championne", current_set, Level.S, power=4)]
+    )
 
-    cards_B = [
-        Card(1, "Test15", Set.CITY, Level.B, power=3),
-        Card(16, "Test16", Set.HAUNTED_HOUSE, Level.B, power=5),
-        Card(17, "Test17", Set.OUTER_SPACE, Level.B, power=4),
-        Card(18, "Test18", Set.SHIPWRECK, Level.B, power=1),
-        Card(19, "Test19", Set.CASTLE, Level.B, power=2),
-        Card(20, "Test20", Set.FILM_STUDIO, Level.B, power=2),
-        Card(21, "Test21", Set.FUNFAIR, Level.B, power=3),
-        Card(22, "Test22", Set.SHIPWRECK, Level.B, power=4),
-        Card(23, "Test23", Set.CITY, Level.B, power=4),
-        Card(24, "Test24", Set.CASTLE, Level.B, power=2),
-        Card(25, "Test25", Set.OUTER_SPACE, Level.B, power=2),
-        Card(26, "Test26", Set.OUTER_SPACE, Level.B, power=3),
-        Card(27, "Test27", Set.FILM_STUDIO, Level.B, power=5),
-        Card(28, "Test28", Set.FUNFAIR, Level.B, power=6),
-        Card(15, "Test15", Set.CITY, Level.B, power=3),
-        Card(16, "Test16", Set.HAUNTED_HOUSE, Level.B, power=5),
-        Card(17, "Test17", Set.OUTER_SPACE, Level.B, power=4),
-        Card(18, "Test18", Set.SHIPWRECK, Level.B, power=1),
-        Card(19, "Test19", Set.CASTLE, Level.B, power=2),
-        Card(20, "Test20", Set.FILM_STUDIO, Level.B, power=2),
-        Card(21, "Test21", Set.FUNFAIR, Level.B, power=3),
-        Card(22, "Test22", Set.SHIPWRECK, Level.B, power=4),
-        Card(23, "Test23", Set.CITY, Level.B, power=4),
-        Card(24, "Test24", Set.CASTLE, Level.B, power=2),
-        Card(25, "Test25", Set.OUTER_SPACE, Level.B, power=2),
-        Card(26, "Test26", Set.OUTER_SPACE, Level.B, power=3),
-        Card(27, "Test27", Set.FILM_STUDIO, Level.B, power=5),
-        Card(28, "Test28", Set.FUNFAIR, Level.B, power=6),
-    ]
+    city_deck = (
+        4 * [Card("Journaliste", current_set, Level.A, power=2)]
+        + 3 * [Card("Capitaine", current_set, Level.A, power=2, text="Rare 3x")]
+        + 4 * [Card("Mascotte", current_set, Level.B, power=2)]
+        + 3 * [Card("Chien", current_set, Level.B, power=3, text="Rare 3x")]
+        + 4 * [Card("Autobus", current_set, Level.C, power=6)]
+        + 2 * [Card("Championne", current_set, Level.C, power=4, text="Rare 2x")]
+    )
 
-    cards_C = [
-        Card(29, "Test29", Set.CITY, Level.C, power=3),
-        Card(30, "Test30", Set.HAUNTED_HOUSE, Level.C, power=5),
-        Card(31, "Test31", Set.OUTER_SPACE, Level.C, power=4),
-        Card(32, "Test32", Set.SHIPWRECK, Level.C, power=1),
-        Card(33, "Test33", Set.CASTLE, Level.C, power=2),
-        Card(34, "Test34", Set.FILM_STUDIO, Level.C, power=2),
-        Card(35, "Test35", Set.FUNFAIR, Level.C, power=3),
-        Card(36, "Test36", Set.SHIPWRECK, Level.C, power=4),
-        Card(37, "Test37", Set.CITY, Level.C, power=4),
-        Card(38, "Test38", Set.CASTLE, Level.C, power=2),
-        Card(39, "Test39", Set.OUTER_SPACE, Level.C, power=2),
-        Card(40, "Test40", Set.OUTER_SPACE, Level.C, power=3),
-        Card(41, "Test41", Set.FILM_STUDIO, Level.C, power=5),
-        Card(42, "Test42", Set.FUNFAIR, Level.C, power=6),
-    ]
+    current_set = Set.CASTLE
+    castle_deck = (
+        4 * [Card("Hermite", current_set, Level.A, power=2)]
+        + 3 * [Card("Cochon", current_set, Level.A, power=3, text="Rare 3x")]
+        + 4 * [Card("Bouffon", current_set, Level.A, power=1)]
+        + 4 * [Card("Garçon d'écurie", current_set, Level.A, power=2)]
+        + 4 * [Card("Chevalier", current_set, Level.B, power=3)]
+        + 4 * [Card("Prince", current_set, Level.C, power=5)]
+        + 4 * [Card("Forgeronne", current_set, Level.B, power=3)]
+        + 4 * [Card("Sorcier", current_set, Level.B, power=4)]
+        + 3 * [Card("Cheval", current_set, Level.B, power=5, text="Rare 3x")]
+        + 2 * [Card("Dragon", current_set, Level.C, power=7, text="Rare 2x")]
+        + 4 * [Card("Barde", current_set, Level.C, power=4)]
+    )
 
-    cards_S = [
-        Card(43, "Start1", Set.CITY, Level.S, power=3),
-        Card(44, "Start2", Set.CITY, Level.S, power=3),
-        Card(45, "Start3", Set.CITY, Level.S, power=3),
-        Card(46, "Start4", Set.CITY, Level.S, power=3),
-        Card(47, "Start5", Set.CITY, Level.S, power=3),
-        Card(48, "Start6", Set.CITY, Level.S, power=3),
-    ]
+    current_set = Set.SHIPWRECK
+    shipwreck_deck = (
+        4 * [Card("M.Sirène", current_set, Level.A, power=1)]
+        + 3 * [Card("Requin", current_set, Level.B, power=5, text="Rare 3x")]
+        + 4 * [Card("Matelot", current_set, Level.A, power=2)]
+        + 4 * [Card("Navigateur", current_set, Level.B, power=4)]
+        + 4 * [Card("Trésor", current_set, Level.A, power=2)]
+        + 4 * [Card("Cuistot", current_set, Level.B, power=2)]
+        + 4 * [Card("Corne de brume", current_set, Level.C, power=6)]
+        + 3 * [Card("Perroquet", current_set, Level.A, power=3, text="Rare 3x")]
+        + 4 * [Card("Sauveteuse", current_set, Level.B, power=4)]
+        + 4 * [Card("Sous-marin", current_set, Level.C, power=9)]
+        + 2 * [Card("Kraken", current_set, Level.C, power=7, text="Rare 2x")]
+    )
 
-    cards = cards_A + cards_B + cards_C + cards_S
+    current_set = Set.FILM_STUDIO
+    film_deck = (
+        2 * [Card("T-rex", current_set, Level.C, power=7, text="Rare 2x")]
+        + 3 * [Card("Chat", current_set, Level.A, power=3, text="Rare 3x")]
+        + 4 * [Card("Star du cinéma", current_set, Level.A, power=2)]
+        + 4 * [Card("Gangster", current_set, Level.A, power=2)]
+        + 4 * [Card("Maquilleur", current_set, Level.A, power=1)]
+        + 4 * [Card("Héroïne", current_set, Level.C, power=5)]
+        + 4 * [Card("Cowboy", current_set, Level.B, power=3)]
+        + 4 * [Card("Réalisatrice", current_set, Level.B, power=4)]
+        + 4 * [Card("Tic tac", current_set, Level.B, power=4)]
+        + 3 * [Card("Lion", current_set, Level.B, power=5, text="Rare 3x")]
+        + 4 * [Card("Super vilain", current_set, Level.C, power=10)]
+    )
+
+    current_set = Set.HAUNTED_HOUSE
+    haunted_deck = (
+        4 * [Card("Majordome", current_set, Level.A, power=1)]
+        + 3 * [Card("Araignée", current_set, Level.A, power=3, text="Rare 3x")]
+        + 8 * [Card("Squelette", current_set, Level.A, power=2, text="Commune 8x")]
+        + 4 * [Card("Ado", current_set, Level.B, power=2)]
+        + 4 * [Card("Nécromancienne", current_set, Level.B, power=3)]
+        + 3 * [Card("Chauve-souris", current_set, Level.B, power=5, text="Rare 3x")]
+        + 4 * [Card("Fantôme", current_set, Level.B, power=1)]
+        + 4 * [Card("Vampire", current_set, Level.C, power=4)]
+        + 4 * [Card("Aspirateur", current_set, Level.C, power=5)]
+        + 2 * [Card("Loup-garou", current_set, Level.C, power=7, text="Rare 2x")]
+    )
+
+    current_set = Set.OUTER_SPACE
+    space_deck = (
+        3 * [Card("I.A.", current_set, Level.A, power=2, text="Rare 3x")]
+        + 3 * [Card("Vache", current_set, Level.A, power=3, text="Rare 3x")]
+        + 4 * [Card("Métaforme", current_set, Level.A, power=2)]
+        + 4 * [Card("Capsule", current_set, Level.A, power=1)]
+        + 4 * [Card("Ovni", current_set, Level.B, power=3)]
+        + 2 * [Card("Blob", current_set, Level.C, power=7, text="Rare 2x")]
+        + 3 * [Card("E.T.", current_set, Level.B, power=5, text="Rare 3x")]
+        + 4 * [Card("Fanfare", current_set, Level.B, power=3)]
+        + 5 * [Card("Clones", current_set, Level.B, power=4, text="Commune 5x")]
+        + 4 * [Card("Geek", current_set, Level.C, power=6)]
+        + 4 * [Card("Hologramme", current_set, Level.C, power=4)]
+    )
+
+    current_set = Set.FUNFAIR
+    funfair_deck = (
+        2 * [Card("Peluche", current_set, Level.C, power=7, text="Rare 2x")]
+        + 3 * [Card("Canard géant", current_set, Level.B, power=5, text="Rare 3x")]
+        + 4 * [Card("Mime", current_set, Level.B, power=1)]
+        + 4 * [Card("Clairvoyante", current_set, Level.B, power=4)]
+        + 4 * [Card("Pyrotechnicienne", current_set, Level.B, power=4)]
+        + 4 * [Card("Illusionniste", current_set, Level.C, power=5)]
+        + 4 * [Card("Clown", current_set, Level.A, power=1)]
+        + 4 * [Card("Vendeuse", current_set, Level.A, power=2)]
+        + 4 * [Card("Jongleur", current_set, Level.A, power=2)]
+        + 3 * [Card("Poney", current_set, Level.A, power=3, text="Rare 3x")]
+        + 4 * [Card("Auto tamponneuse", current_set, Level.C, power=6)]
+    )
+
+    cards = (
+        cards_S * 8
+        + city_deck
+        + castle_deck
+        + shipwreck_deck
+        + film_deck
+        + haunted_deck
+        + space_deck
+        + funfair_deck
+    )
     return cards
 
 

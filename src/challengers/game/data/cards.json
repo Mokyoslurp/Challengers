@@ -1,498 +1,2158 @@
 [
     {
-        "id": "1",
-        "name": "Test1",
+        "name": "Recrue",
         "set": "CITY",
-        "level": "A",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
         "power": "3",
         "text": ""
     },
     {
-        "id": "2",
-        "name": "Test2",
-        "set": "HAUNTED_HOUSE",
-        "level": "A",
-        "power": "5",
-        "text": ""
-    },
-    {
-        "id": "3",
-        "name": "Test3",
-        "set": "OUTER_SPACE",
-        "level": "A",
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
         "power": "4",
         "text": ""
     },
     {
-        "id": "4",
-        "name": "Test4",
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Recrue",
+        "set": "CITY",
+        "level": "S",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "S",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "S",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "S",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Journaliste",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Journaliste",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Journaliste",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Journaliste",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Capitaine",
+        "set": "CITY",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Mascotte",
+        "set": "CITY",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Mascotte",
+        "set": "CITY",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Mascotte",
+        "set": "CITY",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Mascotte",
+        "set": "CITY",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "B",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "B",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chien",
+        "set": "CITY",
+        "level": "B",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Autobus",
+        "set": "CITY",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Autobus",
+        "set": "CITY",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Autobus",
+        "set": "CITY",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Autobus",
+        "set": "CITY",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "C",
+        "power": "4",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Championne",
+        "set": "CITY",
+        "level": "C",
+        "power": "4",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Hermite",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Hermite",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Hermite",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Hermite",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Cochon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Cochon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Cochon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Bouffon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Bouffon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Bouffon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Bouffon",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Gar\u00e7on d'\u00e9curie",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gar\u00e7on d'\u00e9curie",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gar\u00e7on d'\u00e9curie",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gar\u00e7on d'\u00e9curie",
+        "set": "CASTLE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Chevalier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Chevalier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Chevalier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Chevalier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Prince",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Prince",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Prince",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Prince",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Forgeronne",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Forgeronne",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Forgeronne",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Forgeronne",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Sorcier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sorcier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sorcier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sorcier",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Cheval",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Cheval",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Cheval",
+        "set": "CASTLE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Dragon",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Dragon",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Barde",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Barde",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Barde",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Barde",
+        "set": "CASTLE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "M.Sir\u00e8ne",
         "set": "SHIPWRECK",
         "level": "A",
         "power": "1",
         "text": ""
     },
     {
-        "id": "5",
-        "name": "Test5",
-        "set": "CASTLE",
-        "level": "A",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "6",
-        "name": "Test6",
-        "set": "FILM_STUDIO",
-        "level": "A",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "7",
-        "name": "Test7",
-        "set": "FUNFAIR",
-        "level": "A",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "8",
-        "name": "Test8",
+        "name": "M.Sir\u00e8ne",
         "set": "SHIPWRECK",
         "level": "A",
-        "power": "4",
+        "power": "1",
         "text": ""
     },
     {
-        "id": "9",
-        "name": "Test9",
-        "set": "CITY",
+        "name": "M.Sir\u00e8ne",
+        "set": "SHIPWRECK",
         "level": "A",
-        "power": "4",
+        "power": "1",
         "text": ""
     },
     {
-        "id": "10",
-        "name": "Test10",
-        "set": "CASTLE",
+        "name": "M.Sir\u00e8ne",
+        "set": "SHIPWRECK",
         "level": "A",
-        "power": "2",
+        "power": "1",
         "text": ""
     },
     {
-        "id": "11",
-        "name": "Test11",
-        "set": "OUTER_SPACE",
-        "level": "A",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "12",
-        "name": "Test12",
-        "set": "OUTER_SPACE",
-        "level": "A",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "13",
-        "name": "Test13",
-        "set": "FILM_STUDIO",
-        "level": "A",
+        "name": "Requin",
+        "set": "SHIPWRECK",
+        "level": "B",
         "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Requin",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Requin",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Matelot",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
         "text": ""
     },
     {
-        "id": "14",
-        "name": "Test14",
-        "set": "FUNFAIR",
+        "name": "Matelot",
+        "set": "SHIPWRECK",
         "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Matelot",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Matelot",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Navigateur",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Navigateur",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Navigateur",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Navigateur",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Tr\u00e9sor",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Tr\u00e9sor",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Tr\u00e9sor",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Tr\u00e9sor",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Cuistot",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Cuistot",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Cuistot",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Cuistot",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Corne de brume",
+        "set": "SHIPWRECK",
+        "level": "C",
         "power": "6",
         "text": ""
     },
     {
-        "id": "1",
-        "name": "Test15",
-        "set": "CITY",
-        "level": "B",
+        "name": "Corne de brume",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Corne de brume",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Corne de brume",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Perroquet",
+        "set": "SHIPWRECK",
+        "level": "A",
         "power": "3",
-        "text": ""
+        "text": "Rare 3x"
     },
     {
-        "id": "16",
-        "name": "Test16",
-        "set": "HAUNTED_HOUSE",
-        "level": "B",
-        "power": "5",
-        "text": ""
+        "name": "Perroquet",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
     },
     {
-        "id": "17",
-        "name": "Test17",
-        "set": "OUTER_SPACE",
+        "name": "Perroquet",
+        "set": "SHIPWRECK",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Sauveteuse",
+        "set": "SHIPWRECK",
         "level": "B",
         "power": "4",
         "text": ""
     },
     {
-        "id": "18",
-        "name": "Test18",
+        "name": "Sauveteuse",
         "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sauveteuse",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sauveteuse",
+        "set": "SHIPWRECK",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Sous-marin",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "9",
+        "text": ""
+    },
+    {
+        "name": "Sous-marin",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "9",
+        "text": ""
+    },
+    {
+        "name": "Sous-marin",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "9",
+        "text": ""
+    },
+    {
+        "name": "Sous-marin",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "9",
+        "text": ""
+    },
+    {
+        "name": "Kraken",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Kraken",
+        "set": "SHIPWRECK",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "T-rex",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "T-rex",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Chat",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chat",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chat",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Star du cin\u00e9ma",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Star du cin\u00e9ma",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Star du cin\u00e9ma",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Star du cin\u00e9ma",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gangster",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gangster",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gangster",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Gangster",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Maquilleur",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Maquilleur",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Maquilleur",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Maquilleur",
+        "set": "FILM_STUDIO",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "H\u00e9ro\u00efne",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "H\u00e9ro\u00efne",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "H\u00e9ro\u00efne",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "H\u00e9ro\u00efne",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Cowboy",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Cowboy",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Cowboy",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Cowboy",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "R\u00e9alisatrice",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "R\u00e9alisatrice",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "R\u00e9alisatrice",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "R\u00e9alisatrice",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Tic tac",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Tic tac",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Tic tac",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Tic tac",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Lion",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Lion",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Lion",
+        "set": "FILM_STUDIO",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Super vilain",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "10",
+        "text": ""
+    },
+    {
+        "name": "Super vilain",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "10",
+        "text": ""
+    },
+    {
+        "name": "Super vilain",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "10",
+        "text": ""
+    },
+    {
+        "name": "Super vilain",
+        "set": "FILM_STUDIO",
+        "level": "C",
+        "power": "10",
+        "text": ""
+    },
+    {
+        "name": "Majordome",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Majordome",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Majordome",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Majordome",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Araign\u00e9e",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Araign\u00e9e",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Araign\u00e9e",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Squelette",
+        "set": "HAUNTED_HOUSE",
+        "level": "A",
+        "power": "2",
+        "text": "Commune 8x"
+    },
+    {
+        "name": "Ado",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Ado",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Ado",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Ado",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "N\u00e9cromancienne",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "N\u00e9cromancienne",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "N\u00e9cromancienne",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "N\u00e9cromancienne",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Chauve-souris",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chauve-souris",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Chauve-souris",
+        "set": "HAUNTED_HOUSE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Fant\u00f4me",
+        "set": "HAUNTED_HOUSE",
         "level": "B",
         "power": "1",
         "text": ""
     },
     {
-        "id": "19",
-        "name": "Test19",
-        "set": "CASTLE",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "20",
-        "name": "Test20",
-        "set": "FILM_STUDIO",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "21",
-        "name": "Test21",
-        "set": "FUNFAIR",
-        "level": "B",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "22",
-        "name": "Test22",
-        "set": "SHIPWRECK",
-        "level": "B",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "23",
-        "name": "Test23",
-        "set": "CITY",
-        "level": "B",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "24",
-        "name": "Test24",
-        "set": "CASTLE",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "25",
-        "name": "Test25",
-        "set": "OUTER_SPACE",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "26",
-        "name": "Test26",
-        "set": "OUTER_SPACE",
-        "level": "B",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "27",
-        "name": "Test27",
-        "set": "FILM_STUDIO",
-        "level": "B",
-        "power": "5",
-        "text": ""
-    },
-    {
-        "id": "28",
-        "name": "Test28",
-        "set": "FUNFAIR",
-        "level": "B",
-        "power": "6",
-        "text": ""
-    },
-    {
-        "id": "15",
-        "name": "Test15",
-        "set": "CITY",
-        "level": "B",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "16",
-        "name": "Test16",
+        "name": "Fant\u00f4me",
         "set": "HAUNTED_HOUSE",
-        "level": "B",
-        "power": "5",
-        "text": ""
-    },
-    {
-        "id": "17",
-        "name": "Test17",
-        "set": "OUTER_SPACE",
-        "level": "B",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "18",
-        "name": "Test18",
-        "set": "SHIPWRECK",
         "level": "B",
         "power": "1",
         "text": ""
     },
     {
-        "id": "19",
-        "name": "Test19",
-        "set": "CASTLE",
+        "name": "Fant\u00f4me",
+        "set": "HAUNTED_HOUSE",
         "level": "B",
-        "power": "2",
+        "power": "1",
         "text": ""
     },
     {
-        "id": "20",
-        "name": "Test20",
-        "set": "FILM_STUDIO",
+        "name": "Fant\u00f4me",
+        "set": "HAUNTED_HOUSE",
         "level": "B",
-        "power": "2",
+        "power": "1",
         "text": ""
     },
     {
-        "id": "21",
-        "name": "Test21",
-        "set": "FUNFAIR",
-        "level": "B",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "22",
-        "name": "Test22",
-        "set": "SHIPWRECK",
-        "level": "B",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "23",
-        "name": "Test23",
-        "set": "CITY",
-        "level": "B",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "24",
-        "name": "Test24",
-        "set": "CASTLE",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "25",
-        "name": "Test25",
-        "set": "OUTER_SPACE",
-        "level": "B",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "26",
-        "name": "Test26",
-        "set": "OUTER_SPACE",
-        "level": "B",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "27",
-        "name": "Test27",
-        "set": "FILM_STUDIO",
-        "level": "B",
-        "power": "5",
-        "text": ""
-    },
-    {
-        "id": "28",
-        "name": "Test28",
-        "set": "FUNFAIR",
-        "level": "B",
-        "power": "6",
-        "text": ""
-    },
-    {
-        "id": "29",
-        "name": "Test29",
-        "set": "CITY",
+        "name": "Vampire",
+        "set": "HAUNTED_HOUSE",
         "level": "C",
-        "power": "3",
+        "power": "4",
         "text": ""
     },
     {
-        "id": "30",
-        "name": "Test30",
+        "name": "Vampire",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Vampire",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Vampire",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Aspirateur",
         "set": "HAUNTED_HOUSE",
         "level": "C",
         "power": "5",
         "text": ""
     },
     {
-        "id": "31",
-        "name": "Test31",
-        "set": "OUTER_SPACE",
-        "level": "C",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "32",
-        "name": "Test32",
-        "set": "SHIPWRECK",
-        "level": "C",
-        "power": "1",
-        "text": ""
-    },
-    {
-        "id": "33",
-        "name": "Test33",
-        "set": "CASTLE",
-        "level": "C",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "34",
-        "name": "Test34",
-        "set": "FILM_STUDIO",
-        "level": "C",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "35",
-        "name": "Test35",
-        "set": "FUNFAIR",
-        "level": "C",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "36",
-        "name": "Test36",
-        "set": "SHIPWRECK",
-        "level": "C",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "37",
-        "name": "Test37",
-        "set": "CITY",
-        "level": "C",
-        "power": "4",
-        "text": ""
-    },
-    {
-        "id": "38",
-        "name": "Test38",
-        "set": "CASTLE",
-        "level": "C",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "39",
-        "name": "Test39",
-        "set": "OUTER_SPACE",
-        "level": "C",
-        "power": "2",
-        "text": ""
-    },
-    {
-        "id": "40",
-        "name": "Test40",
-        "set": "OUTER_SPACE",
-        "level": "C",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "41",
-        "name": "Test41",
-        "set": "FILM_STUDIO",
+        "name": "Aspirateur",
+        "set": "HAUNTED_HOUSE",
         "level": "C",
         "power": "5",
         "text": ""
     },
     {
-        "id": "42",
-        "name": "Test42",
+        "name": "Aspirateur",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Aspirateur",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Loup-garou",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Loup-garou",
+        "set": "HAUNTED_HOUSE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "I.A.",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "I.A.",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "I.A.",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Vache",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Vache",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Vache",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "M\u00e9taforme",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "M\u00e9taforme",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "M\u00e9taforme",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "M\u00e9taforme",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Capsule",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capsule",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capsule",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Capsule",
+        "set": "OUTER_SPACE",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Ovni",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Ovni",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Ovni",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Ovni",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Blob",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Blob",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "E.T.",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "E.T.",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "E.T.",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Fanfare",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Fanfare",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Fanfare",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Fanfare",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "3",
+        "text": ""
+    },
+    {
+        "name": "Clones",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "4",
+        "text": "Commune 5x"
+    },
+    {
+        "name": "Clones",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "4",
+        "text": "Commune 5x"
+    },
+    {
+        "name": "Clones",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "4",
+        "text": "Commune 5x"
+    },
+    {
+        "name": "Clones",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "4",
+        "text": "Commune 5x"
+    },
+    {
+        "name": "Clones",
+        "set": "OUTER_SPACE",
+        "level": "B",
+        "power": "4",
+        "text": "Commune 5x"
+    },
+    {
+        "name": "Geek",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Geek",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Geek",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Geek",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "6",
+        "text": ""
+    },
+    {
+        "name": "Hologramme",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Hologramme",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Hologramme",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Hologramme",
+        "set": "OUTER_SPACE",
+        "level": "C",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Peluche",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Peluche",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "7",
+        "text": "Rare 2x"
+    },
+    {
+        "name": "Canard g\u00e9ant",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Canard g\u00e9ant",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Canard g\u00e9ant",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "5",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Mime",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Mime",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Mime",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Mime",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Clairvoyante",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Clairvoyante",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Clairvoyante",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Clairvoyante",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Pyrotechnicienne",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Pyrotechnicienne",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Pyrotechnicienne",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Pyrotechnicienne",
+        "set": "FUNFAIR",
+        "level": "B",
+        "power": "4",
+        "text": ""
+    },
+    {
+        "name": "Illusionniste",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Illusionniste",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Illusionniste",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Illusionniste",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "5",
+        "text": ""
+    },
+    {
+        "name": "Clown",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Clown",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Clown",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Clown",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "1",
+        "text": ""
+    },
+    {
+        "name": "Vendeuse",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Vendeuse",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Vendeuse",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Vendeuse",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Jongleur",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Jongleur",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Jongleur",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Jongleur",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "2",
+        "text": ""
+    },
+    {
+        "name": "Poney",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Poney",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Poney",
+        "set": "FUNFAIR",
+        "level": "A",
+        "power": "3",
+        "text": "Rare 3x"
+    },
+    {
+        "name": "Auto tamponneuse",
         "set": "FUNFAIR",
         "level": "C",
         "power": "6",
         "text": ""
     },
     {
-        "id": "43",
-        "name": "Start1",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
+        "name": "Auto tamponneuse",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "6",
         "text": ""
     },
     {
-        "id": "44",
-        "name": "Start2",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
+        "name": "Auto tamponneuse",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "6",
         "text": ""
     },
     {
-        "id": "45",
-        "name": "Start3",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "46",
-        "name": "Start4",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "47",
-        "name": "Start5",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
-        "text": ""
-    },
-    {
-        "id": "48",
-        "name": "Start6",
-        "set": "CITY",
-        "level": "S",
-        "power": "3",
+        "name": "Auto tamponneuse",
+        "set": "FUNFAIR",
+        "level": "C",
+        "power": "6",
         "text": ""
     }
 ]
