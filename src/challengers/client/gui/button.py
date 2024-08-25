@@ -11,7 +11,7 @@ class Button:
         height: int = 150,
         width: int = 150,
         font: str = "comicsans",
-        font_size: str = 40,
+        font_size: str = 20,
     ):
         self.text = text
         self.x = x
