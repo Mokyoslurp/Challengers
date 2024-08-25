@@ -11,8 +11,8 @@ class Client:
     def __init__(self):
         pygame.font.init()
 
-        self.window_width = 460
-        self.window_height = 460
+        self.window_width = 700
+        self.window_height = 700
 
         self.window: pygame.Surface = pygame.display.set_mode(
             (self.window_width, self.window_height)
