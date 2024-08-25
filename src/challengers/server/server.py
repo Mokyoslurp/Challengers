@@ -1,91 +1,70 @@
-import socket
+import socket as s
 import pickle
 from threading import Thread
 
 
-from challengers.game import Tournament
-
-
-SERVER_IP = "192.168.0.102"
+SERVER_IP = "192.168.1.79"
 PORT = 5050
 
+BUFSIZE = 4096
 
-def threaded_client(connection: socket.socket, player_id: int, game_id: int):
-    global id_count
 
-    connection.send(str(player_id).encode())
-    reply = ""
-    while True:
+class Server:
+    def __init__(self):
+        self.socket = s.socket(s.AF_INET, s.SOCK_STREAM)
+
+        self.threads: list[Thread] = []
+
+        self.is_running: bool = True
+
+        self.player_count: int = 0
+
+    def run(self):
         try:
-            # Argument is amount of information you want to receive (bits)
-            data = connection.recv(4096).decode()
+            self.socket.bind((SERVER_IP, PORT))
+        except s.error as e:
+            print(e)
 
-            # Checks if the game still exists
-            if game_id in games:
-                game = games[game_id]
+        # Argument is the number of client that can connect
+        self.socket.listen()
+        print("Waiting for connection, server started!")
+
+        while self.is_running:
+            client, address = self.socket.accept()
+            print("Connected to:", address)
+
+            self.player_count += 1
+            thread = Thread(target=self.client_thread, args=(client, address))
+            thread.start()
+            self.threads.append(thread)
+
+            # TODO: Join threads after client disconnected
+
+    def client_thread(self, socket: s.socket, address):
+        socket.send(str(self.player_count).encode())
+        reply = ""
+        while True:
+            try:
+                # Argument is amount of information you want to receive (bits)
+                data = socket.recv(BUFSIZE).decode()
 
                 if not data:
                     break
                 else:
-                    if data == "reset":
-                        game.reset_moves()
-                    elif data != "get":
-                        game.play(player_id, data)
+                    if data == "test":
+                        print("test")
 
-                reply = game
-                connection.sendall(pickle.dumps(reply))
+                reply = "the game"
+                socket.sendall(pickle.dumps(reply))
 
-            else:
+            except:  # noqa: E722
                 break
-        except:  # noqa: E722
-            break
 
-    print("Lost connection")
-    try:
-        del games[game_id]
-        print("Closing game: ", game_id)
-    except:  # noqa: E722
-        pass
-
-    id_count -= 1
-    connection.close()
+        print("Lost connection to:", address)
+        socket.close()
+        self.player_count -= 1
 
 
 if __name__ == "__main__":
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    try:
-        s.bind((SERVER_IP, PORT))
-    except socket.error as e:
-        print(e)
-
-    threads: list[Thread] = []
-
-    games: dict[int, Tournament] = {}
-    id_count = 0
-
-    # Argument is the number of client that can connect
-    s.listen()
-    print("Waiting for connection, server started!")
-
-    while True:
-        connection, address = s.accept()
-        print("Connected to: ", address)
-
-        id_count += 1
-        game_id = (id_count - 1) // 2
-
-        player_id = 0
-
-        # If odd player number, start a new game
-        if id_count % 2 == 1:
-            games[game_id] = Tournament(2)
-            print("Created new game: ", game_id)
-        else:
-            player_id = 1
-
-        thread = Thread(target=threaded_client, args=(connection, player_id, game_id))
-        thread.start()
-        threads.append(thread)
-
-    # TODO: Join threads after client disconnected
+    server = Server()
+    server.run()
