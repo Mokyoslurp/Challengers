@@ -57,6 +57,7 @@ class Client:
         try:
             # serialization with str.encode() and str.decode() can be done for strings instead of pickle
             self.socket.send(str.encode(data))
+            # TODO: Buffer size to small for entire server: what infos to send ?
             return pickle.loads(self.socket.recv(BUFSIZE))
         except s.error as e:
             print(e)
