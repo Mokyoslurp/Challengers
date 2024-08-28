@@ -8,7 +8,7 @@ from challengers.game import Tournament, Player, Level, TournamentPlan, CardList
 SERVER_IP = "192.168.1.79"
 PORT = 5050
 
-BUFSIZE = 1024 * 10
+BUFSIZE = 1024 * 2
 
 
 class Server:
@@ -73,7 +73,7 @@ class Server:
                         if len(data) > 1:
                             name = data[1]
                         else:
-                            name = "Player " + self.player_count
+                            name = "Player " + str(self.player_count)
                         client_player = Player(self.player_count, name)
                         self.tournament.set_new_player(client_player)
 
