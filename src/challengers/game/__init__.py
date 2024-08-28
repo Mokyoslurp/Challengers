@@ -5,4 +5,4 @@ from .tray import Tray
 from .trophy import Trophy, TrophySerializer, TrophyDict
 from .player import Player
 from .park import Park
-from .tournament import Tournament
+from .tournament import Tournament, TournamentPlan
