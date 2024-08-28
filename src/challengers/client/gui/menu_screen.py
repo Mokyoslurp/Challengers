@@ -1,7 +1,7 @@
 import pygame
 
 
-from .button import Button
+from .components.button import Button
 
 
 class MenuScreen:
