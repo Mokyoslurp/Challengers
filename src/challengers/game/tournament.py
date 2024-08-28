@@ -1,6 +1,8 @@
 import random
 from typing import Self
 
+from threading import Thread
+
 from .player import Player
 from .park import Park
 from .tray import Tray
@@ -8,7 +10,7 @@ from .card import Level
 from .trophy import TrophyDict, TrophySerializer
 from .card import CardList, CardSerializer
 
-from .data import DEBUG, AUTO
+from .data import DEBUG
 
 NUMBER_OF_ROUNDS = 7
 MAX_NUMBER_OF_PLAYERS = 8
@@ -39,6 +41,16 @@ class Tournament:
 
         else:
             raise ValueError
+
+    def reset(self):
+        self.players = []
+        self.winners = [[]]
+        self.winner = None
+        self.round = -1
+        self.trays = {}
+        self.scores = {}
+        self.game_cards = CardList()
+        self.game_trophies = TrophyDict()
 
     def load_game_cards(self, game_cards_file_path: str):
         self.game_cards = CardSerializer.load_cards_from_file(game_cards_file_path)
@@ -94,10 +106,10 @@ class Tournament:
 
         return finalists
 
-    def play(self) -> Player:
+    def prepare(self):
         # Set a robot player if there is an odd number of players
         if len(self.players) % 2 == 1:
-            self.set_new_player(Player(0, ROBOT_PLAYER_NAME))
+            self.set_new_player(Player(0, ROBOT_PLAYER_NAME, is_robot=True))
 
         if DEBUG:
             for player in self.players:
@@ -114,58 +126,95 @@ class Tournament:
             for player in self.players:
                 print(player)
 
-        for i in range(NUMBER_OF_ROUNDS):
-            self.round = i
-            winners: list[Player] = [-1] * len(self.parks)
+    def play_round(self) -> list[Thread]:
+        battles: list[Thread] = []
+        for park in self.parks:
+            park_players = TournamentPlan.get_players(self.round, park.id)
+            park.assign_players(park_players[0], park_players[1])
 
-            for park in self.parks:
-                park_players = TournamentPlan.get_players(self.round, park.id)
-                park.assign_players(park_players[0], park_players[1])
+            if DEBUG:
+                print("\nRound ", self.round + 1, ", park ", park.id, " started.")
 
-                # TODO: Launch threads for each game
-                if DEBUG:
-                    print("\nRound ", self.round + 1, ", park ", park.id, " started.")
+            thread = Thread(target=park.play_game)
+            thread.start()
+            battles.append(thread)
 
-                winners[park.id] = park.play_game()
+        return battles
 
-            for winner in winners:
-                winner.trophies.append(self.game_trophies.draw(round))
-            self.winners[self.round] = winners
+    def manage_robot_players_cards(self):
+        for player in self.players:
+            player.reset_deck()
 
-            for player in self.players:
-                player.reset_deck()
-
+            if player.is_robot:
                 possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[self.round].keys())
-
-                # TODO: Player action here: choose from which tray to draw
-                if AUTO:
-                    chosen_tray_level = random.choice(possible_tray_levels)
-                else:
-                    ...
+                chosen_tray_level = random.choice(possible_tray_levels)
 
                 for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
                     player.draw(self.trays[chosen_tray_level])
                 player.shuffle_deck()
 
-                # TODO: Player action here: select cards to discard
-                if AUTO:
-                    for card in player.deck[:]:
-                        if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
-                            player.discard(card, self.trays[chosen_tray_level])
-                else:
-                    ...
+                for card in player.deck[:]:
+                    if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
+                        player.discard(card, self.trays[chosen_tray_level])
+
+                player.managed_cards = True
+
+    def play(self) -> Player:
+        self.prepare()
+
+        for i in range(NUMBER_OF_ROUNDS):
+            self.round = i
+            winners: list[Player] = [-1] * len(self.parks)
+
+            battles = self.play_round()
+
+            round_finished = False
+            while not round_finished:
+                round_finished = True
+                for park in self.parks:
+                    if not park.battle_finished:
+                        round_finished = False
+
+            for thread in battles:
+                thread.join()
+
+            for park in self.parks:
+                winners[park.id] = park.flag_owner
+                park.battle_finished = False
+
+            for winner in winners:
+                winner.trophies.append(self.game_trophies.draw(round))
+            self.winners[self.round] = winners
+
+            self.manage_robot_players_cards()
+
+            all_players_managed_cards = False
+            while not all_players_managed_cards:
+                all_players_managed_cards = True
+                for player in self.players:
+                    if not player.managed_cards:
+                        all_players_managed_cards = False
+
+            for player in self.players:
+                player.managed_cards = False
 
         finalists = self.get_finalists()
 
         park = self.parks[0]
         park.assign_players(finalists[0], finalists[1])
-        self.winner = park.play_game()
+
+        battle = Thread(target=park.play_game)
+        battle.start()
+
+        battle.join()
+
+        self.winner = park.flag_owner
 
         for player in finalists:
             player.reset_deck()
 
         if DEBUG:
-            print(winner, " won the tournament!")
+            print(self.winner, " won the tournament!")
 
         return self.winner
 
