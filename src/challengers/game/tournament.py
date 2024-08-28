@@ -24,6 +24,9 @@ class Tournament:
 
             self.players: list[Player] = []
             self.parks: list[Park] = [Park(i) for i in range((self.number_of_players + 1) // 2)]
+            # winners by parks and by rounds
+            self.winners: list[list[Player]] = [[]] * NUMBER_OF_ROUNDS
+            self.winner: Player
 
             self.trays: dict[Level, Tray] = {}
 
@@ -124,6 +127,7 @@ class Tournament:
 
             for winner in winners:
                 winner.trophies.append(self.game_trophies.draw(round))
+            self.winners[round] = winners
 
             for player in self.players:
                 player.reset_deck()
@@ -152,7 +156,7 @@ class Tournament:
 
         park = self.parks[0]
         park.assign_players(finalists[0], finalists[1])
-        winner = park.play_game()
+        self.winner = park.play_game()
 
         for player in finalists:
             player.reset_deck()
@@ -160,7 +164,7 @@ class Tournament:
         if DEBUG:
             print(winner, " won the tournament!")
 
-        return winner
+        return self.winner
 
 
 class TournamentPlan:
