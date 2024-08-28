@@ -28,6 +28,8 @@ class Tournament:
             self.winners: list[list[Player]] = [[]] * NUMBER_OF_ROUNDS
             self.winner: Player
 
+            self.round: int = -1
+
             self.trays: dict[Level, Tray] = {}
 
             self.scores: dict[Player, int] = {}
@@ -112,27 +114,28 @@ class Tournament:
             for player in self.players:
                 print(player)
 
-        for round in range(NUMBER_OF_ROUNDS):
+        for i in range(NUMBER_OF_ROUNDS):
+            self.round = i
             winners: list[Player] = [-1] * len(self.parks)
 
             for park in self.parks:
-                park_players = TournamentPlan.get_players(round, park.id)
+                park_players = TournamentPlan.get_players(self.round, park.id)
                 park.assign_players(park_players[0], park_players[1])
 
                 # TODO: Launch threads for each game
                 if DEBUG:
-                    print("\nRound ", round + 1, ", park ", park.id, " started.")
+                    print("\nRound ", self.round + 1, ", park ", park.id, " started.")
 
                 winners[park.id] = park.play_game()
 
             for winner in winners:
                 winner.trophies.append(self.game_trophies.draw(round))
-            self.winners[round] = winners
+            self.winners[self.round] = winners
 
             for player in self.players:
                 player.reset_deck()
 
-                possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[round].keys())
+                possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[self.round].keys())
 
                 # TODO: Player action here: choose from which tray to draw
                 if AUTO:
@@ -140,7 +143,7 @@ class Tournament:
                 else:
                     ...
 
-                for _ in range(TournamentPlan.CARDS_TO_DRAW[round][chosen_tray_level]):
+                for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
                     player.draw(self.trays[chosen_tray_level])
                 player.shuffle_deck()
 
