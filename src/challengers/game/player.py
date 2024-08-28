@@ -4,9 +4,13 @@ from .tray import Tray
 
 
 class Player:
-    def __init__(self, id: int, name: str = ""):
+    def __init__(self, id: int, name: str = "", is_robot: bool = False):
         self.id = id
         self.name = name
+
+        self.is_robot: bool = is_robot
+
+        self.managed_cards: bool = False
 
         self.deck = CardList()
         self.exhaust = CardList()
