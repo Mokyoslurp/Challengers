@@ -2,13 +2,13 @@ import socket as s
 import pickle
 from threading import Thread
 
-from challengers.game import Tournament
+from challengers.game import Tournament, Player, Level, TournamentPlan, CardList, Card
 
 
 SERVER_IP = "192.168.1.79"
 PORT = 5050
 
-BUFSIZE = 4096
+BUFSIZE = 1024 * 10
 
 
 class Server:
@@ -21,6 +21,9 @@ class Server:
         self.is_ready: bool = False
 
         self.player_count: int = 0
+        # Player address and id
+        self.players_ids: dict[int, int] = {}
+        self.players_names: dict[int, str] = {}
 
         self.tournament = tournament
 
@@ -35,18 +38,27 @@ class Server:
         print("Waiting for connection, server started!")
 
         while self.is_running:
-            client, address = self.socket.accept()
-            print("Connected to:", address)
+            while self.is_running and not self.is_ready:
+                client, address = self.socket.accept()
+                print("Connected to:", address)
 
-            self.player_count += 1
-            thread = Thread(target=self.client_thread, args=(client, address))
-            thread.start()
-            self.threads.append(thread)
+                self.player_count += 1
+                if self.player_count == self.tournament.number_of_players:
+                    self.is_ready = True
 
-            # TODO: Join threads after client disconnected
+                thread = Thread(target=self.client_thread, args=(client, address))
+                thread.start()
+                self.threads.append(thread)
 
-            if self.player_count == self.tournament.number_of_players:
-                self.is_ready = True
+                # TODO: Join threads after client disconnected
+
+            self.tournament.play()
+
+            for thread in self.threads:
+                thread.join()
+
+            tournament_copy = self.tournament
+            print(tournament_copy + " ended.")
 
     def client_thread(self, socket: s.socket, address):
         socket.send(str(self.player_count).encode())
@@ -54,18 +66,127 @@ class Server:
         while True:
             try:
                 # Argument is amount of information you want to receive (bits)
-                data = socket.recv(BUFSIZE).decode()
+                data = socket.recv(BUFSIZE).decode().split(" ")
 
-                match data:
+                match data[0]:
+                    case "ready":
+                        if len(data) > 1:
+                            name = data[1]
+                        else:
+                            name = "Player " + self.player_count
+                        client_player = Player(self.player_count, name)
+                        self.tournament.set_new_player(client_player)
+
+                        self.players_ids[address[1]] = client_player.id
+                        self.players_names[client_player.id] = client_player.name
+
+                        reply = str(client_player.id)
+
+                    case "get":
+                        if len(data) > 1:
+                            match data[1]:
+                                case "players":
+                                    reply = self.players_names
+
+                                case "player":
+                                    if len(data) > 2 and data[2] is int:
+                                        id = data[2]
+                                        player = [
+                                            player
+                                            for player in self.tournament.players
+                                            if player.id == id
+                                        ][0]
+                                        if len(data) > 3:
+                                            match data[3]:
+                                                case "deck":
+                                                    reply = player.deck
+                                                case "exhaust":
+                                                    reply = player.exhaust
+                                                case "played":
+                                                    reply = player.played_cards
+                                                case "used":
+                                                    reply = player.used_cards
+                                                case "bench":
+                                                    reply = player.bench
+                                                case "trophies":
+                                                    reply = player.trophies
+                                                case "fans":
+                                                    reply = player.fans
+                                                case "plan":
+                                                    reply = player.tournament_plan
+                                                case _:
+                                                    reply = player.name
+
+                                case "winner":
+                                    if len(data) > 2 and data[2] is int:
+                                        round = data[2]
+                                        if len(data) > 3 and data[3] is int:
+                                            park_id = data[3]
+                                            reply = self.tournament.winners[round][park_id].id
+                                    else:
+                                        if self.tournament.winner:
+                                            reply = self.tournament.winner
+
+                                case "round":
+                                    reply = self.tournament.round
+
+                                case "park":
+                                    reply = client_player.tournament_plan[self.tournament.round]
+
+                                case "flag":
+                                    park_id = client_player.tournament_plan[self.tournament.round]
+                                    park = [
+                                        park for park in self.tournament.parks if park.id == park_id
+                                    ][0]
+                                    reply = park.flag_owner
+
+                                case "scores":
+                                    scores = self.tournament.get_scores()
+                                    scores_with_id = {
+                                        player.id: scores[player] for player in scores
+                                    }
+                                    reply = scores_with_id
+
+                    case "play":
+                        card = client_player.play()
+                        reply = card
+
+                    case "draw":
+                        if len(data) > 1 and data[1] is Level:
+                            level = data[1]
+                            tray = self.tournament.trays[level]
+                            number_of_cards = TournamentPlan.CARDS_TO_DRAW[self.tournament.round][
+                                level
+                            ]
+
+                            cards = CardList()
+                            for _ in range(number_of_cards):
+                                cards.append(client_player.draw(tray))
+
+                    case "remove":
+                        if len(data) > 1 and data[1] is Card:
+                            card = data[1]
+                            if len(data) > 2 and data[2] is Level:
+                                level = data[2]
+                                tray = self.tournament.trays[level]
+                                client_player.discard(card, tray)
+
+                                reply = True
+
+                    case "done":
+                        client_player.managed_cards = True
+                        reply = True
+
+                    case "leave":
+                        break
+
                     case "test":
-                        print("Connection OK")
-                    case "launch":
-                        print("Playing tournament...")
+                        reply = "tested"
                     case _:
                         break
 
-                reply = self.tournament.get_scores()
-                socket.sendall(pickle.dumps(reply))
+                socket.send(pickle.dumps(reply))
+                # socket.sendall(pickle.dumps(reply))
 
             except:  # noqa: E722
                 break
