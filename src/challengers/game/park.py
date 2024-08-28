@@ -16,6 +16,8 @@ class Park:
         self.player_1: Player = None
         self.player_2: Player = None
 
+        self.battle_finished: bool = False
+
     def assign_players(self, player_1: Player, player_2: Player):
         self.player_1 = player_1
         self.player_2 = player_2
@@ -25,6 +27,7 @@ class Park:
 
         player_1_higher_round_win = self.player_1.get_higher_round_win()
         player_2_higher_round_win = self.player_2.get_higher_round_win()
+
         if player_1_higher_round_win == player_2_higher_round_win:
             self.flag_owner = random.choice([self.player_1, self.player_2])
         else:
@@ -49,9 +52,10 @@ class Park:
                 len(attacking_player.deck) > 0
                 and attacking_player.get_power() < self.flag_owner.get_power()
             ):
-                played_card = attacking_player.play()
-                if DEBUG:
-                    print(attacking_player.name + ": " + str(played_card))
+                if attacking_player.is_robot:
+                    played_card = attacking_player.play()
+                    if DEBUG:
+                        print(attacking_player.name + ": " + str(played_card))
 
             if attacking_player.get_power() >= self.flag_owner.get_power():
                 # Switch attack and defense roles
