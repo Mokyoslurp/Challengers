@@ -8,7 +8,7 @@ from challengers.client.gui import MenuScreen
 
 
 class Client:
-    def __init__(self):
+    def __init__(self, player_name: str = ""):
         pygame.font.init()
 
         self.window_width = 800
@@ -28,6 +28,8 @@ class Client:
 
         self.is_connected: bool = False
         self.player_id = None
+
+        self.player_name = player_name
 
     def connect(self):
         if not self.is_connected:
@@ -82,6 +84,7 @@ class Client:
                     if self.menu_screen.enter_server_button.click(mouse_position):
                         self.player_id = self.connect()
                         if self.player_id:
+                            self.send("ready " + self.player_name)
                             print("Successfully connected as P" + str(self.player_id))
                         else:
                             print("Failed to connect to server")
@@ -109,5 +112,5 @@ class Client:
 
 
 if __name__ == "__main__":
-    client = Client()
+    client = Client("TestName")
     client.run()
