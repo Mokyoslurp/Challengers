@@ -1,6 +1,6 @@
 import pygame
 
-from challengers.client.gui.util import render_text_rect, BLACK, WHITE
+from challengers.client.gui.util import BLACK, WHITE
 from challengers.game import Card
 
 
@@ -143,22 +143,8 @@ class CardFront:
         # Text
         font = pygame.font.SysFont(self.font, 15)
         text = font.render(self.text, 1, BLACK)
-        text_rect = render_text_rect(
-            self.text,
-            font,
-            pygame.Rect(
-                self.x + CardFront.WIDTH / 20,
-                self.y + CardFront.HEIGHT * (3 / 8),
-                CardFront.WIDTH / 2 - text.get_width() / 2,
-                CardFront.HEIGHT * (3 / 8)
-                + (CardFront.HEIGHT * (3 / 4) - CardFront.HEIGHT * (3 / 8)) / 2
-                - text.get_height() / 2,
-            ),
-            BLACK,
-            WHITE,
-        )
         window.blit(
-            text_rect,
+            text,
             pygame.Rect(
                 self.x + CardFront.WIDTH / 20,
                 self.y + CardFront.HEIGHT * (3 / 8),
