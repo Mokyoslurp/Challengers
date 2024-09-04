@@ -1,12 +1,10 @@
 import pygame
 
 from challengers.client.gui.util import BLACK, WHITE
+from .constants import CARD_HEIGHT, CARD_WIDTH
 
 
 class CardSpace:
-    HEIGHT = 300
-    WIDTH = 200
-
     def __init__(
         self,
         x: int,
@@ -20,15 +18,15 @@ class CardSpace:
         pygame.draw.rect(
             window,
             color=WHITE,
-            rect=(self.x, self.y, CardSpace.WIDTH, CardSpace.HEIGHT),
-            border_radius=(round(CardSpace.WIDTH / 9)),
+            rect=(self.x, self.y, CARD_WIDTH, CARD_HEIGHT),
+            border_radius=(round(CARD_WIDTH / 9)),
         )
 
         # Border
         pygame.draw.rect(
             window,
             color=BLACK,
-            rect=(self.x, self.y, CardSpace.WIDTH, CardSpace.HEIGHT),
+            rect=(self.x, self.y, CARD_WIDTH, CARD_HEIGHT),
             width=5,
-            border_radius=(round(CardSpace.WIDTH / 9)),
+            border_radius=(round(CARD_WIDTH / 9)),
         )

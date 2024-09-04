@@ -1,13 +1,11 @@
 import pygame
 
 from challengers.client.gui.util import BLACK, WHITE
+from .constants import CARD_WIDTH, CARD_HEIGHT
 from challengers.game import Card
 
 
 class CardFront:
-    HEIGHT = 300
-    WIDTH = 200
-
     def __init__(
         self,
         x: int,
@@ -42,17 +40,17 @@ class CardFront:
         pygame.draw.rect(
             window,
             color=WHITE,
-            rect=(self.x, self.y, CardFront.WIDTH, CardFront.HEIGHT),
-            border_radius=(round(CardFront.WIDTH / 9)),
+            rect=(self.x, self.y, CARD_WIDTH, CARD_HEIGHT),
+            border_radius=(round(CARD_WIDTH / 9)),
         )
 
         # Border
         pygame.draw.rect(
             window,
             color=BLACK,
-            rect=(self.x, self.y, CardFront.WIDTH, CardFront.HEIGHT),
+            rect=(self.x, self.y, CARD_WIDTH, CARD_HEIGHT),
             width=5,
-            border_radius=(round(CardFront.WIDTH / 9)),
+            border_radius=(round(CARD_WIDTH / 9)),
         )
 
         # Power border
@@ -60,13 +58,13 @@ class CardFront:
             window,
             color=BLACK,
             rect=(
-                self.x + CardFront.WIDTH * (3 / 4),
+                self.x + CARD_WIDTH * (3 / 4),
                 self.y,
-                CardFront.WIDTH / 4,
-                CardFront.WIDTH / 4,
+                CARD_WIDTH / 4,
+                CARD_WIDTH / 4,
             ),
             width=5,
-            border_radius=(round(CardFront.WIDTH / 8)),
+            border_radius=(round(CARD_WIDTH / 8)),
         )
 
         # Power text
@@ -75,7 +73,7 @@ class CardFront:
         window.blit(
             text,
             (
-                self.x + CardFront.WIDTH * (3 / 4) + power_rect.width / 2 - text.get_width() / 2,
+                self.x + CARD_WIDTH * (3 / 4) + power_rect.width / 2 - text.get_width() / 2,
                 self.y + power_rect.height / 2 - text.get_height() / 2,
             ),
         )
@@ -86,8 +84,8 @@ class CardFront:
         window.blit(
             text,
             (
-                self.x + CardFront.WIDTH / 2 - CardFront.WIDTH / 6 - text.get_width() / 2,
-                self.y + CardFront.HEIGHT / 10 - text.get_height() / 2,
+                self.x + CARD_WIDTH / 2 - CARD_WIDTH / 6 - text.get_width() / 2,
+                self.y + CARD_HEIGHT / 10 - text.get_height() / 2,
             ),
         )
 
@@ -97,9 +95,9 @@ class CardFront:
             color=BLACK,
             rect=(
                 self.x,
-                self.y + CardFront.HEIGHT * (2 / 8),
-                CardFront.WIDTH,
-                CardFront.HEIGHT / 8,
+                self.y + CARD_HEIGHT * (2 / 8),
+                CARD_WIDTH,
+                CARD_HEIGHT / 8,
             ),
             width=5,
         )
@@ -111,7 +109,7 @@ class CardFront:
             text,
             (
                 self.x + set_rect.width / 2 - text.get_width() / 2,
-                self.y + CardFront.HEIGHT * (2 / 8) + set_rect.height / 2 - text.get_height() / 2,
+                self.y + CARD_HEIGHT * (2 / 8) + set_rect.height / 2 - text.get_height() / 2,
             ),
         )
 
@@ -120,13 +118,13 @@ class CardFront:
             window,
             color=BLACK,
             rect=(
-                self.x + CardFront.WIDTH * (2 / 3),
-                self.y + CardFront.HEIGHT * (3 / 4),
-                CardFront.WIDTH / 3,
-                CardFront.HEIGHT / 4,
+                self.x + CARD_WIDTH * (2 / 3),
+                self.y + CARD_HEIGHT * (3 / 4),
+                CARD_WIDTH / 3,
+                CARD_HEIGHT / 4,
             ),
             width=5,
-            border_radius=(round(CardFront.WIDTH / 9)),
+            border_radius=(round(CARD_WIDTH / 9)),
         )
 
         # Level text
@@ -135,8 +133,8 @@ class CardFront:
         window.blit(
             text,
             (
-                self.x + CardFront.WIDTH * (2 / 3) + level_rect.width / 2 - text.get_width() / 2,
-                self.y + CardFront.HEIGHT * (3 / 4) + level_rect.height / 2 - text.get_height() / 2,
+                self.x + CARD_WIDTH * (2 / 3) + level_rect.width / 2 - text.get_width() / 2,
+                self.y + CARD_HEIGHT * (3 / 4) + level_rect.height / 2 - text.get_height() / 2,
             ),
         )
 
@@ -146,11 +144,11 @@ class CardFront:
         window.blit(
             text,
             pygame.Rect(
-                self.x + CardFront.WIDTH / 20,
-                self.y + CardFront.HEIGHT * (3 / 8),
-                CardFront.WIDTH / 2 - text.get_width() / 2,
-                CardFront.HEIGHT * (3 / 8)
-                + (CardFront.HEIGHT * (3 / 4) - CardFront.HEIGHT * (3 / 8)) / 2
+                self.x + CARD_WIDTH / 20,
+                self.y + CARD_HEIGHT * (3 / 8),
+                CARD_WIDTH / 2 - text.get_width() / 2,
+                CARD_HEIGHT * (3 / 8)
+                + (CARD_HEIGHT * (3 / 4) - CARD_HEIGHT * (3 / 8)) / 2
                 - text.get_height() / 2,
             ),
         )
