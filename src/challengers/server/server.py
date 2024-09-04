@@ -5,7 +5,7 @@ from threading import Thread
 from challengers.game import Tournament, Player, Level, TournamentPlan, CardList, Card
 
 
-SERVER_IP = "192.168.1.79"
+SERVER_IP = "192.168.1.146"
 PORT = 5050
 
 BUFSIZE = 1024 * 2
@@ -89,8 +89,12 @@ class Server:
                                     reply = self.players_names
 
                                 case "player":
-                                    if len(data) > 2 and data[2] is int:
-                                        id = data[2]
+                                    if len(data) > 2:
+                                        try:
+                                            id = int(data[2])
+                                        except ValueError:
+                                            id = 0
+
                                         player = [
                                             player
                                             for player in self.tournament.players
@@ -118,10 +122,18 @@ class Server:
                                                     reply = player.name
 
                                 case "winner":
-                                    if len(data) > 2 and data[2] is int:
-                                        round = data[2]
-                                        if len(data) > 3 and data[3] is int:
-                                            park_id = data[3]
+                                    if len(data) > 2:
+                                        try:
+                                            round = int(data[2])
+                                        except ValueError:
+                                            round = 0
+
+                                        if len(data) > 3:
+                                            try:
+                                                park_id = int(data[3])
+                                            except ValueError:
+                                                park_id = 0
+
                                             reply = self.tournament.winners[round][park_id].id
                                     else:
                                         if self.tournament.winner:
@@ -152,8 +164,19 @@ class Server:
                         reply = card
 
                     case "draw":
-                        if len(data) > 1 and data[1] is Level:
-                            level = data[1]
+                        if len(data) > 1:
+                            match data[1]:
+                                case "S":
+                                    level = Level.S
+                                case "A":
+                                    level = Level.A
+                                case "B":
+                                    level = Level.B
+                                case "C":
+                                    level = Level.C
+                                case _:
+                                    level = Level.S
+
                             tray = self.tournament.trays[level]
                             number_of_cards = TournamentPlan.CARDS_TO_DRAW[self.tournament.round][
                                 level
@@ -164,6 +187,7 @@ class Server:
                                 cards.append(client_player.draw(tray))
 
                     case "remove":
+                        # TODO: REMOVE "is Card" REPLACE WITH TRY EXCEPT
                         if len(data) > 1 and data[1] is Card:
                             card = data[1]
                             if len(data) > 2 and data[2] is Level:
@@ -181,7 +205,8 @@ class Server:
                         break
 
                     case "test":
-                        reply = "tested"
+                        self.tournament.initialize_trays()
+                        reply = self.tournament.trays[Level.A].draw()
                     case _:
                         break
 
