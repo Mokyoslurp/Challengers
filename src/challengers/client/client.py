@@ -3,16 +3,18 @@ import pygame
 import socket as s
 import pickle
 
+
 from challengers.server.server import SERVER_IP, PORT, BUFSIZE
 from challengers.client.gui import MenuScreen
+from challengers.client.gui.game import CardFront, ParkBoard
 
 
 class Client:
     def __init__(self, player_name: str = ""):
         pygame.font.init()
 
-        self.window_width = 800
-        self.window_height = 800
+        self.window_width = 1600
+        self.window_height = 900
 
         self.window: pygame.Surface = pygame.display.set_mode(
             (self.window_width, self.window_height)
@@ -20,6 +22,8 @@ class Client:
         pygame.display.set_caption("Client")
 
         self.menu_screen = MenuScreen()
+        self.park = ParkBoard(500, 10)
+        self.gui = [self.menu_screen, self.park]
 
         self.socket: s.socket
         self.server_address = (SERVER_IP, PORT)
@@ -67,7 +71,8 @@ class Client:
     def draw(self):
         self.window.fill((128, 128, 128))
 
-        self.menu_screen.draw(self.window)
+        for element in self.gui:
+            element.draw(self.window)
 
         pygame.display.update()
 
@@ -91,8 +96,9 @@ class Client:
 
                 else:
                     if self.menu_screen.test_button.click(mouse_position):
-                        data = self.send("test")
-                        print(data)
+                        self.card = self.send("test")
+                        card = CardFront(5, 5, card=self.card)
+                        self.gui.append(card)
 
                     if self.menu_screen.leave_server_button.click(mouse_position):
                         if self.disconnect():
@@ -101,8 +107,40 @@ class Client:
                         else:
                             print("Can't disconnect if not connected")
 
+                    if self.menu_screen.add_bench_1_button.click(mouse_position):
+                        card = CardFront(5, 5, card=self.card)
+                        self.park.add_bench_card(1, self.bench1, card)
+                        self.bench1 += 1
+                        print(self.bench1)
+
+                    if self.menu_screen.add_bench_2_button.click(mouse_position):
+                        card = CardFront(5, 5, card=self.card)
+                        self.park.add_bench_card(2, self.bench2, card)
+                        self.bench2 += 1
+
+                    if self.menu_screen.add_played_1_button.click(mouse_position):
+                        card = CardFront(5, 5, card=self.card)
+                        self.park.add_played_card(1, card)
+
+                    if self.menu_screen.add_played_2_button.click(mouse_position):
+                        card = CardFront(5, 5, card=self.card)
+                        self.park.add_played_card(2, card)
+
+                    if self.menu_screen.reset_button.click(mouse_position):
+                        for b in range(self.bench1):
+                            self.park.reset_bench(1, b)
+                        self.bench1 = 0
+                        for b in range(self.bench2):
+                            self.park.reset_bench(2, b)
+                        self.bench2 = 0
+                        self.park.reset_played_cards(1)
+                        self.park.reset_played_cards(2)
+
     def run(self):
         clock = pygame.time.Clock()
+
+        self.bench1 = 0
+        self.bench2 = 0
 
         while self.is_running:
             clock.tick(60)
