@@ -43,22 +43,25 @@ class Server:
                 print("Connected to:", address)
 
                 self.player_count += 1
-                if self.player_count == self.tournament.number_of_players:
-                    self.is_ready = True
 
                 thread = Thread(target=self.client_thread, args=(client, address))
                 thread.start()
                 self.threads.append(thread)
 
-                # TODO: Join threads after client disconnected
+                if self.player_count == self.tournament.number_of_players:
+                    self.is_ready = True
 
-            self.tournament.play()
+            if self.player_count != self.tournament.number_of_players:
+                self.is_ready = False
 
-            for thread in self.threads:
-                thread.join()
+            if len(self.tournament.players) == self.tournament.number_of_players:
+                self.tournament.play()
 
-            tournament_copy = self.tournament
-            print(tournament_copy + " ended.")
+                for thread in self.threads:
+                    thread.join()
+
+                tournament_copy = self.tournament
+                print(tournament_copy + " ended.")
 
     def client_thread(self, socket: s.socket, address):
         socket.send(str(self.player_count).encode())
