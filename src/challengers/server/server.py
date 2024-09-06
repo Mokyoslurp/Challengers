@@ -71,6 +71,8 @@ class Server:
                 # Argument is amount of information you want to receive (bits)
                 data = socket.recv(BUFSIZE).decode().split(" ")
 
+                print("From", address, ":", data)
+
                 match data[0]:
                     case "ready":
                         if len(data) > 1:
@@ -215,6 +217,8 @@ class Server:
 
                 socket.send(pickle.dumps(reply))
                 # socket.sendall(pickle.dumps(reply))
+
+                print("To", address, ":", reply)
 
             except:  # noqa: E722
                 break
