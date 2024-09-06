@@ -24,6 +24,7 @@ class Server:
         # Player address and id
         self.players_ids: dict[int, int] = {}
         self.players_names: dict[int, str] = {}
+        self.player_ready: dict[int, bool] = {}
 
         self.tournament = tournament
 
@@ -42,6 +43,8 @@ class Server:
                 client, address = self.socket.accept()
                 print("Connected to:", address)
 
+                self.players_ids[address[1]] = self.player_count
+                self.player_ready[self.player_count] = False
                 self.player_count += 1
 
                 thread = Thread(target=self.client_thread, args=(client, address))
@@ -75,17 +78,20 @@ class Server:
 
                 match data[0]:
                     case "ready":
-                        if len(data) > 1:
-                            name = data[1]
+                        if not self.player_ready[self.players_ids[address[1]]]:
+                            if len(data) > 1:
+                                name = data[1]
+                            else:
+                                name = "Player " + str(self.player_count)
+                            client_player = Player(self.players_ids[address[1]], name)
+                            self.tournament.set_new_player(client_player)
+
+                            self.players_names[self.players_ids[address[1]]] = client_player.name
+                            self.player_ready[self.players_ids[address[1]]] = True
+
+                            reply = "Ready"
                         else:
-                            name = "Player " + str(self.player_count)
-                        client_player = Player(self.player_count, name)
-                        self.tournament.set_new_player(client_player)
-
-                        self.players_ids[address[1]] = client_player.id
-                        self.players_names[client_player.id] = client_player.name
-
-                        reply = str(client_player.id)
+                            reply = "Already"
 
                     case "get":
                         if len(data) > 1:
