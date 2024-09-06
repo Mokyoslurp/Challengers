@@ -6,6 +6,7 @@ import pickle
 
 from challengers.server.server import SERVER_IP, PORT, BUFSIZE
 from challengers.client.gui import MenuScreen
+from challengers.client.gui.components import Interface
 
 
 class Client:
@@ -21,7 +22,7 @@ class Client:
         pygame.display.set_caption("Client")
 
         self.menu_screen = MenuScreen()
-        self.gui = [self.menu_screen]
+        self.gui: list[Interface] = [self.menu_screen]
 
         self.socket: s.socket
         self.server_address = (SERVER_IP, PORT)
@@ -42,10 +43,12 @@ class Client:
                 self.is_connected = True
 
                 # Here we use decode() since the first message received is the player id
-                return int(self.socket.recv(BUFSIZE).decode())
+                self.player_id = int(self.socket.recv(BUFSIZE).decode())
+                print("Successfully connected")
 
             except s.error as e:
                 print(e)
+                print("Failed to connect to server")
                 return None
 
         return self.player_id
@@ -55,7 +58,11 @@ class Client:
             self.socket.shutdown(s.SHUT_RDWR)
             self.socket.close()
             self.is_connected = False
+            self.player_id = None
+            self.is_ready = False
+            print("Successfully disconnected from server")
             return True
+        print("Can't disconnect if not connected")
         return False
 
     def send(self, data):
@@ -81,51 +88,24 @@ class Client:
                 self.is_running = False
                 pygame.quit()
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_position = pygame.mouse.get_pos()
+            for interface in self.gui:
+                interface.handle_event(event)
 
-                if not self.is_connected:
-                    if self.menu_screen.enter_server_button.click(mouse_position):
-                        self.player_id = self.connect()
-                        if self.player_id:
-                            print("Successfully connected")
-                        else:
-                            print("Failed to connect to server")
+    def ready(self):
+        if self.is_connected and not self.is_ready:
+            self.player_name = self.menu_screen.player_name_text_field.text
+            self.send("ready " + self.player_name)
+            self.is_ready = True
 
-                else:
-                    if self.menu_screen.ready_button.click(mouse_position) and not self.is_ready:
-                        self.send("ready " + self.player_name)
-                        self.is_ready = True
-
-                    if (
-                        self.menu_screen.player_name_text_field.click(mouse_position)
-                        and not self.is_ready
-                    ):
-                        self.menu_screen.player_name_text_field.active_typing = True
-                    else:
-                        self.menu_screen.player_name_text_field.active_typing = False
-                        if not self.menu_screen.player_name_text_field.is_empty:
-                            self.player_name = self.menu_screen.player_name_text_field.text
-
-                    if self.menu_screen.leave_server_button.click(mouse_position):
-                        if self.disconnect():
-                            self.player_id = None
-                            self.is_ready = False
-                            print("Successfully disconnected from server")
-                        else:
-                            print("Can't disconnect if not connected")
-            if event.type == pygame.KEYDOWN and not self.is_ready:
-                if event.key == pygame.K_BACKSPACE:
-                    self.menu_screen.player_name_text_field.del_char()
-                else:
-                    self.menu_screen.player_name_text_field.add_char(event.unicode)
-                    self.player_name = self.menu_screen.player_name_text_field.text
+    def assign_functions(self):
+        self.menu_screen.enter_server_button.on_click(self.connect)
+        self.menu_screen.leave_server_button.on_click(self.disconnect)
+        self.menu_screen.ready_button.on_click(self.ready)
 
     def run(self):
         clock = pygame.time.Clock()
 
-        self.bench1 = 0
-        self.bench2 = 0
+        self.assign_functions()
 
         while self.is_running:
             clock.tick(60)
