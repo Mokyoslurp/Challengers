@@ -6,7 +6,6 @@ import pickle
 
 from challengers.server.server import SERVER_IP, PORT, BUFSIZE
 from challengers.client.gui import MenuScreen
-from challengers.client.gui.game import CardFront, ParkBoard
 
 
 class Client:
@@ -22,14 +21,14 @@ class Client:
         pygame.display.set_caption("Client")
 
         self.menu_screen = MenuScreen()
-        self.park = ParkBoard(500, 10)
-        self.gui = [self.menu_screen, self.park]
+        self.gui = [self.menu_screen]
 
         self.socket: s.socket
         self.server_address = (SERVER_IP, PORT)
 
         self.is_running = True
 
+        self.is_ready: bool = False
         self.is_connected: bool = False
         self.player_id = None
 
@@ -89,52 +88,38 @@ class Client:
                     if self.menu_screen.enter_server_button.click(mouse_position):
                         self.player_id = self.connect()
                         if self.player_id:
-                            self.send("ready " + self.player_name)
-                            print("Successfully connected as P" + str(self.player_id))
+                            print("Successfully connected")
                         else:
                             print("Failed to connect to server")
 
                 else:
-                    if self.menu_screen.test_button.click(mouse_position):
-                        self.card = self.send("test")
-                        card = CardFront(5, 5, card=self.card)
-                        self.gui.append(card)
+                    if self.menu_screen.ready_button.click(mouse_position) and not self.is_ready:
+                        self.send("ready " + self.player_name)
+                        self.is_ready = True
+
+                    if (
+                        self.menu_screen.player_name_text_field.click(mouse_position)
+                        and not self.is_ready
+                    ):
+                        self.menu_screen.player_name_text_field.active_typing = True
+                    else:
+                        self.menu_screen.player_name_text_field.active_typing = False
+                        if not self.menu_screen.player_name_text_field.is_empty:
+                            self.player_name = self.menu_screen.player_name_text_field.text
 
                     if self.menu_screen.leave_server_button.click(mouse_position):
                         if self.disconnect():
                             self.player_id = None
+                            self.is_ready = False
                             print("Successfully disconnected from server")
                         else:
                             print("Can't disconnect if not connected")
-
-                    if self.menu_screen.add_bench_1_button.click(mouse_position):
-                        card = CardFront(5, 5, card=self.card)
-                        self.park.add_bench_card(1, self.bench1, card)
-                        self.bench1 += 1
-                        print(self.bench1)
-
-                    if self.menu_screen.add_bench_2_button.click(mouse_position):
-                        card = CardFront(5, 5, card=self.card)
-                        self.park.add_bench_card(2, self.bench2, card)
-                        self.bench2 += 1
-
-                    if self.menu_screen.add_played_1_button.click(mouse_position):
-                        card = CardFront(5, 5, card=self.card)
-                        self.park.add_played_card(1, card)
-
-                    if self.menu_screen.add_played_2_button.click(mouse_position):
-                        card = CardFront(5, 5, card=self.card)
-                        self.park.add_played_card(2, card)
-
-                    if self.menu_screen.reset_button.click(mouse_position):
-                        for b in range(self.bench1):
-                            self.park.reset_bench(1, b)
-                        self.bench1 = 0
-                        for b in range(self.bench2):
-                            self.park.reset_bench(2, b)
-                        self.bench2 = 0
-                        self.park.reset_played_cards(1)
-                        self.park.reset_played_cards(2)
+            if event.type == pygame.KEYDOWN and not self.is_ready:
+                if event.key == pygame.K_BACKSPACE:
+                    self.menu_screen.player_name_text_field.del_char()
+                else:
+                    self.menu_screen.player_name_text_field.add_char(event.unicode)
+                    self.player_name = self.menu_screen.player_name_text_field.text
 
     def run(self):
         clock = pygame.time.Clock()
