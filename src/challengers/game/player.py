@@ -18,8 +18,6 @@ class Player:
         self.trophies: list[Trophy] = []
         self.fans = 0
 
-        self.tournament_plan: list[int] = []
-
         self.played_cards = CardList()
         self.used_cards = CardList()
         self.bench: dict[Card, int] = {}
