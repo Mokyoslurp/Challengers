@@ -109,7 +109,7 @@ class Tournament:
     def prepare(self):
         # Set a robot player if there is an odd number of players
         if len(self.players) % 2 == 1:
-            self.set_new_player(Player(0, ROBOT_PLAYER_NAME, is_robot=True))
+            self.players.append(Player(len(self.players), ROBOT_PLAYER_NAME, is_robot=True))
 
         if DEBUG:
             for player in self.players:
