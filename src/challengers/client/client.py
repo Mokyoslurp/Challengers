@@ -5,7 +5,7 @@ import pickle
 
 
 from challengers.server.server import SERVER_IP, PORT, BUFSIZE
-from challengers.client.gui import MenuScreen
+from challengers.client.gui import MenuScreen, BattleScreen
 from challengers.client.gui.components import Interface
 
 
@@ -22,6 +22,7 @@ class Client:
         pygame.display.set_caption("Client")
 
         self.menu_screen = MenuScreen()
+        self.battle_screen = BattleScreen()
         self.gui: list[Interface] = [self.menu_screen]
 
         self.socket: s.socket
@@ -90,6 +91,12 @@ class Client:
 
             for interface in self.gui:
                 interface.handle_event(event)
+
+        if self.is_ready:
+            opponent_id = self.send("get opponent")
+            if opponent_id:
+                self.is_ready = False
+                self.gui = [self.battle_screen]
 
     def ready(self):
         if self.is_connected and not self.is_ready:
