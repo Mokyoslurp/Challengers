@@ -128,7 +128,9 @@ class Server:
                                                 case "fans":
                                                     reply = player.fans
                                                 case "plan":
-                                                    reply = player.tournament_plan
+                                                    reply = TournamentPlan.plans[
+                                                        client_player
+                                                    ].park_ids
                                                 case _:
                                                     reply = player.name
 
@@ -154,13 +156,15 @@ class Server:
                                     reply = self.tournament.round
 
                                 case "park":
-                                    reply = client_player.tournament_plan[self.tournament.round]
+                                    reply = TournamentPlan.plans[client_player].park_ids[
+                                        self.tournament.round
+                                    ]
 
                                 case "flag":
-                                    park_id = client_player.tournament_plan[self.tournament.round]
-                                    park = [
-                                        park for park in self.tournament.parks if park.id == park_id
-                                    ][0]
+                                    park_id = TournamentPlan.plans[client_player].park_ids[
+                                        self.tournament.round
+                                    ]
+                                    park = self.tournament.parks[park_id]
                                     reply = park.flag_owner
 
                                 case "scores":
