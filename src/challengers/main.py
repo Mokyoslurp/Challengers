@@ -14,7 +14,7 @@ TROPHY_DATA_FILE_PATH = GAME_DATA_PATH / TROPHY_DATA_FILE
 
 
 if __name__ == "__main__":
-    server = Server(Tournament(8))
+    server = Server(Tournament(1))
 
     server.tournament.load_game_cards(CARD_DATA_FILE_PATH)
     server.tournament.load_game_trophies(TROPHY_DATA_FILE_PATH)
