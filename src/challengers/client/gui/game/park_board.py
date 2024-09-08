@@ -1,19 +1,15 @@
 import pygame
 
+from challengers.client.gui.components.gui_element import GUIElement
 from challengers.client.gui.util import BLACK, WHITE
 from .constants import PARK_HEIGHT, PARK_WIDTH, CARD_WIDTH, CARD_HEIGHT
 
 from . import CardSpace, CardFront
 
 
-class ParkBoard:
-    def __init__(
-        self,
-        x: int,
-        y: int,
-    ):
-        self.x = x
-        self.y = y
+class ParkBoard(GUIElement):
+    def __init__(self, x: int, y: int, **kwargs):
+        super().__init__(x=x, y=y, **kwargs)
 
         width_spacing = (PARK_WIDTH - 6 * CARD_WIDTH) / 7
 

@@ -1,17 +1,13 @@
 import pygame
 
+from challengers.client.gui.components import GUIElement
 from challengers.client.gui.util import BLACK, WHITE
 from .constants import CARD_HEIGHT, CARD_WIDTH
 
 
-class CardBack:
-    def __init__(
-        self,
-        x: int,
-        y: int,
-    ):
-        self.x = x
-        self.y = y
+class CardBack(GUIElement):
+    def __init__(self, x: int, y: int, **kwargs):
+        super().__init__(x=x, y=y, **kwargs)
 
     def draw(self, window: pygame.Surface):
         # Background
@@ -37,8 +33,8 @@ class CardBack:
             color=BLACK,
             points=[
                 (self.x + CARD_WIDTH / 2, self.y),
-                (self.x + self.WIDTH, self.y + CARD_HEIGHT / 2),
-                (self.x + CARD_WIDTH / 2, self.y + self.HEIGHT),
+                (self.x + CARD_WIDTH, self.y + CARD_HEIGHT / 2),
+                (self.x + CARD_WIDTH / 2, self.y + CARD_HEIGHT),
                 (self.x, self.y + CARD_HEIGHT / 2),
             ],
         )

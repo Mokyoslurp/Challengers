@@ -1,11 +1,12 @@
 import pygame
 
+from challengers.client.gui.components import GUIElement
 from challengers.client.gui.util import BLACK, WHITE
 from .constants import CARD_WIDTH, CARD_HEIGHT
 from challengers.game import Card
 
 
-class CardFront:
+class CardFront(GUIElement):
     def __init__(
         self,
         x: int,
@@ -16,9 +17,9 @@ class CardFront:
         set: str = "City",
         text: str = "",
         card: Card = None,
+        **kwargs,
     ):
-        self.x = x
-        self.y = y
+        super().__init__(x=x, y=y, **kwargs)
 
         self.name = name
         self.power = str(power)

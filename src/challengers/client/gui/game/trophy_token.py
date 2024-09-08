@@ -1,22 +1,17 @@
 import pygame
 
+from challengers.client.gui.components import GUIElement
 from challengers.client.gui.util import BLACK, WHITE
 from challengers.game import Trophy
 
 
-class TrophyToken:
+class TrophyToken(GUIElement):
     RADIUS = 50
 
     def __init__(
-        self,
-        x: int,
-        y: int,
-        fans: int = 0,
-        round: int = 0,
-        trophy: Trophy = None,
+        self, x: int, y: int, fans: int = 0, round: int = 0, trophy: Trophy = None, **kwargs
     ):
-        self.x = x
-        self.y = y
+        super().__init__(x=x, y=y, **kwargs)
 
         self.fans = str(fans)
         self.round = str(round)

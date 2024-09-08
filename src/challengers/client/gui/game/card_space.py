@@ -1,17 +1,13 @@
 import pygame
 
+from challengers.client.gui.components import GUIElement
 from challengers.client.gui.util import BLACK, WHITE
 from .constants import CARD_HEIGHT, CARD_WIDTH
 
 
-class CardSpace:
-    def __init__(
-        self,
-        x: int,
-        y: int,
-    ):
-        self.x = x
-        self.y = y
+class CardSpace(GUIElement):
+    def __init__(self, x: int, y: int, **kwargs):
+        super().__init__(x=x, y=y, **kwargs)
 
     def draw(self, window: pygame.Surface):
         # Background
