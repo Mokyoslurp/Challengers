@@ -96,6 +96,17 @@ class Server:
                     case "get":
                         if len(data) > 1:
                             match data[1]:
+                                case "opponent":
+                                    if self.tournament.round >= 0:
+                                        park_id = TournamentPlan.plans[client_player].park_ids[
+                                            self.tournament.round
+                                        ]
+                                        park = self.tournament.parks[park_id]
+                                        if park.player_1 and park.player_2:
+                                            players = [park.player_1, park.player_2]
+                                            players.remove(client_player)
+                                            reply = players[0].id
+
                                 case "players":
                                     reply = self.players_names
 
