@@ -45,11 +45,12 @@ class Server:
 
                 self.players_ids[address[1]] = self.player_count
                 self.player_ready[self.player_count] = False
-                self.player_count += 1
 
                 thread = Thread(target=self.client_thread, args=(client, address))
                 thread.start()
                 self.threads.append(thread)
+
+                self.player_count += 1
 
                 if self.player_count == self.tournament.number_of_players:
                     self.is_ready = True
