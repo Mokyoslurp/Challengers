@@ -7,6 +7,7 @@ import pickle
 from challengers.server.server import SERVER_IP, PORT, BUFSIZE
 from challengers.client.gui import MenuScreen, BattleScreen
 from challengers.client.gui.components import Interface
+from challengers.client.gui.game import CardFront
 
 
 class Client:
@@ -31,8 +32,11 @@ class Client:
         self.is_running = True
 
         self.is_ready: bool = False
+        self.is_battling: bool = False
         self.is_connected: bool = False
-        self.player_id = None
+
+        self.player_id: int = None
+        self.opponent_id: int = None
 
         self.player_name = player_name
 
@@ -93,10 +97,43 @@ class Client:
                 interface.handle_event(event)
 
         if self.is_ready:
-            opponent_id = self.send("get opponent")
-            if opponent_id:
+            self.opponent_id = self.send("get opponent")
+            if self.opponent_id:
                 self.is_ready = False
                 self.gui = [self.battle_screen]
+                self.is_battling = True
+
+        # TODO: Request one action at a time to avoid instant change of the interface
+        # TODO: Request only missing data to avoid reloading all the screen every frame
+        if self.is_battling:
+            self.battle_screen.park.reset_played_cards(1)
+            self.battle_screen.park.reset_played_cards(2)
+
+            self_bench = self.send("get player " + str(self.player_id) + " bench")
+            i = 0
+            for data in self_bench:
+                self.battle_screen.park.reset_bench(1, i)
+                card = CardFront(0, 0, card=data)
+                self.battle_screen.park.add_bench_card(1, i, card)
+                i += 1
+
+            opponent_bench = self.send("get player " + str(self.opponent_id) + " bench")
+            i = 0
+            for data in opponent_bench:
+                self.battle_screen.park.reset_bench(2, i)
+                card = CardFront(0, 0, card=data)
+                self.battle_screen.park.add_bench_card(2, i, card)
+                i += 1
+
+            self_played_cards = self.send("get player " + str(self.player_id) + " played")
+            for data in self_played_cards:
+                card = CardFront(0, 0, card=data)
+                self.battle_screen.park.add_played_card(1, card)
+
+            opponent_played_cards = self.send("get player " + str(self.opponent_id) + " played")
+            for data in opponent_played_cards:
+                card = CardFront(0, 0, card=data)
+                self.battle_screen.park.add_played_card(2, card)
 
     def ready(self):
         if self.is_connected and not self.is_ready:
@@ -104,10 +141,15 @@ class Client:
             self.send("ready " + self.player_name)
             self.is_ready = True
 
+    def play_card(self):
+        if self.is_connected:
+            self.send("play")
+
     def assign_functions(self):
         self.menu_screen.enter_server_button.on_click(self.connect)
         self.menu_screen.leave_server_button.on_click(self.disconnect)
         self.menu_screen.ready_button.on_click(self.ready)
+        self.battle_screen.draw_card_button.on_click(self.play_card)
 
     def run(self):
         clock = pygame.time.Clock()
