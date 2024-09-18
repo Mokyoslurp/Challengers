@@ -11,4 +11,12 @@ file.close()
 
 bot = hikari.GatewayBot(token)
 
+
+@bot.listen()
+async def ping(event: hikari.GuildMessageCreateEvent) -> None:
+    if event.is_human:
+        if bot.get_me().id in event.message.user_mentions_ids:
+            await event.message.respond(event.author.mention)
+
+
 bot.run()
