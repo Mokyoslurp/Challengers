@@ -1,7 +1,7 @@
 import random
 from typing import Self
 
-from threading import Thread
+import asyncio
 
 from .player import Player
 from .park import Park
@@ -126,97 +126,81 @@ class Tournament:
             for player in self.players:
                 print(player)
 
-    def play_round(self) -> list[Thread]:
-        battles: list[Thread] = []
-        for park in self.parks:
-            park_players = TournamentPlan.get_players(self.round, park.id)
-            park.assign_players(park_players[0], park_players[1])
+    async def play_round(self, park: Park):
+        park_players = TournamentPlan.get_players(self.round, park.id)
+        park.assign_players(park_players[0], park_players[1])
 
-            if DEBUG:
-                print("\nRound ", self.round + 1, ", park ", park.id, " started.")
+        if DEBUG:
+            print("\nRound ", self.round + 1, ", park ", park.id, " started.")
 
-            thread = Thread(target=park.play_game)
-            thread.start()
-            battles.append(thread)
+        return await park.play_game()
 
-        return battles
+    def manage_robot_players_cards(self, player: Player):
+        if player.is_robot:
+            possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[self.round].keys())
+            chosen_tray_level = random.choice(possible_tray_levels)
 
-    def manage_robot_players_cards(self):
+            for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
+                player.draw(self.trays[chosen_tray_level])
+            player.shuffle_deck()
+
+            for card in player.deck[:]:
+                if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
+                    player.discard(card, self.trays[chosen_tray_level])
+
+    async def manage_cards(self):
+        human_players: list[Player] = []
         for player in self.players:
             player.reset_deck()
-
             if player.is_robot:
-                possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[self.round].keys())
-                chosen_tray_level = random.choice(possible_tray_levels)
+                self.manage_robot_players_cards(player)
+            else:
+                human_players.append(player)
 
-                for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
-                    player.draw(self.trays[chosen_tray_level])
-                player.shuffle_deck()
+        await asyncio.gather(*(player.let_manage_cards() for player in human_players))
 
-                for card in player.deck[:]:
-                    if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
-                        player.discard(card, self.trays[chosen_tray_level])
-
-                player.managed_cards = True
-
-    def play(self) -> Player:
-        self.prepare()
-
+    async def play_rounds(self):
         for i in range(NUMBER_OF_ROUNDS):
             self.round = i
-            winners: list[Player] = [-1] * len(self.parks)
 
-            battles = self.play_round()
-
-            round_finished = False
-            while not round_finished:
-                round_finished = True
-                for park in self.parks:
-                    if not park.battle_finished:
-                        round_finished = False
-
-            for thread in battles:
-                thread.join()
-
-            for park in self.parks:
-                winners[park.id] = park.flag_owner
-                park.battle_finished = False
+            winners = await asyncio.gather(*(self.play_round(park) for park in self.parks))
 
             for winner in winners:
                 winner.trophies.append(self.game_trophies.draw(round))
             self.winners[self.round] = winners
 
-            self.manage_robot_players_cards()
+            await self.manage_cards()
 
-            all_players_managed_cards = False
-            while not all_players_managed_cards:
-                all_players_managed_cards = True
-                for player in self.players:
-                    if not player.managed_cards:
-                        all_players_managed_cards = False
-
-            for player in self.players:
-                player.managed_cards = False
-
+    async def play_final(self) -> Player:
         finalists = self.get_finalists()
 
         park = self.parks[0]
         park.assign_players(finalists[0], finalists[1])
 
-        battle = Thread(target=park.play_game)
-        battle.start()
-
-        battle.join()
-
-        self.winner = park.flag_owner
+        self.winner = await park.play_game()
 
         for player in finalists:
             player.reset_deck()
 
-        if DEBUG:
-            print(self.winner, " won the tournament!")
+    async def play(self) -> Player:
+        if len(self.players) == self.number_of_players:
+            self.prepare()
 
-        return self.winner
+            if DEBUG:
+                print("Tournament started")
+
+            await self.play_rounds()
+
+            if DEBUG:
+                print("Final started")
+
+            await self.play_final()
+
+            if DEBUG:
+                print(self.winner, " won the tournament!")
+
+            return self.winner
+        return None
 
 
 class TournamentPlan:

@@ -1,4 +1,5 @@
 import random
+import asyncio
 
 from .player import Player
 
@@ -20,10 +21,9 @@ class Park:
         self.id = id
 
         self.flag_owner: Player = None
+        self.attacking_player: Player = None
         self.player_1: Player = None
         self.player_2: Player = None
-
-        self.battle_finished: bool = False
 
     def assign_players(self, player_1: Player, player_2: Player):
         """
@@ -35,14 +35,10 @@ class Park:
         self.player_1 = player_1
         self.player_2 = player_2
 
-    def play_game(self) -> Player:
+    def set_starting_player(self):
         """
-        Plays a round in the park
-
-        :return: the player that won the battle
+        Sets both the first player who owns the flag, and the player who will attack first.
         """
-        attacking_player: Player = None
-
         player_1_higher_round_win = self.player_1.get_higher_round_win()
         player_2_higher_round_win = self.player_2.get_higher_round_win()
 
@@ -54,33 +50,45 @@ class Park:
                 if player_1_higher_round_win > player_2_higher_round_win
                 else self.player_2
             )
+        self.attacking_player = self.player_1 if self.flag_owner == self.player_2 else self.player_2
 
-        attacking_player = self.player_1 if self.flag_owner == self.player_2 else self.player_2
+    def switch_flag_owner(self):
+        self.flag_owner, self.attacking_player = self.attacking_player, self.flag_owner
 
-        played_card = self.flag_owner.play()
+        self.flag_owner.set_defense()
+        self.attacking_player.bench_cards()
+
+    async def play_game(self) -> Player:
+        """
+        Plays a round in the park
+
+        :return: the player that won the battle
+        """
+        self.set_starting_player()
+
+        # Play initial card
+        played_card = await self.flag_owner.let_play()
         if DEBUG:
             print(self.flag_owner.name + ", Defending: " + str(played_card))
 
+        # Rest of the match
         while (
-            len(attacking_player.deck) > 0
+            len(self.attacking_player.deck) > 0
             and len(self.player_1.bench) < 6
             and len(self.player_2.bench) < 6
         ):
             while (
-                len(attacking_player.deck) > 0
-                and attacking_player.get_power() < self.flag_owner.get_power()
+                len(self.attacking_player.deck) > 0
+                and self.attacking_player.get_power() < self.flag_owner.get_power()
             ):
-                if attacking_player.is_robot:
-                    played_card = attacking_player.play()
-                    if DEBUG:
-                        print(attacking_player.name + ": " + str(played_card))
+                played_card = await self.attacking_player.let_play()
+                if DEBUG:
+                    print(self.attacking_player.name + ": " + str(played_card))
 
-            if attacking_player.get_power() >= self.flag_owner.get_power():
+            if self.attacking_player.get_power() >= self.flag_owner.get_power():
+                await asyncio.sleep(1)
                 # Switch attack and defense roles
-                self.flag_owner, attacking_player = attacking_player, self.flag_owner
-
-                self.flag_owner.set_defense()
-                attacking_player.bench_cards()
+                self.switch_flag_owner()
 
         if DEBUG:
             print(self.flag_owner.name + " won!")
