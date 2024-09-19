@@ -166,7 +166,7 @@ class Tournament:
             winners = await asyncio.gather(*(self.play_round(park) for park in self.parks))
 
             for winner in winners:
-                winner.trophies.append(self.game_trophies.draw(round))
+                winner.trophies.append(self.game_trophies.draw(self.round))
             self.winners[self.round] = winners
 
             await self.manage_cards()
