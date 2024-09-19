@@ -9,20 +9,38 @@ BENCH_SIZE = 6
 
 
 class Park:
+    """
+    Park object in which two players will battle
+    """
+
     def __init__(self, id: int):
+        """
+        :param id: unique id of the park
+        """
         self.id = id
 
-        self.flag_owner = None
+        self.flag_owner: Player = None
         self.player_1: Player = None
         self.player_2: Player = None
 
         self.battle_finished: bool = False
 
     def assign_players(self, player_1: Player, player_2: Player):
+        """
+        Adds the players to the competing players in the park
+
+        :param player_1: player 1
+        :param player_2: player 2
+        """
         self.player_1 = player_1
         self.player_2 = player_2
 
     def play_game(self) -> Player:
+        """
+        Plays a round in the park
+
+        :return: the player that won the battle
+        """
         attacking_player: Player = None
 
         player_1_higher_round_win = self.player_1.get_higher_round_win()

@@ -4,7 +4,18 @@ from .tray import Tray
 
 
 class Player:
+    """
+    A player defined by an id and a name, who has a deck of cards
+    """
+
     def __init__(self, id: int, name: str = "", is_robot: bool = False):
+        """
+        Player initialization
+
+        :param id: player unique id
+        :param name: player name, defaults to ""
+        :param is_robot: True if the player is not a human and will play automatically, defaults to False
+        """
         self.id = id
         self.name = name
 
@@ -47,12 +58,22 @@ class Player:
         return string
 
     def get_total_fans(self) -> int:
+        """
+        Calculates the player total fans, with the bonus fans and the fans obtained with the trophies
+
+        :return: total fans number
+        """
         total_fans = self.fans
         for trophy in self.trophies:
             total_fans += trophy.fans
         return total_fans
 
-    def get_starter_cards(self, tray: Tray) -> CardList:
+    def get_starter_cards(self, tray: Tray):
+        """
+        Draws starter cards for the player, and shuffles the deck
+
+        :param tray: the starter tray to draw from
+        """
         for card in tray.pile:
             if card not in self.deck:
                 self.deck.append(card)
@@ -61,42 +82,76 @@ class Player:
             tray.pile.remove(card)
 
         self.shuffle_deck()
-        return self.deck
 
     def get_higher_round_win(self) -> int:
+        """
+        Gets the higher round won by the player
+
+        :return: the higher round won by the player
+        """
         if not self.trophies:
             return 0
         else:
             return self.trophies[-1].round
 
-    def draw(self, tray: Tray) -> Card:
+    def draw(self, tray: Tray):
+        """
+        Draws a card from a tray and adds it to the player deck
+
+        :param tray: to tray to draw from
+        """
         card = tray.draw()
         if card:
             self.deck.append(card)
-        return card
 
-    def discard(self, card: Card, tray: Tray) -> Card:
+    def discard(self, card: Card, tray: Tray):
+        """
+        Discards the chosen card from the player deck into a tray's discard
+
+        :param card: discarded card
+        :param tray: tray in which to discard
+        """
         if card in self.deck:
             tray.discard.append(card)
             self.deck.remove(card)
-            return card
 
     def shuffle_deck(self):
+        """
+        Shuffles the player deck
+        """
         self.deck.shuffle()
 
     def play(self) -> Card:
+        """
+        Adds a card from deck to played cards
+
+        :return: the played card
+        """
         played_card = self.deck.draw()
         if played_card:
             self.played_cards.append(played_card)
             return played_card
 
     def get_power(self) -> int:
+        """
+        Gets total power of the played cards
+
+        :return: _description_
+        """
         total_power = 0
         for card in self.played_cards:
             total_power += card.power
         return total_power
 
     def get_score(self) -> int:
+        """
+        Gets the player total score based on its number of trophies, fans and maximum round won.
+
+        The score is in format XXYZ, XX being the total number of fans, Y the number of trophies
+        won, and Z the number of the latest round won.
+
+        :return: the score of the player
+        """
         # Factors 1, 10, 100 are to have a coherent score that reflects independently all this criteria in one integer
         fans = self.get_total_fans() * 100
         max_trophies = len(self.trophies) * 10
@@ -106,6 +161,9 @@ class Player:
         return fans + max_trophies + max_round
 
     def bench_cards(self):
+        """
+        Moves cards from the played and used cards of the player to its bench
+        """
         for card in self.played_cards + self.used_cards:
             if card in self.bench:
                 self.bench[card] += 1
@@ -116,11 +174,18 @@ class Player:
         self.used_cards.clear()
 
     def set_defense(self):
+        """
+        Moves all the played cards to used cards, except the last one,
+        to set the player in defense phase
+        """
         for card in self.played_cards[:-1]:
             self.used_cards.append(card)
             self.played_cards.remove(card)
 
-    def reset_deck(self) -> CardList:
+    def reset_deck(self):
+        """
+        Moves all played, used, and benched cards to the deck, and shuffles it
+        """
         list_bench = CardList()
         for card in self.bench:
             for _ in range(self.bench[card]):
@@ -135,4 +200,3 @@ class Player:
         self.bench = {}
 
         self.shuffle_deck()
-        return self.deck
