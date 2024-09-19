@@ -104,6 +104,7 @@ class Player:
 
         :param tray: to tray to draw from
         """
+        # TODO: Implement constraint on what tray the player can choose
         if self.has_to_manage_cards:
             card = tray.draw()
             if card:
