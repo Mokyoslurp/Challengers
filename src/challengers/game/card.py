@@ -15,6 +15,18 @@ class Set(Enum):
     SHIPWRECK = 6
 
 
+SET_COLORS = {
+    Set.CITY: "\033[96m",  # Bright Cyan
+    Set.CASTLE: "\033[34m",  # Blue
+    Set.FUNFAIR: "\033[91m",  # Bright Red
+    Set.OUTER_SPACE: "\033[31m",  # Red
+    Set.FILM_STUDIO: "\033[92m",  # Bright Green
+    Set.HAUNTED_HOUSE: "\033[90m",  # Bright Black
+    Set.SHIPWRECK: "\033[36m",  # Cyan
+}
+END_COLOR = "\033[0m"
+
+
 class Level(Enum):
     S = 0
     A = 1
@@ -30,20 +42,47 @@ class Card:
     power: int = 0
     text: str = ""
 
+    drawing = None
+
     def __str__(self) -> str:
-        string = (
-            self.level.name
-            + ", "
-            + self.set.name.replace("_", " ").capitalize()
-            + ", "
-            + self.name
-            + ": "
-            + "Power = "
-            + str(self.power)
-        )
-        if self.text:
-            string += "\n\t" + self.text
-        return string
+        if not self.drawing:
+            first_line = self.name
+            second_line = (
+                str(self.power)
+                + "|"
+                + self.level.name
+                + "|"
+                + self.set.name.replace("_", " ").capitalize()
+            )
+            max_characters = max(len(first_line), len(second_line))
+
+            first_line = (
+                "|"
+                + first_line
+                + "".join([" " for _ in range(max_characters - len(first_line))])
+                + "|\n"
+            )
+            second_line = (
+                "|"
+                + second_line
+                + "".join([" " for _ in range(max_characters - len(second_line))])
+                + "|\n"
+            )
+
+            inter_line = "".join(["-" for _ in range(max_characters + 2)])
+            self.drawing = (
+                SET_COLORS[self.set]
+                + inter_line
+                + "\n"
+                + first_line
+                + inter_line
+                + "\n"
+                + second_line
+                + inter_line
+                + END_COLOR
+            )
+
+        return self.drawing
 
     def __hash__(self) -> int:
         return hash(self.name)
