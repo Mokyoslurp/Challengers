@@ -24,6 +24,7 @@ class Player:
 
         self.is_robot: bool = is_robot
 
+        self.is_ready: bool = False
         self.has_to_play: bool = False
         self.has_to_manage_cards: bool = False
 
@@ -163,6 +164,14 @@ class Player:
                 played_card = self.played_cards[-1]
 
             return played_card
+
+    async def let_get_ready(self):
+        if self.is_robot:
+            self.is_ready = True
+        else:
+            self.is_ready = False
+        while not self.is_ready:
+            await asyncio.sleep(1)
 
     def get_power(self) -> int:
         """
