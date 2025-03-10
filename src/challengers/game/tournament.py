@@ -262,8 +262,7 @@ class Tournament:
             self.manage_cards()
 
         self.play_final()
-
-        return self.winner
+        self.ended.set()
 
 
 class TournamentPlan:
