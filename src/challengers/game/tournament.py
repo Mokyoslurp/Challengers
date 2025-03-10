@@ -38,7 +38,7 @@ class Tournament:
             self.winner: Player
 
             self.status = Tournament.Status.NONE
-            self.round: int = 0
+            self.round: int = -1
 
             self.trays: dict[Level, Tray] = {}
             # Possible combinations of tray to draw from and number of cards
@@ -280,8 +280,7 @@ class TournamentPlan:
     plans: dict[Player, Self] = {}
 
     def __init__(self, park_ids: list[int]):
-        if len(park_ids) == NUMBER_OF_ROUNDS:
-            self.park_ids = park_ids.copy()
+        self.park_ids = park_ids.copy()
 
     @classmethod
     def get_players(cls, round: int, park_id: int) -> list[Player]:
