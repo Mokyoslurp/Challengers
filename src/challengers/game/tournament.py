@@ -152,6 +152,11 @@ class Tournament:
         player.draw(self.trays[level], self.available_draws[level])
 
     def manage_robot_players_cards(self, player: Player):
+        """Randomizes the card draw and discard for the bots
+
+        :param player: The robot player
+        """
+
         if player.is_robot:
             # random draw choice
             chosen_tray_level = random.choice(list(self.available_draws.keys()))
@@ -160,6 +165,7 @@ class Tournament:
 
             player.shuffle_deck()
 
+            # Random discard
             for card in player.deck[:]:
                 if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
                     player.discard(card, self.trays[chosen_tray_level])
