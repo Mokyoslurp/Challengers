@@ -25,7 +25,7 @@ class Duel:
         self.flag_owner: Player = None
         self.attacking_player: Player = None
 
-    def set_starting_player(self):
+    def choose_starting_player(self):
         """
         Sets both the first player who owns the flag, and the player who will attack first.
         """
@@ -54,7 +54,7 @@ class Duel:
 
         :return: the player that won the battle
         """
-        self.set_starting_player()
+        self.choose_starting_player()
 
         # Play initial card
         played_card = await self.flag_owner.let_play()
