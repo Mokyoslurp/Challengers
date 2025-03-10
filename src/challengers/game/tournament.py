@@ -1,8 +1,7 @@
 import random
 from typing import Self
 from enum import Enum
-
-import asyncio
+import threading
 
 from .player import Player
 from .duel import Duel
@@ -117,7 +116,7 @@ class Tournament:
 
         return finalists
 
-    async def prepare(self):
+    def prepare(self):
         if self.status == Tournament.Status.NONE:
             if len(self.players) == self.number_of_players:
                 # Set a robot player if there is an odd number of players
@@ -133,10 +132,16 @@ class Tournament:
             self.initialize_trays()
             for player in self.players:
                 player.get_starter_cards(self.trays[Level.S])
+                if not player.is_robot:
+                    player.is_ready = False
+                else:
+                    player.is_ready = True
 
             self.status = Tournament.Status.PREPARE
 
-            await asyncio.gather(*(player.let_get_ready() for player in self.players))
+            # Wait for all players to be ready
+            while not all([player.is_ready for player in self.players]) and not self.is_ended():
+                pass
 
             self.status = Tournament.Status.ROUND
 
@@ -159,78 +164,99 @@ class Tournament:
                 if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
                     player.discard(card, self.trays[chosen_tray_level])
 
-    async def manage_cards(self):
+    def manage_cards(self):
         if self.status == Tournament.Status.DECK:
-            human_players: list[Player] = []
             for player in self.players:
-                player.reset_deck()
-                if player.is_robot:
-                    self.manage_robot_players_cards(player)
-                else:
-                    human_players.append(player)
+                player.has_managed_cards = False
 
             self.available_draws = TournamentPlan.get_available_draws(self.round)
 
             if DEBUG:
                 print(f"Available draws : {self.available_draws}")
 
-            await asyncio.gather(*(player.let_manage_cards() for player in human_players))
+            human_players: list[Player] = []
+            for player in self.players:
+                player.reset_deck()
+                if player.is_robot:
+                    self.manage_robot_players_cards(player)
+                    player.has_managed_cards = True
+                else:
+                    human_players.append(player)
+
+            while not all([player.has_managed_cards for player in human_players]):
+                pass
+
+            for player in self.players:
+                player.shuffle_deck()
 
             self.status = Tournament.Status.ROUND
 
-    async def play_round(self):
+    def play_round(self):
         if self.status == Tournament.Status.ROUND:
             self.round += 1
             self.duels = []
+
+            duel_threads: list[threading.Thread] = []
 
             for duel_id in [i for i in range((self.number_of_players + 1) // 2)]:
                 players = TournamentPlan.get_players(self.round, duel_id)
                 duel = Duel(players[0], players[1])
                 self.duels.append(duel)
 
-            if DEBUG:
-                print(f"Duel {players[0]} VS {players[1]} started")
+                if DEBUG:
+                    print(f"Duel {players[0]} VS {players[1]} started")
 
-            winners = await asyncio.gather(*(duel.play() for duel in self.duels))
+                duel_thread = threading.Thread(target=duel.play)
+                duel_threads.append(duel_thread)
+                duel_thread.start()
+
+                if DEBUG:
+                    print(f"\nRound {self.round + 1}, duel {players[0]} VS {players[1]} started.")
+
+            for duel_thread in duel_threads:
+                duel_thread.join()
+
+            for duel in self.duels:
+                winner = duel.winner
+                winner.trophies.append(self.game_trophies.draw(self.round))
+                self.winners[self.round].append(winner)
 
             if DEBUG:
                 print(f"\nRound {self.round + 1} ended.")
-
-            for winner in winners:
-                winner.trophies.append(self.game_trophies.draw(self.round - 1))
-            self.winners[self.round - 1] = winners
 
             if self.round == NUMBER_OF_ROUNDS:
                 self.status = Tournament.Status.FINAL
             else:
                 self.status = Tournament.Status.DECK
 
-    async def play_final(self) -> Player:
+    def play_final(self) -> Player:
         if self.status == Tournament.Status.FINAL:
             finalists = self.get_finalists()
-
-            duel = Duel(finalists[0], finalists[1])
-
-            if DEBUG:
-                print("Final started")
-
-            self.winner = await duel.play()
-
-            if DEBUG:
-                print(self.winner, " won the tournament!")
 
             for player in finalists:
                 player.reset_deck()
 
-    async def play(self) -> Player:
-        await self.prepare()
+            duel = Duel(finalists[0], finalists[1])
+            self.duels = [duel]
+
+            if DEBUG:
+                print("Final started")
+
+            duel.play()
+            self.winner = duel.winner
+
+            if DEBUG:
+                print(self.winner, " won the tournament!")
+
+    def play(self) -> Player:
+        self.prepare()
 
         while self.status != Tournament.Status.FINAL:
-            await self.play_round()
+            self.play_round()
 
-            await self.manage_cards()
+            self.manage_cards()
 
-        await self.play_final()
+        self.play_final()
 
         return self.winner
 

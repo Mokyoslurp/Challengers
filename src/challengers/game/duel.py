@@ -1,5 +1,4 @@
 import random
-import asyncio
 
 from .player import Player
 
@@ -25,6 +24,8 @@ class Duel:
         self.flag_owner: Player = None
         self.attacking_player: Player = None
 
+        self.winner: Player = None
+
     def choose_starting_player(self):
         """
         Sets both the first player who owns the flag, and the player who will attack first.
@@ -48,7 +49,7 @@ class Duel:
         self.flag_owner.set_defense()
         self.attacking_player.bench_cards()
 
-    async def play(self) -> Player:
+    def play(self) -> Player:
         """
         Plays duel
 
@@ -57,9 +58,11 @@ class Duel:
         self.choose_starting_player()
 
         # Play initial card
-        played_card = await self.flag_owner.let_play()
+        # Play initial card
+        self.flag_owner.has_played = False
+        self.flag_owner.play()
         if DEBUG:
-            print(self.flag_owner.name + ", Defending: " + str(played_card))
+            print(f"First card by {self.flag_owner}\n {self.flag_owner.played_cards[-1]}")
 
         # Rest of the match
         while (
@@ -71,14 +74,17 @@ class Duel:
                 len(self.attacking_player.deck) > 0
                 and self.attacking_player.get_power() < self.flag_owner.get_power()
             ):
-                played_card = await self.attacking_player.let_play()
-                if DEBUG:
-                    print(self.attacking_player.name + ": " + str(played_card))
+                self.attacking_player.has_played = False
+                if self.attacking_player.is_robot:
+                    self.attacking_player.play()
+                while not self.attacking_player.has_played:
+                    pass
 
             if self.attacking_player.get_power() >= self.flag_owner.get_power():
-                await asyncio.sleep(1)
                 # Switch attack and defense roles
                 self.switch_flag_owner()
+
+        self.winner = self.flag_owner
 
         if DEBUG:
             print(self.flag_owner.name + " won!")
