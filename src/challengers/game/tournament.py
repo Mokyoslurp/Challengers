@@ -5,7 +5,7 @@ from enum import Enum
 import asyncio
 
 from .player import Player
-from .park import Park
+from .duel import Duel
 from .tray import Tray
 from .card import Level
 from .trophy import TrophyDict, TrophySerializer
@@ -33,8 +33,8 @@ class Tournament:
             self.number_of_players = number_of_players
 
             self.players: list[Player] = []
-            self.parks: list[Park] = [Park(i) for i in range((self.number_of_players + 1) // 2)]
-            # winners by parks and by rounds
+            self.duels: list[Duel] = []
+            # winners by duels and by rounds
             self.winners: list[list[Player]] = [[]] * NUMBER_OF_ROUNDS
             self.winner: Player
 
@@ -143,15 +143,6 @@ class Tournament:
             if DEBUG:
                 print("Tournament started")
 
-    async def play_round(self, park: Park):
-        park_players = TournamentPlan.get_players(self.round, park.id)
-        park.assign_players(park_players[0], park_players[1])
-
-        if DEBUG:
-            print("\nRound ", self.round + 1, ", park ", park.id, " started.")
-
-        return await park.play_game()
-
     def make_draw(self, player: Player, level: Level):
         player.draw(self.trays[level], self.available_draws[level])
 
@@ -187,11 +178,24 @@ class Tournament:
 
             self.status = Tournament.Status.ROUND
 
-    async def play_matches(self):
+    async def play_round(self):
         if self.status == Tournament.Status.ROUND:
             self.round += 1
+            self.duels = []
 
-            winners = await asyncio.gather(*(self.play_round(park) for park in self.parks))
+            for duel_id in [i for i in range((self.number_of_players + 1) // 2)]:
+                players = TournamentPlan.get_players(self.round, duel_id)
+                duel = Duel()
+                duel.assign_players(players[0], players[1])
+                self.duels.append(duel)
+
+            if DEBUG:
+                print(f"Duel {players[0]} VS {players[1]} started")
+
+            winners = await asyncio.gather(*(duel.play() for duel in self.duels))
+
+            if DEBUG:
+                print(f"\nRound {self.round + 1} ended.")
 
             for winner in winners:
                 winner.trophies.append(self.game_trophies.draw(self.round - 1))
@@ -206,13 +210,13 @@ class Tournament:
         if self.status == Tournament.Status.FINAL:
             finalists = self.get_finalists()
 
-            park = self.parks[0]
-            park.assign_players(finalists[0], finalists[1])
+            duel = Duel()
+            duel.assign_players(finalists[0], finalists[1])
 
             if DEBUG:
                 print("Final started")
 
-            self.winner = await park.play_game()
+            self.winner = await duel.play()
 
             if DEBUG:
                 print(self.winner, " won the tournament!")
@@ -224,7 +228,7 @@ class Tournament:
         await self.prepare()
 
         while self.status != Tournament.Status.FINAL:
-            await self.play_matches()
+            await self.play_round()
 
             await self.manage_cards()
 

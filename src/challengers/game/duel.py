@@ -9,17 +9,12 @@ from .data import DEBUG
 BENCH_SIZE = 6
 
 
-class Park:
+class Duel:
     """
-    Park object in which two players will battle
+    Duel between two players
     """
 
-    def __init__(self, id: int):
-        """
-        :param id: unique id of the park
-        """
-        self.id = id
-
+    def __init__(self):
         self.flag_owner: Player = None
         self.attacking_player: Player = None
         self.player_1: Player = None
@@ -27,7 +22,7 @@ class Park:
 
     def assign_players(self, player_1: Player, player_2: Player):
         """
-        Adds the players to the competing players in the park
+        Adds the players to the competing players in the duel
 
         :param player_1: player 1
         :param player_2: player 2
@@ -58,9 +53,9 @@ class Park:
         self.flag_owner.set_defense()
         self.attacking_player.bench_cards()
 
-    async def play_game(self) -> Player:
+    async def play(self) -> Player:
         """
-        Plays a round in the park
+        Plays duel
 
         :return: the player that won the battle
         """
