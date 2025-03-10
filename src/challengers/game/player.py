@@ -102,17 +102,18 @@ class Player:
         else:
             return self.trophies[-1].round
 
-    def draw(self, tray: Tray):
+    def draw(self, tray: Tray, amount: int):
         """
         Draws a card from a tray and adds it to the player deck
 
         :param tray: to tray to draw from
+        :param amount: amount of cards to draw
         """
-        # TODO: Implement constraint on what tray the player can choose
         if not self.has_managed_cards:
-            card = tray.draw()
-            if card:
-                self.deck.append(card)
+            for _ in range(amount):
+                card = tray.draw()
+                if card:
+                    self.deck.append(card)
 
     def discard(self, card: Card, tray: Tray):
         """

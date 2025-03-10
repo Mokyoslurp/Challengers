@@ -149,13 +149,16 @@ class Tournament:
 
         return await park.play_game()
 
+    def make_draw(self, player: Player, level: Level):
+        player.draw(self.trays[level], self.available_draws[level])
+
     def manage_robot_players_cards(self, player: Player):
         if player.is_robot:
             # random draw choice
             chosen_tray_level = random.choice(list(self.available_draws.keys()))
 
-            for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
-                player.draw(self.trays[chosen_tray_level])
+            self.make_draw(player, chosen_tray_level)
+
             player.shuffle_deck()
 
             for card in player.deck[:]:
