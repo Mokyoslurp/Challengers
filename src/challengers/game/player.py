@@ -1,6 +1,3 @@
-import asyncio
-
-
 from .trophy import Trophy
 from .card import Card, CardList
 from .tray import Tray
@@ -126,15 +123,6 @@ class Player:
             tray.discard.append(card)
             self.deck.remove(card)
 
-    def done_managing_cards(self):
-        if not self.has_managed_cards:
-            self.has_managed_cards = True
-
-    async def let_manage_cards(self):
-        self.has_managed_cards = False
-        while not self.has_managed_cards:
-            await asyncio.sleep(1)
-
     def shuffle_deck(self):
         """
         Shuffles the player deck
@@ -152,30 +140,8 @@ class Player:
             if played_card:
                 self.played_cards.append(played_card)
                 self.has_played = True
-                return played_card
-
-    async def let_play(self):
-        self.has_played = False
-        if not self.has_played:
-            await asyncio.sleep(1)
-
-            if self.is_robot:
-                played_card = self.play()
-
-            else:
-                while not self.has_played:
-                    await asyncio.sleep(1)
-                played_card = self.played_cards[-1]
-
-            return played_card
-
-    async def let_get_ready(self):
-        if self.is_robot:
-            self.is_ready = True
-        else:
-            self.is_ready = False
-        while not self.is_ready:
-            await asyncio.sleep(1)
+                return True
+        return False
 
     def get_power(self) -> int:
         """
