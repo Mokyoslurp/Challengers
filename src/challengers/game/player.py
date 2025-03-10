@@ -39,6 +39,9 @@ class Player:
         self.bench: dict[Card, int] = {}
 
     def __str__(self):
+        return self.name
+
+    def to_string(self):
         string = (
             " P"
             + str(self.id)
