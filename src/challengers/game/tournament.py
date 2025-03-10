@@ -185,8 +185,7 @@ class Tournament:
 
             for duel_id in [i for i in range((self.number_of_players + 1) // 2)]:
                 players = TournamentPlan.get_players(self.round, duel_id)
-                duel = Duel()
-                duel.assign_players(players[0], players[1])
+                duel = Duel(players[0], players[1])
                 self.duels.append(duel)
 
             if DEBUG:
@@ -210,8 +209,7 @@ class Tournament:
         if self.status == Tournament.Status.FINAL:
             finalists = self.get_finalists()
 
-            duel = Duel()
-            duel.assign_players(finalists[0], finalists[1])
+            duel = Duel(finalists[0], finalists[1])
 
             if DEBUG:
                 print("Final started")

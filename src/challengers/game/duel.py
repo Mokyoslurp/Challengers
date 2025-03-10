@@ -14,21 +14,16 @@ class Duel:
     Duel between two players
     """
 
-    def __init__(self):
+    def __init__(self, player_1: Player, player_2: Player):
+        """
+        :param player_1:
+        :param player_2:
+        """
+        self.player_1: Player = player_1
+        self.player_2: Player = player_2
+
         self.flag_owner: Player = None
         self.attacking_player: Player = None
-        self.player_1: Player = None
-        self.player_2: Player = None
-
-    def assign_players(self, player_1: Player, player_2: Player):
-        """
-        Adds the players to the competing players in the duel
-
-        :param player_1: player 1
-        :param player_2: player 2
-        """
-        self.player_1 = player_1
-        self.player_2 = player_2
 
     def set_starting_player(self):
         """
