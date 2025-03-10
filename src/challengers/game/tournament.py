@@ -23,7 +23,7 @@ ROBOT_PLAYER_NAME = "IA"
 class Tournament:
     class Status(Enum):
         NONE = 0
-        MATCH = 1
+        ROUND = 1
         DECK = 2
         FINAL = 3
         PREPARE = 4
@@ -138,7 +138,7 @@ class Tournament:
 
             await asyncio.gather(*(player.let_get_ready() for player in self.players))
 
-            self.status = Tournament.Status.MATCH
+            self.status = Tournament.Status.ROUND
 
             if DEBUG:
                 print("Tournament started")
@@ -185,10 +185,10 @@ class Tournament:
 
             await asyncio.gather(*(player.let_manage_cards() for player in human_players))
 
-            self.status = Tournament.Status.MATCH
+            self.status = Tournament.Status.ROUND
 
     async def play_matches(self):
-        if self.status == Tournament.Status.MATCH:
+        if self.status == Tournament.Status.ROUND:
             self.round += 1
 
             winners = await asyncio.gather(*(self.play_round(park) for park in self.parks))
