@@ -196,7 +196,10 @@ class Tournament:
             for player in self.players:
                 player.shuffle_deck()
 
-            self.status = Tournament.Status.ROUND
+            if self.round == NUMBER_OF_ROUNDS - 1:
+                self.status = Tournament.Status.FINAL
+            else:
+                self.status = Tournament.Status.ROUND
 
     def play_round(self):
         if self.status == Tournament.Status.ROUND:
@@ -231,10 +234,7 @@ class Tournament:
             if DEBUG:
                 print(f"\nRound {self.round + 1} ended.")
 
-            if self.round == NUMBER_OF_ROUNDS:
-                self.status = Tournament.Status.FINAL
-            else:
-                self.status = Tournament.Status.DECK
+            self.status = Tournament.Status.DECK
 
     def play_final(self) -> Player:
         if self.status == Tournament.Status.FINAL:
