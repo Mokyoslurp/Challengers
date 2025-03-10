@@ -49,8 +49,13 @@ class Tournament:
             self.game_cards: CardList
             self.game_trophies = TrophyDict()
 
+            self.ended = threading.Event()
+
         else:
             raise ValueError
+
+    def is_ended(self):
+        return self.ended.is_set()
 
     def reset(self):
         self.players = []
@@ -183,7 +188,9 @@ class Tournament:
                 else:
                     human_players.append(player)
 
-            while not all([player.has_managed_cards for player in human_players]):
+            while not self.is_ended() and not all(
+                [player.has_managed_cards for player in human_players]
+            ):
                 pass
 
             for player in self.players:
@@ -251,7 +258,7 @@ class Tournament:
     def play(self) -> Player:
         self.prepare()
 
-        while self.status != Tournament.Status.FINAL:
+        while self.status != Tournament.Status.FINAL and not self.is_ended():
             self.play_round()
 
             self.manage_cards()

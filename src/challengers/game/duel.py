@@ -1,4 +1,5 @@
 import random
+import threading
 
 from .player import Player
 
@@ -25,6 +26,12 @@ class Duel:
         self.attacking_player: Player = None
 
         self.winner: Player = None
+
+        # To trigger when duel is ended
+        self.ended = threading.Event()
+
+    def is_ended(self):
+        return self.ended.is_set()
 
     def choose_starting_player(self):
         """
@@ -69,15 +76,17 @@ class Duel:
             len(self.attacking_player.deck) > 0
             and len(self.player_1.bench) < 6
             and len(self.player_2.bench) < 6
+            and not self.is_ended()
         ):
             while (
                 len(self.attacking_player.deck) > 0
                 and self.attacking_player.get_power() < self.flag_owner.get_power()
+                and not self.is_ended()
             ):
                 self.attacking_player.has_played = False
                 if self.attacking_player.is_robot:
                     self.attacking_player.play()
-                while not self.attacking_player.has_played:
+                while not self.attacking_player.has_played and not self.is_ended():
                     pass
 
             if self.attacking_player.get_power() >= self.flag_owner.get_power():
@@ -85,6 +94,7 @@ class Duel:
                 self.switch_flag_owner()
 
         self.winner = self.flag_owner
+        self.ended.set()
 
         if DEBUG:
             print(self.flag_owner.name + " won!")
