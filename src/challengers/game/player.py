@@ -25,8 +25,8 @@ class Player:
         self.is_robot: bool = is_robot
 
         self.is_ready: bool = False
-        self.has_to_play: bool = False
-        self.has_to_manage_cards: bool = False
+        self.has_played: bool = True
+        self.has_managed_cards: bool = True
 
         self.deck = CardList()
         self.exhaust = CardList()
@@ -106,7 +106,7 @@ class Player:
         :param tray: to tray to draw from
         """
         # TODO: Implement constraint on what tray the player can choose
-        if self.has_to_manage_cards:
+        if not self.has_managed_cards:
             card = tray.draw()
             if card:
                 self.deck.append(card)
@@ -118,17 +118,17 @@ class Player:
         :param card: discarded card
         :param tray: tray in which to discard
         """
-        if self.has_to_manage_cards and card in self.deck:
+        if not self.has_managed_cards and card in self.deck:
             tray.discard.append(card)
             self.deck.remove(card)
 
     def done_managing_cards(self):
-        if self.has_to_manage_cards:
-            self.has_to_manage_cards = False
+        if not self.has_managed_cards:
+            self.has_managed_cards = True
 
     async def let_manage_cards(self):
-        self.has_to_manage_cards = True
-        while self.has_to_manage_cards:
+        self.has_managed_cards = False
+        while not self.has_managed_cards:
             await asyncio.sleep(1)
 
     def shuffle_deck(self):
@@ -143,23 +143,23 @@ class Player:
 
         :return: the played card
         """
-        if self.has_to_play:
+        if not self.has_played:
             played_card = self.deck.draw()
             if played_card:
                 self.played_cards.append(played_card)
-                self.has_to_play = False
+                self.has_played = True
                 return played_card
 
     async def let_play(self):
-        self.has_to_play = True
-        if self.has_to_play:
+        self.has_played = False
+        if not self.has_played:
             await asyncio.sleep(1)
 
             if self.is_robot:
                 played_card = self.play()
 
             else:
-                while self.has_to_play:
+                while not self.has_played:
                     await asyncio.sleep(1)
                 played_card = self.played_cards[-1]
 
