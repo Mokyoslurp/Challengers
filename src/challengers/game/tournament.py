@@ -79,10 +79,6 @@ class Tournament:
             tray.prepare(self.game_cards)
             self.trays[level] = tray
 
-        if DEBUG:
-            for tray in self.trays.values():
-                print(tray)
-
         return self.trays
 
     def add_player(self, player: Player) -> list[Player]:
@@ -128,10 +124,6 @@ class Tournament:
                 if len(self.players) % 2 == 1:
                     self.players.append(Player(len(self.players), ROBOT_PLAYER_NAME, is_robot=True))
 
-                if DEBUG:
-                    for player in self.players:
-                        print(player)
-
             TournamentPlan.generate(self.number_of_players, self.players)
 
             self.initialize_trays()
@@ -143,6 +135,9 @@ class Tournament:
                     player.is_ready = True
 
             self.status = Tournament.Status.PREPARE
+
+            if DEBUG:
+                print("All players have to be ready\n")
 
             # Wait for all players to be ready
             while not all([player.is_ready for player in self.players]) and not self.is_ended():
@@ -188,6 +183,9 @@ class Tournament:
                 else:
                     human_players.append(player)
 
+            if DEBUG:
+                print("Players have to manage cards !")
+
             while not self.is_ended() and not all(
                 [player.has_managed_cards for player in human_players]
             ):
@@ -195,6 +193,9 @@ class Tournament:
 
             for player in self.players:
                 player.shuffle_deck()
+
+            if DEBUG:
+                print("Cards management done")
 
             if self.round == NUMBER_OF_ROUNDS - 1:
                 self.status = Tournament.Status.FINAL
@@ -212,9 +213,6 @@ class Tournament:
                 players = TournamentPlan.get_players(self.round, duel_id)
                 duel = Duel(players[0], players[1])
                 self.duels.append(duel)
-
-                if DEBUG:
-                    print(f"Duel {players[0]} VS {players[1]} started")
 
                 duel_thread = threading.Thread(target=duel.play)
                 duel_threads.append(duel_thread)

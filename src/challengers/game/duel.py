@@ -65,9 +65,9 @@ class Duel:
         self.choose_starting_player()
 
         # Play initial card
-        # Play initial card
         self.flag_owner.has_played = False
         self.flag_owner.play()
+
         if DEBUG:
             print(f"First card by {self.flag_owner}\n {self.flag_owner.played_cards[-1]}")
 
@@ -83,11 +83,19 @@ class Duel:
                 and self.attacking_player.get_power() < self.flag_owner.get_power()
                 and not self.is_ended()
             ):
+                if DEBUG:
+                    print(f"\nWaiting for {self.attacking_player} to play\n")
+
                 self.attacking_player.has_played = False
                 if self.attacking_player.is_robot:
                     self.attacking_player.play()
                 while not self.attacking_player.has_played and not self.is_ended():
                     pass
+
+                if DEBUG:
+                    print(
+                        f"Player {self.attacking_player.name} played\n{self.attacking_player.played_cards[-1]}"
+                    )
 
             if self.attacking_player.get_power() >= self.flag_owner.get_power():
                 # Switch attack and defense roles
@@ -97,6 +105,4 @@ class Duel:
         self.ended.set()
 
         if DEBUG:
-            print(self.flag_owner.name + " won!")
-
-        return self.flag_owner
+            print(f"Player {self.winner.name} won duel {self.player_1} VS {self.player_2}")
