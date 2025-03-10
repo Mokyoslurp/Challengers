@@ -125,7 +125,7 @@ class Tournament:
                     for player in self.players:
                         print(player)
 
-            TournamentPlan.generate_plans(self.number_of_players, self.players)
+            TournamentPlan.generate(self.number_of_players, self.players)
 
             self.initialize_trays()
             for player in self.players:
@@ -247,7 +247,7 @@ class TournamentPlan:
         return players
 
     @classmethod
-    def generate_plans(cls, number_of_players: int, players: list[Player]):
+    def generate(cls, number_of_players: int, players: list[Player]):
         plans: list[Self] = []
 
         plans.append(TournamentPlan([0, 0, 0, 0, 0, 0, 0]))
