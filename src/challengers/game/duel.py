@@ -74,8 +74,8 @@ class Duel:
         # Rest of the match
         while (
             len(self.attacking_player.deck) > 0
-            and len(self.player_1.bench) < 6
-            and len(self.player_2.bench) < 6
+            and len(self.player_1.bench) < BENCH_SIZE
+            and len(self.player_2.bench) < BENCH_SIZE
             and not self.is_ended()
         ):
             while (
