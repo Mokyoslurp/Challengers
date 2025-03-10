@@ -41,6 +41,8 @@ class Tournament:
             self.round: int = 0
 
             self.trays: dict[Level, Tray] = {}
+            # Possible combinations of tray to draw from and number of cards
+            self.available_draws: dict[Level, int] = {}
 
             self.scores: dict[Player, int] = {}
 
@@ -149,8 +151,8 @@ class Tournament:
 
     def manage_robot_players_cards(self, player: Player):
         if player.is_robot:
-            possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[self.round].keys())
-            chosen_tray_level = random.choice(possible_tray_levels)
+            # random draw choice
+            chosen_tray_level = random.choice(list(self.available_draws.keys()))
 
             for _ in range(TournamentPlan.CARDS_TO_DRAW[self.round][chosen_tray_level]):
                 player.draw(self.trays[chosen_tray_level])
@@ -169,6 +171,11 @@ class Tournament:
                     self.manage_robot_players_cards(player)
                 else:
                     human_players.append(player)
+
+            self.available_draws = TournamentPlan.get_available_draws(self.round)
+
+            if DEBUG:
+                print(f"Available draws : {self.available_draws}")
 
             await asyncio.gather(*(player.let_manage_cards() for player in human_players))
 
@@ -286,3 +293,13 @@ class TournamentPlan:
             plans.remove(plan)
 
         return cls.plans
+
+    @classmethod
+    def get_available_draws(cls, round: int):
+        available_draws: dict[Level, int] = {}
+
+        possible_tray_levels = list(TournamentPlan.CARDS_TO_DRAW[round].keys())
+        for tray_level in possible_tray_levels:
+            available_draws[tray_level] = TournamentPlan.CARDS_TO_DRAW[round][tray_level]
+
+        return available_draws
