@@ -121,7 +121,7 @@ class Card:
 class CardList:
     def __init__(self, card_list: list[Card] = None):
         if card_list:
-            self.elements: list[Card] = card_list
+            self.elements: list[Card] = card_list.copy()
         else:
             self.elements = []
 
