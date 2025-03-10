@@ -78,7 +78,7 @@ class Tournament:
 
         return self.trays
 
-    def set_new_player(self, player: Player) -> list[Player]:
+    def add_player(self, player: Player) -> list[Player]:
         if len(self.players) < self.number_of_players:
             self.players.append(player)
             return self.players
