@@ -26,6 +26,7 @@ class Tournament:
         MATCH = 1
         DECK = 2
         FINAL = 3
+        PREPARE = 4
 
     def __init__(self, number_of_players: int):
         if 0 < number_of_players <= MAX_NUMBER_OF_PLAYERS:
@@ -132,6 +133,8 @@ class Tournament:
             self.initialize_trays()
             for player in self.players:
                 player.get_starter_cards(self.trays[Level.S])
+
+            self.status = Tournament.Status.PREPARE
 
             await asyncio.gather(*(player.let_get_ready() for player in self.players))
 
