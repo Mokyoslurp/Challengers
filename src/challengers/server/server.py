@@ -5,7 +5,7 @@ from threading import Thread
 from challengers.game import Tournament, Player, Level, TournamentPlan, CardList, Card
 
 
-SERVER_IP = "192.168.1.146"
+SERVER_IP = "localhost"
 PORT = 5050
 
 BUFSIZE = 1024 * 2
@@ -58,6 +58,7 @@ class Server:
             if self.player_count != self.tournament.number_of_players:
                 self.is_ready = False
 
+            # TODO: PB because of robot players
             if len(self.tournament.players) == self.tournament.number_of_players:
                 self.tournament.play()
 
@@ -85,7 +86,7 @@ class Server:
                             else:
                                 name = "Player " + str(self.player_count)
                             client_player = Player(self.players_ids[address[1]], name)
-                            self.tournament.set_new_player(client_player)
+                            self.tournament.add_player(client_player)
 
                             self.players_names[self.players_ids[address[1]]] = client_player.name
                             self.player_ready[self.players_ids[address[1]]] = True
@@ -99,12 +100,12 @@ class Server:
                             match data[1]:
                                 case "opponent":
                                     if self.tournament.round >= 0:
-                                        park_id = TournamentPlan.plans[client_player].park_ids[
+                                        duel_id = TournamentPlan.plans[client_player].duel_ids[
                                             self.tournament.round
                                         ]
-                                        park = self.tournament.parks[park_id]
-                                        if park.player_1 and park.player_2:
-                                            players = [park.player_1, park.player_2]
+                                        duel = self.tournament.duels[duel_id]
+                                        if duel.player_1 and duel.player_2:
+                                            players = [duel.player_1, duel.player_2]
                                             players.remove(client_player)
                                             reply = players[0].id
 
@@ -142,7 +143,7 @@ class Server:
                                                 case "plan":
                                                     reply = TournamentPlan.plans[
                                                         client_player
-                                                    ].park_ids
+                                                    ].duel_ids
                                                 case _:
                                                     reply = player.name
 
@@ -167,17 +168,17 @@ class Server:
                                 case "round":
                                     reply = self.tournament.round
 
-                                case "park":
-                                    reply = TournamentPlan.plans[client_player].park_ids[
+                                case "duel":
+                                    reply = TournamentPlan.plans[client_player].duel_ids[
                                         self.tournament.round
                                     ]
 
                                 case "flag":
-                                    park_id = TournamentPlan.plans[client_player].park_ids[
+                                    duel_id = TournamentPlan.plans[client_player].duel_ids[
                                         self.tournament.round
                                     ]
-                                    park = self.tournament.parks[park_id]
-                                    reply = park.flag_owner
+                                    duel = self.tournament.duels[duel_id]
+                                    reply = duel.flag_owner
 
                                 case "scores":
                                     scores = self.tournament.get_scores()
@@ -225,7 +226,7 @@ class Server:
                                 reply = True
 
                     case "done":
-                        client_player.managed_cards = True
+                        client_player.has_managed_cards = True
                         reply = True
 
                     case "leave":
