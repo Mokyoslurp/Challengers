@@ -284,14 +284,14 @@ class TournamentPlan:
 
     plans: dict[Player, Self] = {}
 
-    def __init__(self, park_ids: list[int]):
-        self.park_ids = park_ids.copy()
+    def __init__(self, duel_ids: list[int]):
+        self.duel_ids = duel_ids.copy()
 
     @classmethod
-    def get_players(cls, round: int, park_id: int) -> list[Player]:
+    def get_players(cls, round: int, duel_id: int) -> list[Player]:
         players: list[Player] = []
         for player in cls.plans:
-            if cls.plans[player].park_ids[round] == park_id:
+            if cls.plans[player].duel_ids[round] == duel_id:
                 players.append(player)
 
         return players
