@@ -1,10 +1,14 @@
 import socket as s
-import pickle
 import threading
 from pathlib import Path
 
-from challengers.game import Tournament, Player, Level, TournamentPlan, CardList, Card
-
+from challengers.game import Tournament, Player
+from challengers.server import (
+    build_response,
+    decode_request,
+    REQUEST_LENGTH,
+    Command,
+)
 
 SERVER_IP = "localhost"
 PORT = 5050
@@ -35,6 +39,18 @@ class Server:
         self.tournament.add_player(player)
 
         return player
+
+    def send(self, socket: s.socket, data: int):
+        response = build_response(data)
+        try:
+            socket.send(response)
+        except s.error as e:
+            print(e)
+
+    def receive(self, socket: s.socket) -> tuple[Command, int]:
+        request = socket.recv(REQUEST_LENGTH)
+        command, data = decode_request(request)
+        return command, data
 
     def run(self):
         try:
@@ -86,180 +102,86 @@ class Server:
                     client_thread.join()
 
     def client_thread(self, socket: s.socket, address):
-        socket.send(str(self.player_count).encode())
-        reply = ""
+        self.send(socket, self.player_count)
+        player_connected = True
 
         player_id = self.players_ids[address[1]]
-        while True:
+        while player_connected:
             try:
-                # Argument is amount of information you want to receive (bits)
-                data = socket.recv(BUFSIZE).decode().split(" ")
+                command, data = self.receive(socket)
+                reply = 0
 
-                print("From", address, ":", data)
+                print(f"From {address} : {command}, {data}")
 
-                match data[0]:
-                    case "ready":
-                        if not self.player_ready[player_id]:
-                            if len(data) > 1:
-                                name = data[1]
-                            else:
-                                name = "Player " + str(self.player_count)
-                            client_player = Player(player_id, name)
-                            self.tournament.add_player(client_player)
+                match command:
+                    case Command.FORCE_END:
+                        self.tournament.ended.set()
+                        for duel in self.tournament.duels:
+                            duel.ended.set()
+                        player_connected = False
 
-                            self.players_names[player_id] = client_player.name
-                            self.player_ready[player_id] = True
+                        reply = 1
 
-                            reply = "Ready"
-                        else:
-                            reply = "Already"
+                    case Command.CONNECT:
+                        if self.tournament.status == Tournament.Status.NONE:
+                            if not self.player_ready[player_id]:
+                                player_name = f"P{player_id}"
+                                player = self.add_player(player_id, player_name)
 
-                    case "get":
-                        if len(data) > 1:
-                            match data[1]:
-                                case "opponent":
-                                    if self.tournament.round >= 0:
-                                        duel_id = TournamentPlan.plans[client_player].duel_ids[
-                                            self.tournament.round
-                                        ]
-                                        duel = self.tournament.duels[duel_id]
-                                        if duel.player_1 and duel.player_2:
-                                            players = [duel.player_1, duel.player_2]
-                                            players.remove(client_player)
-                                            reply = players[0].id
+                                self.players_names[player_id] = player_name
+                                self.player_ready[player_id] = True
 
-                                case "players":
-                                    reply = self.players_names
+                                print(f"{player} connected\n")
 
-                                case "player":
-                                    if len(data) > 2:
-                                        try:
-                                            id = int(data[2])
-                                        except ValueError:
-                                            id = 0
+                                reply = 1
 
-                                        player = [
-                                            player
-                                            for player in self.tournament.players
-                                            if player.id == id
-                                        ][0]
-                                        if len(data) > 3:
-                                            match data[3]:
-                                                case "deck":
-                                                    reply = player.deck
-                                                case "exhaust":
-                                                    reply = player.exhaust
-                                                case "played":
-                                                    reply = player.played_cards
-                                                case "used":
-                                                    reply = player.used_cards
-                                                case "bench":
-                                                    reply = player.bench
-                                                case "trophies":
-                                                    reply = player.trophies
-                                                case "fans":
-                                                    reply = player.fans
-                                                case "plan":
-                                                    reply = TournamentPlan.plans[
-                                                        client_player
-                                                    ].duel_ids
-                                                case _:
-                                                    reply = player.name
+                    case Command.READY:
+                        if self.tournament.status == Tournament.Status.PREPARE:
+                            if not player.is_ready:
+                                player.is_ready = True
+                                print(f"{player} is ready\n")
 
-                                case "winner":
-                                    if len(data) > 2:
-                                        try:
-                                            round = int(data[2])
-                                        except ValueError:
-                                            round = 0
+                                reply = 1
 
-                                        if len(data) > 3:
-                                            try:
-                                                park_id = int(data[3])
-                                            except ValueError:
-                                                park_id = 0
+                    case Command.PLAY_CARD:
+                        if (
+                            self.tournament.status == Tournament.Status.ROUND
+                            or self.tournament.status == Tournament.Status.FINAL
+                        ):
+                            if not player.has_played:
+                                player.play()
+                                # TODO: Return Card id (and implement cards ids)
+                                reply = 1
 
-                                            reply = self.tournament.winners[round][park_id].id
-                                    else:
-                                        if self.tournament.winner:
-                                            reply = self.tournament.winner
+                    case Command.DRAW_CARD:
+                        if self.tournament.status == Tournament.Status.DECK:
+                            if not player.has_managed_cards:
+                                tray_choice = data
+                                draw_levels = list(self.tournament.available_draws.keys())
 
-                                case "round":
-                                    reply = self.tournament.round
+                                if tray_choice < len(draw_levels):
+                                    draw_level = draw_levels[tray_choice]
+                                    self.tournament.make_draw(player, draw_level)
+                                    # TODO: Return Card id (and implement cards ids)
+                                    reply = 1
 
-                                case "duel":
-                                    reply = TournamentPlan.plans[client_player].duel_ids[
-                                        self.tournament.round
-                                    ]
+                    case Command.END_CARD_MANAGEMENT:
+                        if self.tournament.status == Tournament.Status.DECK:
+                            if not player.has_managed_cards:
+                                player.has_managed_cards = True
+                                print(f"Player {player} managed cards\n")
 
-                                case "flag":
-                                    duel_id = TournamentPlan.plans[client_player].duel_ids[
-                                        self.tournament.round
-                                    ]
-                                    duel = self.tournament.duels[duel_id]
-                                    reply = duel.flag_owner
+                                reply = 1
 
-                                case "scores":
-                                    scores = self.tournament.get_scores()
-                                    scores_with_id = {
-                                        player.id: scores[player] for player in scores
-                                    }
-                                    reply = scores_with_id
+                    case Command.LEAVE:
+                        player_connected = False
 
-                    case "play":
-                        card = client_player.play()
-                        reply = card
+                        reply = 1
 
-                    case "draw":
-                        if len(data) > 1:
-                            match data[1]:
-                                case "S":
-                                    level = Level.S
-                                case "A":
-                                    level = Level.A
-                                case "B":
-                                    level = Level.B
-                                case "C":
-                                    level = Level.C
-                                case _:
-                                    level = Level.S
-
-                            tray = self.tournament.trays[level]
-                            number_of_cards = TournamentPlan.CARDS_TO_DRAW[self.tournament.round][
-                                level
-                            ]
-
-                            cards = CardList()
-                            for _ in range(number_of_cards):
-                                cards.append(client_player.draw(tray))
-
-                    case "remove":
-                        # TODO: REMOVE "is Card" REPLACE WITH TRY EXCEPT
-                        if len(data) > 1 and data[1] is Card:
-                            card = data[1]
-                            if len(data) > 2 and data[2] is Level:
-                                level = data[2]
-                                tray = self.tournament.trays[level]
-                                client_player.discard(card, tray)
-
-                                reply = True
-
-                    case "done":
-                        client_player.has_managed_cards = True
-                        reply = True
-
-                    case "leave":
-                        break
-
-                    case "test":
-                        self.tournament.initialize_trays()
-                        reply = self.tournament.trays[Level.A].draw()
                     case _:
                         break
 
-                socket.send(pickle.dumps(reply))
-                # socket.sendall(pickle.dumps(reply))
-
+                self.send(socket, reply)
                 print("To", address, ":", reply)
 
             except:  # noqa: E722
