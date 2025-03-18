@@ -148,7 +148,7 @@ class Tournament:
             if DEBUG:
                 print("Tournament started")
 
-    def make_draw(self, player: Player, level: Level):
+    def make_draw(self, player: Player, level: Level) -> CardList:
         return player.draw(self.trays[level], self.available_draws[level])
 
     def manage_robot_players_cards(self, player: Player):

@@ -99,7 +99,7 @@ class Player:
         else:
             return self.trophies[-1].round
 
-    def draw(self, tray: Tray, amount: int):
+    def draw(self, tray: Tray, amount: int) -> CardList:
         """
         Draws a card from a tray and adds it to the player deck
 
@@ -107,7 +107,7 @@ class Player:
         :param amount: amount of cards to draw
         """
         if not self.has_managed_cards:
-            cards = []
+            cards = CardList()
             for _ in range(amount):
                 card = tray.draw()
                 if card:
