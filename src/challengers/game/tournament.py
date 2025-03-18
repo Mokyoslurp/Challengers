@@ -149,7 +149,7 @@ class Tournament:
                 print("Tournament started")
 
     def make_draw(self, player: Player, level: Level):
-        player.draw(self.trays[level], self.available_draws[level])
+        return player.draw(self.trays[level], self.available_draws[level])
 
     def manage_robot_players_cards(self, player: Player):
         """Randomizes the card draw and discard for the bots

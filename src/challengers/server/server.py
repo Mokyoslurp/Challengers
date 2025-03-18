@@ -146,9 +146,9 @@ class Server:
                             or self.tournament.status == Tournament.Status.FINAL
                         ):
                             if not player.has_played:
-                                player.play()
-                                # TODO: Return Card id (and implement cards ids)
-                                reply = 1
+                                card = player.play()
+                                if card:
+                                    reply = card.id
 
                     case Command.DRAW_CARD:
                         if self.tournament.status == Tournament.Status.DECK:
@@ -158,9 +158,10 @@ class Server:
 
                                 if tray_choice < len(draw_levels):
                                     draw_level = draw_levels[tray_choice]
-                                    self.tournament.make_draw(player, draw_level)
+                                    cards = self.tournament.make_draw(player, draw_level)
                                     # TODO: Return Card id (and implement cards ids)
-                                    reply = 1
+                                    if cards:
+                                        reply = 1
 
                     case Command.END_CARD_MANAGEMENT:
                         if self.tournament.status == Tournament.Status.DECK:

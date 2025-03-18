@@ -107,10 +107,14 @@ class Player:
         :param amount: amount of cards to draw
         """
         if not self.has_managed_cards:
+            cards = []
             for _ in range(amount):
                 card = tray.draw()
                 if card:
                     self.deck.append(card)
+                    cards.append(card)
+            return cards
+        return None
 
     def discard(self, card: Card, tray: Tray):
         """
@@ -140,8 +144,8 @@ class Player:
             if played_card:
                 self.played_cards.append(played_card)
                 self.has_played = True
-                return True
-        return False
+                return played_card
+        return None
 
     def get_power(self) -> int:
         """

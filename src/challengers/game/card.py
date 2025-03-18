@@ -175,6 +175,12 @@ class CardList:
     def remove(self, card: Card):
         self.elements.remove(card)
 
+    @classmethod
+    def get_unique_cards_list(cls, file_path):
+        cards = list(set(CardSerializer.load_cards_from_file(file_path)))
+        cards = {card.id: card for card in cards}
+        return cards
+
 
 class CardSerializer:
     @staticmethod

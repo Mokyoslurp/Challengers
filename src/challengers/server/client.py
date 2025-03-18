@@ -37,10 +37,19 @@ class Client:
 
 
 if __name__ == "__main__":
+    from pathlib import Path
+
     from challengers.server.server import SERVER_IP, PORT
+    from challengers.game.card import CardList
+
+    GAME_DATA_PATH = Path(__file__).parent.parent / "game" / "data"
+    CARD_DATA_FILE = "cards.json"
+    CARD_DATA_FILE_PATH = GAME_DATA_PATH / CARD_DATA_FILE
 
     client = Client()
     client.connect((SERVER_IP, PORT))
+
+    cards = CardList.get_unique_cards_list(CARD_DATA_FILE_PATH)
 
     is_running = True
 
@@ -66,6 +75,9 @@ if __name__ == "__main__":
 
             reply = client.send(command, option)
             print(f"Command {command.name} sent. Received {reply}.")
+
+            if command == Command.PLAY_CARD and reply:
+                print(cards[reply])
 
         except Exception as e:
             print(e)
