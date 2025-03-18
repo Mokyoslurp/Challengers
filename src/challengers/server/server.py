@@ -91,9 +91,8 @@ class Server:
 
                 self.tournament_thread.join()
 
-                winner = self.tournament.winner
-                if winner:
-                    print(f"Winner is {winner}")
+                if self.tournament.winner:
+                    print(f"Winner is {self.tournament.winner}")
                     self.tournament.print_scores()
 
                 for client_thread in self.client_threads:
