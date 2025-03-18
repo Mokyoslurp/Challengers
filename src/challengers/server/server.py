@@ -1,6 +1,6 @@
 import socket as s
 import pickle
-from threading import Thread
+import threading
 
 from challengers.game import Tournament, Player, Level, TournamentPlan, CardList, Card
 
@@ -15,7 +15,8 @@ class Server:
     def __init__(self, tournament: Tournament):
         self.socket = s.socket(s.AF_INET, s.SOCK_STREAM)
 
-        self.client_threads: list[Thread] = []
+        self.tournament_thread: threading.Thread
+        self.client_threads: list[threading.Thread] = []
 
         self.is_running: bool = False
         self.is_ready: bool = False
@@ -47,7 +48,7 @@ class Server:
                 self.players_ids[address[1]] = self.player_count
                 self.player_ready[self.player_count] = False
 
-                client_thread = Thread(target=self.client_thread, args=(client, address))
+                client_thread = threading.Thread(target=self.client_thread, args=(client, address))
                 client_thread.start()
                 self.client_threads.append(client_thread)
 
@@ -61,13 +62,21 @@ class Server:
 
             # TODO: PB because of robot players
             if len(self.tournament.players) == self.tournament.number_of_players:
-                self.tournament.play()
+                self.tournament_thread = threading.Thread(target=self.tournament.play)
+                self.tournament_thread.start()
+
+                while not self.tournament.is_ended():
+                    pass
+
+                self.tournament_thread.join()
+
+                winner = self.tournament.winner
+                if winner:
+                    print(f"Winner is {winner}")
+                    self.tournament.print_scores()
 
                 for client_thread in self.client_threads:
                     client_thread.join()
-
-                tournament_copy = self.tournament
-                print(tournament_copy + " ended.")
 
     def client_thread(self, socket: s.socket, address):
         socket.send(str(self.player_count).encode())
