@@ -29,6 +29,12 @@ class Server:
 
         self.tournament = tournament
 
+    def add_player(self, player_id: int, player_name: str):
+        player = Player(player_id, player_name)
+        self.tournament.add_player(player)
+
+        return player
+
     def run(self):
         try:
             self.socket.bind((SERVER_IP, PORT))
