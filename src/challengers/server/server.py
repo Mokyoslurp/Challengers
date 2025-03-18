@@ -15,7 +15,7 @@ class Server:
     def __init__(self, tournament: Tournament):
         self.socket = s.socket(s.AF_INET, s.SOCK_STREAM)
 
-        self.threads: list[Thread] = []
+        self.client_threads: list[Thread] = []
 
         self.is_running: bool = True
         self.is_ready: bool = False
@@ -46,9 +46,9 @@ class Server:
                 self.players_ids[address[1]] = self.player_count
                 self.player_ready[self.player_count] = False
 
-                thread = Thread(target=self.client_thread, args=(client, address))
-                thread.start()
-                self.threads.append(thread)
+                client_thread = Thread(target=self.client_thread, args=(client, address))
+                client_thread.start()
+                self.client_threads.append(client_thread)
 
                 self.player_count += 1
 
@@ -62,8 +62,8 @@ class Server:
             if len(self.tournament.players) == self.tournament.number_of_players:
                 self.tournament.play()
 
-                for thread in self.threads:
-                    thread.join()
+                for client_thread in self.client_threads:
+                    client_thread.join()
 
                 tournament_copy = self.tournament
                 print(tournament_copy + " ended.")
