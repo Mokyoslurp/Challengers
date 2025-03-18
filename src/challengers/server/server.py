@@ -73,6 +73,7 @@ class Server:
         socket.send(str(self.player_count).encode())
         reply = ""
 
+        player_id = self.players_ids[address[1]]
         while True:
             try:
                 # Argument is amount of information you want to receive (bits)
@@ -82,16 +83,16 @@ class Server:
 
                 match data[0]:
                     case "ready":
-                        if not self.player_ready[self.players_ids[address[1]]]:
+                        if not self.player_ready[player_id]:
                             if len(data) > 1:
                                 name = data[1]
                             else:
                                 name = "Player " + str(self.player_count)
-                            client_player = Player(self.players_ids[address[1]], name)
+                            client_player = Player(player_id, name)
                             self.tournament.add_player(client_player)
 
-                            self.players_names[self.players_ids[address[1]]] = client_player.name
-                            self.player_ready[self.players_ids[address[1]]] = True
+                            self.players_names[player_id] = client_player.name
+                            self.player_ready[player_id] = True
 
                             reply = "Ready"
                         else:
