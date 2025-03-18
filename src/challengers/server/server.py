@@ -13,8 +13,6 @@ from challengers.server import (
 SERVER_IP = "localhost"
 PORT = 5050
 
-BUFSIZE = 1024 * 2
-
 
 class Server:
     def __init__(self, tournament: Tournament):
