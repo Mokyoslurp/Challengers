@@ -17,7 +17,7 @@ class Server:
 
         self.client_threads: list[Thread] = []
 
-        self.is_running: bool = True
+        self.is_running: bool = False
         self.is_ready: bool = False
 
         self.player_count: int = 0
@@ -38,6 +38,7 @@ class Server:
         self.socket.listen(self.tournament.number_of_players)
         print("Waiting for connection, server started!")
 
+        self.is_running = True
         while self.is_running:
             while self.is_running and not self.is_ready:
                 client, address = self.socket.accept()
@@ -71,6 +72,7 @@ class Server:
     def client_thread(self, socket: s.socket, address):
         socket.send(str(self.player_count).encode())
         reply = ""
+
         while True:
             try:
                 # Argument is amount of information you want to receive (bits)
