@@ -28,10 +28,16 @@ class Client:
             pass
 
     def send(self, command: Command, data: int = 0):
-        request = build_request(command, data)
         try:
-            self.socket.send(request)
-            return decode_response(self.socket.recv(RESPONSE_LENGTH))
+            # Send the command
+            self.socket.send(build_request(command, data))
+            # Receive the length of the packet to come
+            response_length = decode_response(self.socket.recv(RESPONSE_LENGTH))[0]
+            # Send acknowledgement of the packet length
+            self.socket.send(build_request(Command.BLANK, response_length))
+            # Receive full response
+            response = decode_response(self.socket.recv(response_length * 8))
+            return response
         except s.error as e:
             print(e)
 
@@ -76,8 +82,13 @@ if __name__ == "__main__":
             reply = client.send(command, option)
             print(f"Command {command.name} sent. Received {reply}.")
 
-            if command == Command.PLAY_CARD and reply:
-                print(cards[reply])
+            if reply:
+                if command == Command.PLAY_CARD:
+                    print(cards[reply[0]])
+
+                if command == Command.DRAW_CARD:
+                    for id in reply:
+                        print(cards[id])
 
         except Exception as e:
             print(e)

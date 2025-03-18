@@ -1,6 +1,7 @@
 import socket as s
 import threading
 from pathlib import Path
+from typing import Union
 
 from challengers.game import Tournament, Player
 from challengers.server import (
@@ -38,10 +39,25 @@ class Server:
 
         return player
 
-    def send(self, socket: s.socket, data: int):
-        response = build_response(data)
+    def send(self, socket: s.socket, data: Union[int, list[int]]):
+        if isinstance(data, list):
+            length = len(data)
+        else:
+            length = 1
+
         try:
-            socket.send(response)
+            pre_response, response = build_response(data, length)
+            # Send length of packet to come
+            socket.send(pre_response)
+            # Wait for acknowledgment
+            command, data = self.receive(socket)
+            if command == Command.BLANK and data == length:
+                # Send the data
+                socket.send(response)
+            else:
+                # Send nothing if acknowledgement wrong
+                _, response = build_response(0)
+                socket.send(response)
         except s.error as e:
             print(e)
 
@@ -99,7 +115,9 @@ class Server:
                     client_thread.join()
 
     def client_thread(self, socket: s.socket, address):
-        self.send(socket, self.player_count)
+        # Send player id to the player
+        _, response = build_response(self.player_count)
+        socket.send(response)
         player_connected = True
 
         player_id = self.players_ids[address[1]]
@@ -161,7 +179,7 @@ class Server:
                                     cards = self.tournament.make_draw(player, draw_level)
                                     # TODO: Return Card id (and implement cards ids)
                                     if cards:
-                                        reply = 1
+                                        reply = [card.id for card in cards]
 
                     case Command.END_CARD_MANAGEMENT:
                         if self.tournament.status == Tournament.Status.DECK:

@@ -4,6 +4,7 @@ Format of commands to send to server are described here
 """
 
 from enum import Enum
+from typing import Union
 
 REQUEST_BYTES = 2
 REQUEST_LENGTH = 8 * REQUEST_BYTES
@@ -40,10 +41,19 @@ def build_request(command: Command, data: int):
     return (0).to_bytes(REQUEST_BYTES)
 
 
-def build_response(data: int):
-    if data < 255:
-        return data.to_bytes(RESPONSE_BYTES)
-    return (0).to_bytes(RESPONSE_BYTES)
+def build_response(data: Union[int, list[int]], length: int = 1):
+    if not isinstance(data, list):
+        data = [data]
+
+    data_bytes = b""
+    for d in list[int](data):
+        if d < 255:
+            data_bytes += d.to_bytes(RESPONSE_BYTES)
+        else:
+            data_bytes += (0).to_bytes(RESPONSE_BYTES)
+
+    length_byte = length.to_bytes(RESPONSE_BYTES)
+    return length_byte, data_bytes
 
 
 def decode_request(request: bytes):
@@ -57,7 +67,9 @@ def decode_request(request: bytes):
 
 def decode_response(response: bytes):
     try:
-        data = int(response[0])
+        data = []
+        for byte in response:
+            data.append(int(byte))
         return data
     except ValueError as e:
         return e
