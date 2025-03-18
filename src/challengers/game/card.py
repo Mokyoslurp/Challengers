@@ -36,6 +36,7 @@ class Level(Enum):
 
 @dataclass
 class Card:
+    id: int = 0
     name: str = ""
     set: Set = Set.CITY
     level: Level = Level.S
@@ -84,8 +85,8 @@ class Card:
 
         return self.drawing
 
-    def __hash__(self) -> int:
-        return hash(self.name)
+    def __hash__(self):
+        return hash(self.id)
 
     @classmethod
     def get_fields(cls):
