@@ -1,17 +1,26 @@
 import pygame
-
+from pathlib import Path
 import socket as s
-import pickle
 
-
-from challengers.server.server import SERVER_IP, PORT, BUFSIZE
+from challengers.server import (
+    build_request,
+    decode_response,
+    RESPONSE_LENGTH,
+    Command,
+)
 from challengers.client.gui import MenuScreen, BattleScreen
 from challengers.client.gui.components import Interface
 from challengers.client.gui.game import CardFront
+from challengers.game import CardList, Tournament
+
+
+GAME_DATA_PATH = Path(__file__).parent.parent / "game" / "data"
+CARD_DATA_FILE = "cards.json"
+CARD_DATA_FILE_PATH = GAME_DATA_PATH / CARD_DATA_FILE
 
 
 class Client:
-    def __init__(self, player_name: str = ""):
+    def __init__(self):
         pygame.font.init()
 
         self.window_width = 1600
@@ -27,18 +36,35 @@ class Client:
         self.gui: list[Interface] = [self.menu_screen]
 
         self.socket: s.socket
-        self.server_address = (SERVER_IP, PORT)
+        self.server_address: tuple[str, int]
 
-        self.is_running = True
+        self.is_running = False
 
-        self.is_ready: bool = False
-        self.is_battling: bool = False
+        self.status: Tournament.Status = Tournament.Status.NONE
         self.is_connected: bool = False
 
-        self.player_id: int = None
-        self.opponent_id: int = None
+        self.player_id: int
+        self.opponent_id: int
 
-        self.player_name = player_name
+        self.player_name: str
+
+        self.unique_cards_list = CardList.get_unique_cards_list(CARD_DATA_FILE_PATH)
+
+    def send(self, command: Command, data: int = 0):
+        try:
+            # Send the command
+            self.socket.send(build_request(command, data))
+            # Receive the length of the packet to come
+            response_length = decode_response(self.socket.recv(RESPONSE_LENGTH))[0]
+            # Send acknowledgement of the packet length
+            self.socket.send(build_request(Command.BLANK, response_length))
+            # Receive full response
+            response = decode_response(self.socket.recv(response_length * 8))
+
+            print(f"Command {command.name} sent. Received {response}.")
+            return response
+        except s.error as e:
+            print(e)
 
     def connect(self):
         if not self.is_connected:
@@ -47,37 +73,24 @@ class Client:
                 self.socket.connect(self.server_address)
                 self.is_connected = True
 
-                # Here we use decode() since the first message received is the player id
-                self.player_id = int(self.socket.recv(BUFSIZE).decode())
-                print("Successfully connected")
+                self.player_id = self.socket.recv(RESPONSE_LENGTH)
+                print(f"Connected to : {self.server_address[0]}, {self.server_address[1]}")
+
+                self.send(Command.CONNECT)
 
             except s.error as e:
                 print(e)
                 print("Failed to connect to server")
-                return None
-
-        return self.player_id
 
     def disconnect(self):
         if self.is_connected:
+            self.send(Command.LEAVE)
             self.socket.shutdown(s.SHUT_RDWR)
             self.socket.close()
             self.is_connected = False
             self.player_id = None
-            self.is_ready = False
+            self.is_running = False
             print("Successfully disconnected from server")
-            return True
-        print("Can't disconnect if not connected")
-        return False
-
-    def send(self, data):
-        try:
-            # serialization with str.encode() and str.decode() can be done for strings instead of pickle
-            self.socket.send(str.encode(data))
-            # TODO: Buffer size to small for entire server: what infos to send ?
-            return pickle.loads(self.socket.recv(BUFSIZE))
-        except s.error as e:
-            print(e)
 
     def draw(self):
         self.window.fill((128, 128, 128))
@@ -96,54 +109,94 @@ class Client:
             for interface in self.gui:
                 interface.handle_event(event)
 
-        if self.is_ready:
-            self.opponent_id = self.send("get opponent")
-            if self.opponent_id:
-                self.is_ready = False
-                self.gui = [self.battle_screen]
-                self.is_battling = True
+        new_status = self.get_tournament_status()
+
+        # Changing status
+        if self.status != Tournament.Status.ROUND and new_status == Tournament.Status.ROUND:
+            self.gui = [self.battle_screen]
+            self.status = new_status
 
         # TODO: Request one action at a time to avoid instant change of the interface
         # TODO: Request only missing data to avoid reloading all the screen every frame
-        if self.is_battling:
+        if self.status == Tournament.Status.ROUND:
             self.battle_screen.park.reset_played_cards(1)
             self.battle_screen.park.reset_played_cards(2)
 
-            self_bench = self.send("get player " + str(self.player_id) + " bench")
-            i = 0
-            for data in self_bench:
+            self_bench = self.get_self_bench()
+            for i, data in enumerate(self_bench):
                 self.battle_screen.park.reset_bench(1, i)
                 card = CardFront(0, 0, card=data)
                 self.battle_screen.park.add_bench_card(1, i, card)
-                i += 1
 
-            opponent_bench = self.send("get player " + str(self.opponent_id) + " bench")
-            i = 0
-            for data in opponent_bench:
+            opponent_bench = self.get_opponent_bench()
+            for i, data in enumerate(opponent_bench):
                 self.battle_screen.park.reset_bench(2, i)
                 card = CardFront(0, 0, card=data)
                 self.battle_screen.park.add_bench_card(2, i, card)
-                i += 1
 
-            self_played_cards = self.send("get player " + str(self.player_id) + " played")
+            self_played_cards = self.get_self_played_cards()
             for data in self_played_cards:
                 card = CardFront(0, 0, card=data)
                 self.battle_screen.park.add_played_card(1, card)
 
-            opponent_played_cards = self.send("get player " + str(self.opponent_id) + " played")
+            opponent_played_cards = self.get_opponent_played_cards()
             for data in opponent_played_cards:
                 card = CardFront(0, 0, card=data)
                 self.battle_screen.park.add_played_card(2, card)
 
     def ready(self):
-        if self.is_connected and not self.is_ready:
-            self.player_name = self.menu_screen.player_name_text_field.text
-            self.send("ready " + self.player_name)
-            self.is_ready = True
+        if self.is_connected:
+            response = self.send(Command.READY)
+            return response
+
+    def get_tournament_status(self):
+        if self.is_connected:
+            return Tournament.Status(self.send(Command.GET_STATUS)[0])
 
     def play_card(self):
         if self.is_connected:
-            self.send("play")
+            card_id = self.send(Command.PLAY_CARD)[0]
+            if card_id:
+                return self.unique_cards_list[card_id]
+
+    def draw_card(self, tray: int):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.DRAW_CARD, tray))
+
+    def discard_card(self, card_id: int):
+        if self.is_connected:
+            return self.send(Command.DISCARD_CARD, card_id)
+
+    def end_card_management(self):
+        if self.is_connected:
+            return self.send(Command.END_CARD_MANAGEMENT)
+
+    def get_self_deck(self):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.GET_SELF_DECK))
+
+    def get_self_bench(self):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.GET_SELF_BENCH))
+
+    def get_self_played_cards(self):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.GET_SELF_PLAYED_CARDS))
+
+    def get_opponent_bench(self):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.GET_OPPONENT_BENCH))
+
+    def get_opponent_played_cards(self):
+        if self.is_connected:
+            return self.get_cards_list_from_ids(self.send(Command.GET_OPPONENT_PLAYED_CARDS))
+
+    def get_cards_list_from_ids(self, cards_ids: list[int]):
+        cards = []
+        for card_id in cards_ids:
+            if card_id:
+                cards.append(self.unique_cards_list[card_id])
+        return cards
 
     def assign_functions(self):
         self.menu_screen.enter_server_button.on_click(self.connect)
@@ -156,6 +209,7 @@ class Client:
 
         self.assign_functions()
 
+        self.is_running = True
         while self.is_running:
             clock.tick(60)
 
@@ -164,5 +218,8 @@ class Client:
 
 
 if __name__ == "__main__":
-    client = Client("TestName")
+    from challengers.server.server import SERVER_IP, PORT
+
+    client = Client()
+    client.server_address = (SERVER_IP, PORT)
     client.run()
