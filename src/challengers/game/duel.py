@@ -1,5 +1,6 @@
 import random
 import threading
+from time import sleep
 
 from .player import Player
 
@@ -88,6 +89,7 @@ class Duel:
 
                 self.attacking_player.has_played = False
                 if self.attacking_player.is_robot:
+                    sleep(1.5)
                     self.attacking_player.play()
                 while not self.attacking_player.has_played and not self.is_ended():
                     pass
