@@ -127,30 +127,46 @@ class Client:
         # TODO: Request one action at a time to avoid instant change of the interface
         # TODO: Request only missing data to avoid reloading all the screen every frame
         if self.status == Tournament.Status.ROUND:
-            self.battle_screen.park.reset_played_cards(1)
-            self.battle_screen.park.reset_played_cards(2)
+            new_self_played_cards = self.get_self_played_cards()
+            new_opponent_played_cards = self.get_opponent_played_cards()
+            new_self_bench = self.get_self_bench()
+            new_opponent_bench = self.get_opponent_bench()
 
-            self_bench = self.get_self_bench()
-            for i, data in enumerate(self_bench):
-                self.battle_screen.park.reset_bench(1, i)
-                card = CardFront(0, 0, card=data)
-                self.battle_screen.park.add_bench_card(1, i, card)
+            if new_self_played_cards != self.battle_screen.self_played_cards:
+                self.battle_screen.self_played_cards = new_self_played_cards
 
-            opponent_bench = self.get_opponent_bench()
-            for i, data in enumerate(opponent_bench):
-                self.battle_screen.park.reset_bench(2, i)
-                card = CardFront(0, 0, card=data)
-                self.battle_screen.park.add_bench_card(2, i, card)
+                if self.battle_screen.self_played_cards:
+                    for data in self.battle_screen.self_played_cards:
+                        card = CardFront(0, 0, card=data)
+                        self.battle_screen.park.add_played_card(1, card)
+                else:
+                    self.battle_screen.park.reset_played_cards(1)
 
-            self_played_cards = self.get_self_played_cards()
-            for data in self_played_cards:
-                card = CardFront(0, 0, card=data)
-                self.battle_screen.park.add_played_card(1, card)
+            if new_opponent_played_cards != self.battle_screen.opponent_played_cards:
+                self.battle_screen.opponent_played_cards = new_opponent_played_cards
 
-            opponent_played_cards = self.get_opponent_played_cards()
-            for data in opponent_played_cards:
-                card = CardFront(0, 0, card=data)
-                self.battle_screen.park.add_played_card(2, card)
+                if self.battle_screen.opponent_played_cards:
+                    for data in self.battle_screen.opponent_played_cards:
+                        card = CardFront(0, 0, card=data)
+                        self.battle_screen.park.add_played_card(2, card)
+                else:
+                    self.battle_screen.park.reset_played_cards(2)
+
+            if new_self_bench != self.battle_screen.self_bench:
+                self.battle_screen.self_bench = new_self_bench
+
+                for i, data in enumerate(self.battle_screen.self_bench):
+                    self.battle_screen.park.reset_bench(1, i)
+                    card = CardFront(0, 0, card=data)
+                    self.battle_screen.park.add_bench_card(1, i, card)
+
+            if new_opponent_bench != self.battle_screen.opponent_bench:
+                self.battle_screen.opponent_bench = new_opponent_bench
+
+                for i, data in enumerate(self.battle_screen.opponent_bench):
+                    self.battle_screen.park.reset_bench(2, i)
+                    card = CardFront(0, 0, card=data)
+                    self.battle_screen.park.add_bench_card(2, i, card)
 
     def ready(self):
         if self.is_connected:
@@ -219,7 +235,7 @@ class Client:
 
         self.is_running = True
         while self.is_running:
-            clock.tick(60)
+            clock.tick(1)
 
             self.update()
             self.draw()

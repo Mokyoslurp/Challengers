@@ -10,6 +10,11 @@ from .game import (
 
 class BattleScreen(Interface):
     def __init__(self):
+        self.self_played_cards = []
+        self.opponent_played_cards = []
+        self.self_bench = []
+        self.opponent_bench = []
+
         self.park = ParkBoard(5, 5)
 
         self.player_deck = CardBack(1400, 100)
