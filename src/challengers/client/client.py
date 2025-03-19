@@ -124,8 +124,6 @@ class Client:
             self.gui = [self.battle_screen]
             self.status = new_status
 
-        # TODO: Request one action at a time to avoid instant change of the interface
-        # TODO: Request only missing data to avoid reloading all the screen every frame
         if self.status == Tournament.Status.ROUND:
             new_self_played_cards = self.get_self_played_cards()
             new_opponent_played_cards = self.get_opponent_played_cards()
