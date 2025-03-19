@@ -66,6 +66,7 @@ if __name__ == "__main__":
         "d": Command.DRAW_CARD,
         "t": Command.DISCARD_CARD,
         "m": Command.END_CARD_MANAGEMENT,
+        "s": Command.GET_SELF_DECK,
         "q": Command.LEAVE,
         "x": Command.FORCE_END,
     }
@@ -89,7 +90,11 @@ if __name__ == "__main__":
                 if command == Command.PLAY_CARD:
                     print(cards[reply[0]])
 
-                if command == Command.DRAW_CARD:
+                elif command == Command.DRAW_CARD:
+                    for id in reply:
+                        print(cards[id])
+
+                elif command == Command.GET_SELF_DECK:
                     for id in reply:
                         print(cards[id])
 

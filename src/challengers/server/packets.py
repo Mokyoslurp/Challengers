@@ -32,6 +32,9 @@ class Command(Enum):
     DISCARD_CARD = 31
     END_CARD_MANAGEMENT = 39
 
+    # Get self player properties commands
+    GET_SELF_DECK = 41
+
     FORCE_END = 255
 
 

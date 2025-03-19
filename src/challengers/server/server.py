@@ -192,6 +192,12 @@ class Server:
 
                                         reply = 1
 
+                    case Command.GET_SELF_DECK:
+                        if self.tournament.status != Tournament.Status.NONE:
+                            cards_ids = [card.id for card in player.deck]
+
+                            reply = cards_ids
+
                     case Command.END_CARD_MANAGEMENT:
                         if self.tournament.status == Tournament.Status.DECK:
                             if not player.has_managed_cards:
