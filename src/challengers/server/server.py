@@ -193,10 +193,45 @@ class Server:
                                         reply = 1
 
                     case Command.GET_SELF_DECK:
-                        if self.tournament.status != Tournament.Status.NONE:
+                        if self.tournament.status == Tournament.Status.DECK:
                             cards_ids = [card.id for card in player.deck]
 
-                            reply = cards_ids
+                            if cards_ids:
+                                reply = cards_ids
+
+                    case Command.GET_SELF_BENCH:
+                        if self.tournament.status == Tournament.Status.ROUND:
+                            cards_ids = [card.id for card in player.bench]
+
+                            if cards_ids:
+                                reply = cards_ids
+
+                    case Command.GET_SELF_PLAYED_CARDS:
+                        if self.tournament.status == Tournament.Status.ROUND:
+                            cards_ids = [card.id for card in player.played_cards]
+
+                            if cards_ids:
+                                reply = cards_ids
+
+                    case Command.GET_OPPONENT_BENCH:
+                        if self.tournament.status == Tournament.Status.ROUND:
+                            opponent = self.tournament.get_opponent(player)
+                            if opponent:
+                                cards_ids = [card.id for card in opponent.bench]
+                                if cards_ids:
+                                    reply = cards_ids
+
+                    case Command.GET_OPPONENT_PLAYED_CARDS:
+                        if self.tournament.status == Tournament.Status.ROUND:
+                            opponent = self.tournament.get_opponent(player)
+                            if opponent:
+                                cards_ids = [card.id for card in opponent.played_cards]
+
+                                if cards_ids:
+                                    reply = cards_ids
+
+                    case Command.GET_STATUS:
+                        reply = self.tournament.status.value
 
                     case Command.END_CARD_MANAGEMENT:
                         if self.tournament.status == Tournament.Status.DECK:

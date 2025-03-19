@@ -34,6 +34,14 @@ class Command(Enum):
 
     # Get self player properties commands
     GET_SELF_DECK = 41
+    GET_SELF_BENCH = 42
+    GET_SELF_PLAYED_CARDS = 43
+
+    # Get opponent player properties commands
+    GET_OPPONENT_BENCH = 52
+    GET_OPPONENT_PLAYED_CARDS = 53
+
+    GET_STATUS = 60
 
     FORCE_END = 255
 
