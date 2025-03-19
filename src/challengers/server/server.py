@@ -170,14 +170,14 @@ class Server:
 
                     case Command.DRAW_CARD:
                         if self.tournament.status == Tournament.Status.DECK:
-                            if not player.has_managed_cards:
+                            if not player.has_managed_cards and not player.has_drawn:
                                 tray_choice = data
                                 draw_levels = list(self.tournament.available_draws.keys())
 
                                 if tray_choice < len(draw_levels):
                                     draw_level = draw_levels[tray_choice]
                                     cards = self.tournament.make_draw(player, draw_level)
-                                    # TODO: Return Card id (and implement cards ids)
+
                                     if cards:
                                         reply = [card.id for card in cards]
 

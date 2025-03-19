@@ -24,6 +24,7 @@ class Player:
         self.is_ready: bool = False
         self.has_played: bool = True
         self.has_managed_cards: bool = True
+        self.has_drawn: bool = True
 
         self.deck = CardList()
         self.exhaust = CardList()
@@ -107,13 +108,15 @@ class Player:
         :param amount: amount of cards to draw
         """
         if not self.has_managed_cards:
-            cards = CardList()
-            for _ in range(amount):
-                card = tray.draw()
-                if card:
-                    self.deck.append(card)
-                    cards.append(card)
-            return cards
+            if not self.has_drawn:
+                cards = CardList()
+                for _ in range(amount):
+                    card = tray.draw()
+                    if card:
+                        self.deck.append(card)
+                        cards.append(card)
+                self.has_drawn = True
+                return cards
         return None
 
     def discard(self, card: Card, tray: Tray):

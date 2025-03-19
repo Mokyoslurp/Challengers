@@ -174,6 +174,7 @@ class Tournament:
         if self.status == Tournament.Status.DECK:
             for player in self.players:
                 player.has_managed_cards = False
+                player.has_drawn = False
 
             self.available_draws = TournamentPlan.get_available_draws(self.round)
 
