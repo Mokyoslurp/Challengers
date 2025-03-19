@@ -29,6 +29,7 @@ class Command(Enum):
 
     # Card management commands
     DRAW_CARD = 30
+    DISCARD_CARD = 31
     END_CARD_MANAGEMENT = 39
 
     FORCE_END = 255

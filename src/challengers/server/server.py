@@ -181,6 +181,17 @@ class Server:
                                     if cards:
                                         reply = [card.id for card in cards]
 
+                    case Command.DISCARD_CARD:
+                        if self.tournament.status == Tournament.Status.DECK:
+                            if not player.has_managed_cards and player.has_drawn:
+                                card_id = data
+                                if card_id in self.tournament.unique_cards_list:
+                                    card = self.tournament.unique_cards_list[card_id]
+                                    if card in player.deck:
+                                        player.deck.remove(card)
+
+                                        reply = 1
+
                     case Command.END_CARD_MANAGEMENT:
                         if self.tournament.status == Tournament.Status.DECK:
                             if not player.has_managed_cards:

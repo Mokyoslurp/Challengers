@@ -64,6 +64,7 @@ if __name__ == "__main__":
         "r": Command.READY,
         "p": Command.PLAY_CARD,
         "d": Command.DRAW_CARD,
+        "t": Command.DISCARD_CARD,
         "m": Command.END_CARD_MANAGEMENT,
         "q": Command.LEAVE,
         "x": Command.FORCE_END,
@@ -78,6 +79,8 @@ if __name__ == "__main__":
                 option = int(input("Tray ?"))
             elif command == Command.FORCE_END or command == Command.LEAVE:
                 is_running = False
+            elif command == Command.DISCARD_CARD:
+                option = int(input("Card id ?"))
 
             reply = client.send(command, option)
             print(f"Command {command.name} sent. Received {reply}.")
