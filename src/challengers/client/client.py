@@ -133,22 +133,18 @@ class Client:
             if new_self_played_cards != self.battle_screen.self_played_cards:
                 self.battle_screen.self_played_cards = new_self_played_cards
 
-                if self.battle_screen.self_played_cards:
-                    for data in self.battle_screen.self_played_cards:
-                        card = CardFront(0, 0, card=data)
-                        self.battle_screen.park.add_played_card(1, card)
-                else:
-                    self.battle_screen.park.reset_played_cards(1)
+                self.battle_screen.park.reset_played_cards(1)
+                for data in self.battle_screen.self_played_cards:
+                    card = CardFront(0, 0, card=data)
+                    self.battle_screen.park.add_played_card(1, card)
 
             if new_opponent_played_cards != self.battle_screen.opponent_played_cards:
                 self.battle_screen.opponent_played_cards = new_opponent_played_cards
 
-                if self.battle_screen.opponent_played_cards:
-                    for data in self.battle_screen.opponent_played_cards:
-                        card = CardFront(0, 0, card=data)
-                        self.battle_screen.park.add_played_card(2, card)
-                else:
-                    self.battle_screen.park.reset_played_cards(2)
+                self.battle_screen.park.reset_played_cards(2)
+                for data in self.battle_screen.opponent_played_cards:
+                    card = CardFront(0, 0, card=data)
+                    self.battle_screen.park.add_played_card(2, card)
 
             if new_self_bench != self.battle_screen.self_bench:
                 self.battle_screen.self_bench = new_self_bench
