@@ -8,7 +8,7 @@ from .duel import Duel
 from .tray import Tray
 from .card import Level
 from .trophy import TrophyDict, TrophySerializer
-from .card import CardList, CardSerializer
+from .card import CardList, CardSerializer, Card
 
 from .data import DEBUG
 
@@ -46,6 +46,7 @@ class Tournament:
 
             self.scores: dict[Player, int] = {}
 
+            self.unique_cards_list: dict[int, Card]
             self.game_cards: CardList
             self.game_trophies = TrophyDict()
 
@@ -65,10 +66,12 @@ class Tournament:
         self.trays = {}
         self.scores = {}
         self.game_cards = CardList()
+        self.unique_cards_list = {}
         self.game_trophies = TrophyDict()
 
     def load_game_cards(self, game_cards_file_path: str):
         self.game_cards = CardSerializer.load_cards_from_file(game_cards_file_path)
+        self.unique_cards_list = CardList.get_unique_cards_list(game_cards_file_path)
 
     def load_game_trophies(self, game_trophies_file_path: str):
         self.game_trophies = TrophySerializer.load_trophies_from_file(game_trophies_file_path)
