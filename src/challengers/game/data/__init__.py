@@ -2,5 +2,5 @@
 
 from .config import (
     DEBUG,
-    AUTO,
+    TELEMETRY,
 )

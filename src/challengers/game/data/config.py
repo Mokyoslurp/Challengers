@@ -1,2 +1,2 @@
 DEBUG = False
-AUTO = True
+TELEMETRY = False

@@ -12,6 +12,7 @@ from challengers.client.gui import MenuScreen, BattleScreen
 from challengers.client.gui.components import Interface
 from challengers.client.gui.game import CardFront
 from challengers.game import CardList, Tournament
+from challengers.game.data import TELEMETRY
 
 
 GAME_DATA_PATH = Path(__file__).parent.parent / "game" / "data"
@@ -61,7 +62,8 @@ class Client:
             # Receive full response
             response = decode_response(self.socket.recv(response_length * 8))
 
-            print(f"Command {command.name} sent. Received {response}.")
+            if TELEMETRY:
+                print(f"Command {command.name} sent. Received {response}.")
             return response
         except s.error as e:
             print(e)
@@ -74,13 +76,17 @@ class Client:
                 self.is_connected = True
 
                 self.player_id = self.socket.recv(RESPONSE_LENGTH)
-                print(f"Connected to : {self.server_address[0]}, {self.server_address[1]}")
+
+                if TELEMETRY:
+                    print(f"Connected to : {self.server_address[0]}, {self.server_address[1]}")
 
                 self.send(Command.CONNECT)
 
             except s.error as e:
                 print(e)
-                print("Failed to connect to server")
+
+                if TELEMETRY:
+                    print("Failed to connect to server")
 
     def disconnect(self):
         if self.is_connected:
@@ -90,7 +96,9 @@ class Client:
             self.is_connected = False
             self.player_id = None
             self.is_running = False
-            print("Successfully disconnected from server")
+
+            if TELEMETRY:
+                print("Successfully disconnected from server")
 
     def draw(self):
         self.window.fill((128, 128, 128))

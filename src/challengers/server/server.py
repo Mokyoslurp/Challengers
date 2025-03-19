@@ -3,6 +3,7 @@ import threading
 from pathlib import Path
 from typing import Union
 
+from challengers.game.data import TELEMETRY
 from challengers.game import Tournament, Player
 from challengers.server import (
     build_response,
@@ -74,13 +75,17 @@ class Server:
 
         # Argument is the number of client that can connect
         self.socket.listen(self.tournament.number_of_players)
-        print("Waiting for connection, server started!")
+
+        if TELEMETRY:
+            print("Waiting for connection, server started!")
 
         self.is_running = True
         while self.is_running:
             while self.is_running and not self.is_ready:
                 client, address = self.socket.accept()
-                print("Connected to:", address)
+
+                if TELEMETRY:
+                    print("Connected to:", address)
 
                 self.players_ids[address[1]] = self.player_count
                 self.player_ready[self.player_count] = False
@@ -107,7 +112,7 @@ class Server:
 
                 self.tournament_thread.join()
 
-                if self.tournament.winner:
+                if TELEMETRY and self.tournament.winner:
                     print(f"Winner is {self.tournament.winner}")
                     self.tournament.print_scores()
 
@@ -126,7 +131,8 @@ class Server:
                 command, data = self.receive(socket)
                 reply = 0
 
-                print(f"From {address} : {command}, {data}")
+                if TELEMETRY:
+                    print(f"From {address} : {command}, {data}")
 
                 match command:
                     case Command.FORCE_END:
@@ -146,7 +152,8 @@ class Server:
                                 self.players_names[player_id] = player_name
                                 self.player_ready[player_id] = True
 
-                                print(f"{player} connected\n")
+                                if TELEMETRY:
+                                    print(f"{player} connected\n")
 
                                 reply = 1
 
@@ -154,7 +161,9 @@ class Server:
                         if self.tournament.status == Tournament.Status.PREPARE:
                             if not player.is_ready:
                                 player.is_ready = True
-                                print(f"{player} is ready\n")
+
+                                if TELEMETRY:
+                                    print(f"{player} is ready\n")
 
                                 reply = 1
 
@@ -237,7 +246,9 @@ class Server:
                         if self.tournament.status == Tournament.Status.DECK:
                             if not player.has_managed_cards:
                                 player.has_managed_cards = True
-                                print(f"Player {player} managed cards\n")
+
+                                if TELEMETRY:
+                                    print(f"Player {player} managed cards\n")
 
                                 reply = 1
 
@@ -250,12 +261,15 @@ class Server:
                         break
 
                 self.send(socket, reply)
-                print("To", address, ":", reply)
+
+                if TELEMETRY:
+                    print("To", address, ":", reply)
 
             except:  # noqa: E722
                 break
 
-        print("Lost connection to:", address)
+        if TELEMETRY:
+            print("Lost connection to:", address)
         socket.close()
         self.player_count -= 1
 
