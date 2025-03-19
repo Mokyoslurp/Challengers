@@ -8,7 +8,7 @@ from challengers.server import (
     RESPONSE_LENGTH,
     Command,
 )
-from challengers.client.gui import MenuScreen, BattleScreen
+from challengers.client.gui import MenuScreen, BattleScreen, DeckManagementScreen
 from challengers.client.gui.components import Interface
 from challengers.client.gui.game import CardFront
 from challengers.game import CardList, Tournament
@@ -34,6 +34,7 @@ class Client:
 
         self.menu_screen = MenuScreen()
         self.battle_screen = BattleScreen()
+        self.deck_management_screen = DeckManagementScreen()
         self.gui: list[Interface] = [self.menu_screen]
 
         self.socket: s.socket
@@ -124,6 +125,11 @@ class Client:
             self.gui = [self.battle_screen]
             self.status = new_status
 
+        elif self.status != Tournament.Status.DECK and new_status == Tournament.Status.DECK:
+            self.gui = [self.deck_management_screen]
+            self.deck_management_screen.deck.reset()
+            self.status = new_status
+
         if self.status == Tournament.Status.ROUND:
             new_self_played_cards = self.get_self_played_cards()
             new_opponent_played_cards = self.get_opponent_played_cards()
@@ -161,6 +167,16 @@ class Client:
                     self.battle_screen.park.reset_bench(2, i)
                     card = CardFront(0, 0, card=data)
                     self.battle_screen.park.add_bench_card(2, i, card)
+
+        elif self.status == Tournament.Status.DECK:
+            deck = self.get_self_deck()
+            if deck != self.deck_management_screen.self_deck:
+                self.deck_management_screen.self_deck = deck
+
+                self.deck_management_screen.deck.reset()
+                for data in deck:
+                    card = CardFront(0, 0, card=data)
+                    self.deck_management_screen.deck.add_card(card)
 
     def ready(self):
         if self.is_connected:
