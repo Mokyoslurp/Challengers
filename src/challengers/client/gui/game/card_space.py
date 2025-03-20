@@ -7,7 +7,7 @@ from .constants import CARD_HEIGHT, CARD_WIDTH
 
 class CardSpace(GUIElement):
     def __init__(self, x: int, y: int, **kwargs):
-        super().__init__(x=x, y=y, **kwargs)
+        super().__init__(x=x, y=y, height=CARD_HEIGHT, width=CARD_WIDTH, **kwargs)
 
     def draw(self, window: pygame.Surface):
         # Background

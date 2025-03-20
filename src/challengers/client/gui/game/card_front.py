@@ -19,7 +19,7 @@ class CardFront(GUIElement):
         card: Card = None,
         **kwargs,
     ):
-        super().__init__(x=x, y=y, **kwargs)
+        super().__init__(x=x, y=y, height=CARD_HEIGHT, width=CARD_WIDTH, **kwargs)
 
         self.name = name
         self.power = str(power)

@@ -12,7 +12,7 @@ class Cross(GUIElement):
         y: int,
         **kwargs,
     ):
-        super().__init__(x=x, y=y, **kwargs)
+        super().__init__(x=x, y=y, height=CARD_WIDTH / 4, width=CARD_WIDTH / 4, **kwargs)
 
         self.font = "comicsans"
 
