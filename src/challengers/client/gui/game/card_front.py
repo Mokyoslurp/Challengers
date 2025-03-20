@@ -11,6 +11,7 @@ class CardFront(GUIElement):
         self,
         x: int,
         y: int,
+        id: int = 0,
         power: int = 0,
         name: str = "",
         level: str = "S",
@@ -21,6 +22,7 @@ class CardFront(GUIElement):
     ):
         super().__init__(x=x, y=y, height=CARD_HEIGHT, width=CARD_WIDTH, **kwargs)
 
+        self.id = id
         self.name = name
         self.power = str(power)
         self.level = level
@@ -28,6 +30,7 @@ class CardFront(GUIElement):
         self.text = text
 
         if card:
+            self.id = card.id
             self.name = card.name
             self.power = str(card.power)
             self.level = card.level.name
