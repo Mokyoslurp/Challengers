@@ -10,6 +10,8 @@ class Deck(GUIElement):
     def __init__(self, x: int, y: int, **kwargs):
         super().__init__(x=x, y=y, **kwargs)
 
+        self.hide()
+
         self.cards = [
             CardSpace(x, y),
             CardSpace(x + (CARD_WIDTH + 10), y),
@@ -19,14 +21,15 @@ class Deck(GUIElement):
             CardSpace(x + 5 * (CARD_WIDTH + 10), y),
         ]
 
-        self.crosses = {i: Cross(self.cards[i].x, self.cards[i].y) for i in range(len(self.cards))}
+        self.crosses = [Cross(self.cards[i].x, self.cards[i].y) for i in range(len(self.cards))]
+
+        self.children = self.crosses
 
     def draw(self, window: pygame.Surface):
         for card in self.cards:
             card.draw(window)
 
-        for cross in self.crosses.values():
-            cross.draw(window)
+        super().draw(window)
 
     def add_card(self, card: CardFront):
         for i, deck_card in enumerate(self.cards):
