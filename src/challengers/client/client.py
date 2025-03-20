@@ -197,9 +197,11 @@ class Client:
         if self.is_connected:
             return self.get_cards_list_from_ids(self.send(Command.DRAW_CARD, tray))
 
-    def discard_card(self, card_id: int):
+    def discard_card(self, i: int):
         if self.is_connected:
-            return self.send(Command.DISCARD_CARD, card_id)
+            card = self.deck_management_screen.deck.cards[i]
+            if type(card) is CardFront:
+                return self.send(Command.DISCARD_CARD, card.id)
 
     def end_card_management(self):
         if self.is_connected:
@@ -237,6 +239,17 @@ class Client:
         self.menu_screen.leave_server_button.on_click(self.disconnect)
         self.menu_screen.ready_button.on_click(self.ready)
         self.battle_screen.draw_card_button.on_click(self.play_card)
+
+        self.deck_management_screen.tray_A.on_click(lambda: self.draw_card(0))
+        self.deck_management_screen.tray_B.on_click(lambda: self.draw_card(1))
+        self.deck_management_screen.tray_C.on_click(lambda: self.draw_card(2))
+
+        for i in range(len(self.deck_management_screen.deck.crosses)):
+            # Double lambda is necessary to pass i by value and not by reference.
+            # If i is passed by reference, all lambda functions will use the same i
+            self.deck_management_screen.deck.crosses[i].on_click(
+                (lambda x: (lambda: self.discard_card(x)))(i)
+            )
 
     def run(self):
         clock = pygame.time.Clock()
