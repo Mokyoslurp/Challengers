@@ -42,11 +42,16 @@ class GUIElement:
 
         self.on_click_function: Callable = None
 
+        self.children: list[GUIElement] = []
+
     def draw(self, window: pygame.Surface):
         """Draws the element on the screen
 
         :param window: screen to draw the element on
         """
+        for child in self.children:
+            child.draw(window)
+
         if self.is_drawn:
             pygame.draw.rect(window, self.background_color, self.rect)
 
@@ -66,6 +71,9 @@ class GUIElement:
             return False
 
     def handle_event(self, event: pygame.event.Event) -> bool:
+        for child in self.children:
+            child.handle_event(event)
+
         if self.is_active:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_position = pygame.mouse.get_pos()
