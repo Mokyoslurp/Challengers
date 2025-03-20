@@ -1,7 +1,7 @@
 import pygame
 
 from challengers.client.gui.components.gui_element import GUIElement
-from .constants import CARD_WIDTH
+from .constants import CARD_WIDTH, CARD_HEIGHT
 
 from . import CardSpace, CardFront, Cross
 
@@ -13,12 +13,8 @@ class Deck(GUIElement):
         self.hide()
 
         self.cards = [
-            CardSpace(x, y),
-            CardSpace(x + (CARD_WIDTH + 10), y),
-            CardSpace(x + 2 * (CARD_WIDTH + 10), y),
-            CardSpace(x + 3 * (CARD_WIDTH + 10), y),
-            CardSpace(x + 4 * (CARD_WIDTH + 10), y),
-            CardSpace(x + 5 * (CARD_WIDTH + 10), y),
+            CardSpace(x + (i % 10) * (CARD_WIDTH + 10), y + (i // 10) * (CARD_HEIGHT + 10))
+            for i in range(20)
         ]
 
         self.crosses = [Cross(self.cards[i].x, self.cards[i].y) for i in range(len(self.cards))]
