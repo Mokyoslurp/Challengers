@@ -123,6 +123,11 @@ class Client:
         # Changing status
         if self.status != Tournament.Status.ROUND and new_status == Tournament.Status.ROUND:
             self.gui = [self.battle_screen]
+            self.battle_screen.park.reset_played_cards(1)
+            self.battle_screen.park.reset_played_cards(2)
+            for i in range(6):
+                self.battle_screen.park.reset_bench(1, i)
+                self.battle_screen.park.reset_bench(2, i)
             self.status = new_status
 
         elif self.status != Tournament.Status.DECK and new_status == Tournament.Status.DECK:
@@ -203,6 +208,10 @@ class Client:
             if type(card) is CardFront:
                 return self.send(Command.DISCARD_CARD, card.id)
 
+    def management_done(self):
+        if self.is_connected:
+            return self.send(Command.END_CARD_MANAGEMENT)
+
     def end_card_management(self):
         if self.is_connected:
             return self.send(Command.END_CARD_MANAGEMENT)
@@ -250,6 +259,8 @@ class Client:
             self.deck_management_screen.deck.crosses[i].on_click(
                 (lambda x: (lambda: self.discard_card(x)))(i)
             )
+
+        self.deck_management_screen.management_done_button.on_click(self.management_done)
 
     def run(self):
         clock = pygame.time.Clock()

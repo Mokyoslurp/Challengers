@@ -1,5 +1,6 @@
 from .components import (
     Interface,
+    Button,
 )
 from .game import (
     CardBack,
@@ -17,4 +18,8 @@ class DeckManagementScreen(Interface):
 
         self.deck = Deck(10, 400)
 
-        super().__init__([self.tray_A, self.tray_B, self.tray_C, self.deck])
+        self.management_done_button = Button(610, 100, text="Done")
+
+        super().__init__(
+            [self.tray_A, self.tray_B, self.tray_C, self.deck, self.management_done_button]
+        )
