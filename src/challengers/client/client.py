@@ -135,7 +135,16 @@ class Client:
             self.deck_management_screen.deck.reset()
             self.status = new_status
 
-        if self.status == Tournament.Status.ROUND:
+        elif self.status != Tournament.Status.FINAL and new_status == Tournament.Status.FINAL:
+            self.gui = [self.battle_screen]
+            self.battle_screen.park.reset_played_cards(1)
+            self.battle_screen.park.reset_played_cards(2)
+            for i in range(6):
+                self.battle_screen.park.reset_bench(1, i)
+                self.battle_screen.park.reset_bench(2, i)
+            self.status = new_status
+
+        if self.status == Tournament.Status.ROUND or self.status == Tournament.Status.FINAL:
             new_self_played_cards = self.get_self_played_cards()
             new_opponent_played_cards = self.get_opponent_played_cards()
             new_self_bench = self.get_self_bench()
