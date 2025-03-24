@@ -30,7 +30,6 @@ class Server:
         # Client sockets are keys to get players ids, other dict have ids as keys
         self.players_ids: dict[s.socket, int] = {}
         self.players_names: dict[int, str] = {}
-        self.player_ready: dict[int, bool] = {}
 
         self.tournament = tournament
 
@@ -88,7 +87,6 @@ class Server:
                     print("Connected to:", address)
 
                 self.players_ids[client_socket] = self.player_count
-                self.player_ready[self.player_count] = False
 
                 client_thread = threading.Thread(
                     target=self.client_thread, args=(client_socket, address)
@@ -145,12 +143,11 @@ class Server:
 
                     case Command.CONNECT:
                         if self.tournament.status == Tournament.Status.NONE:
-                            if not self.player_ready[player_id]:
+                            if not self.players_names[player_id]:
                                 player_name = f"P{player_id}"
                                 player = self.add_player(player_id, player_name)
 
                                 self.players_names[player_id] = player_name
-                                self.player_ready[player_id] = True
 
                                 if TELEMETRY:
                                     print(f"{player} connected\n")
