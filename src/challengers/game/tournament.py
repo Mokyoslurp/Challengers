@@ -58,6 +58,10 @@ class Tournament:
     def is_ended(self):
         return self.ended.is_set()
 
+    def check_all_players_connected(self):
+        # Addition of a robot player is possible, having then number_of_players + 1 player
+        return len(self.players) >= self.number_of_players
+
     def reset(self):
         self.players = []
         self.winners = [[]]
@@ -85,7 +89,7 @@ class Tournament:
         return self.trays
 
     def add_player(self, player: Player) -> list[Player]:
-        if len(self.players) < self.number_of_players:
+        if not self.check_all_players_connected():
             self.players.append(player)
             return self.players
 
