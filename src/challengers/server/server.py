@@ -88,9 +88,7 @@ class Server:
 
                 self.players_ids[client_socket] = self.player_count
 
-                client_thread = threading.Thread(
-                    target=self.client_thread, args=(client_socket, address)
-                )
+                client_thread = threading.Thread(target=self.client_thread, args=(client_socket))
                 client_thread.start()
                 self.client_threads.append(client_thread)
 
