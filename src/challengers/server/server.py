@@ -82,7 +82,7 @@ class Server:
         self.is_running = True
         while self.is_running:
             while self.is_running and not self.is_ready:
-                client, address = self.socket.accept()
+                client_socket, address = self.socket.accept()
 
                 if TELEMETRY:
                     print("Connected to:", address)
@@ -90,7 +90,9 @@ class Server:
                 self.players_ids[address[1]] = self.player_count
                 self.player_ready[self.player_count] = False
 
-                client_thread = threading.Thread(target=self.client_thread, args=(client, address))
+                client_thread = threading.Thread(
+                    target=self.client_thread, args=(client_socket, address)
+                )
                 client_thread.start()
                 self.client_threads.append(client_thread)
 
