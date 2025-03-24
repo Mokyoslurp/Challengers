@@ -122,9 +122,6 @@ class Server:
                     client_thread.join()
 
     def client_thread(self, socket: s.socket, address):
-        # Send player id to the player
-        _, response = build_response(self.player_count)
-        socket.send(response)
         player_connected = True
 
         player_id = self.players_ids[address[1]]

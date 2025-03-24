@@ -75,12 +75,11 @@ class Client:
                 self.socket.connect(self.server_address)
                 self.is_connected = True
 
-                self.socket.recv(RESPONSE_LENGTH)
+                # TODO: Send player name here
+                # self.send(Command.CONNECT, self.player_name)
 
                 if TELEMETRY:
                     print(f"Connected to : {self.server_address[0]}, {self.server_address[1]}")
-
-                self.send(Command.CONNECT)
 
             except s.error as e:
                 print(e)
