@@ -45,9 +45,6 @@ class Client:
         self.status: Tournament.Status = Tournament.Status.NONE
         self.is_connected: bool = False
 
-        self.player_id: int
-        self.opponent_id: int
-
         self.player_name: str
 
         self.unique_cards_list = CardList.get_unique_cards_list(CARD_DATA_FILE_PATH)
@@ -76,7 +73,7 @@ class Client:
                 self.socket.connect(self.server_address)
                 self.is_connected = True
 
-                self.player_id = self.socket.recv(RESPONSE_LENGTH)
+                self.socket.recv(RESPONSE_LENGTH)
 
                 if TELEMETRY:
                     print(f"Connected to : {self.server_address[0]}, {self.server_address[1]}")
@@ -95,7 +92,6 @@ class Client:
             self.socket.shutdown(s.SHUT_RDWR)
             self.socket.close()
             self.is_connected = False
-            self.player_id = None
             self.is_running = False
 
             if TELEMETRY:
