@@ -19,6 +19,8 @@ GAME_DATA_PATH = Path(__file__).parent.parent / "game" / "data"
 CARD_DATA_FILE = "cards.json"
 CARD_DATA_FILE_PATH = GAME_DATA_PATH / CARD_DATA_FILE
 
+DEFAULT_PLAYER_NAME = "Player"
+
 
 class Client:
     def __init__(self):
@@ -45,7 +47,7 @@ class Client:
         self.status: Tournament.Status = Tournament.Status.NONE
         self.is_connected: bool = False
 
-        self.player_name: str
+        self.player_name: str = DEFAULT_PLAYER_NAME
 
         self.unique_cards_list = CardList.get_unique_cards_list(CARD_DATA_FILE_PATH)
 
