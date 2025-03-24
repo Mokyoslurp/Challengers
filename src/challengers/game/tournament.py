@@ -88,12 +88,21 @@ class Tournament:
 
         return self.trays
 
-    def add_player(self, player: Player) -> list[Player]:
+    def add_player(self, player: Player):
+        """Adds a new player to the tournament. If the last player is added
+            a robot player is added if the number of players is odd.
+
+        :param player: the player to add
+        """
         if not self.check_all_players_connected():
             self.players.append(player)
-            return self.players
 
-        return None
+            if self.check_all_players_connected():
+                # Set a robot player if there is an odd number of players
+                if len(self.players) % 2 == 1:
+                    robot_player = Player(len(self.players), ROBOT_PLAYER_NAME, is_robot=True)
+                    robot_player.is_ready = True
+                    self.players.append(robot_player)
 
     def get_scores(self) -> dict[Player, int]:
         for player in self.players:
@@ -139,20 +148,11 @@ class Tournament:
 
     def prepare(self):
         if self.status == Tournament.Status.NONE:
-            if len(self.players) == self.number_of_players:
-                # Set a robot player if there is an odd number of players
-                if len(self.players) % 2 == 1:
-                    self.players.append(Player(len(self.players), ROBOT_PLAYER_NAME, is_robot=True))
-
             TournamentPlan.generate(self.number_of_players, self.players)
 
             self.initialize_trays()
             for player in self.players:
                 player.get_starter_cards(self.trays[Level.S])
-                if not player.is_robot:
-                    player.is_ready = False
-                else:
-                    player.is_ready = True
 
             self.status = Tournament.Status.PREPARE
 
