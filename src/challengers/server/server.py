@@ -142,6 +142,8 @@ class Server:
                     case Command.CONNECT:
                         if self.tournament.status == Tournament.Status.NONE:
                             if not self.players_names[player_id]:
+                                # TODO: Change player_name acquisition to use with data:
+                                # player_name = data
                                 player_name = f"P{player_id}"
                                 player = self.add_player(player_id, player_name)
 
