@@ -27,8 +27,8 @@ class Server:
         self.is_ready: bool = False
 
         self.player_count: int = 0
-        # Player address and id
-        self.players_ids: dict[int, int] = {}
+        # Client sockets are keys to get players ids, other dict have ids as keys
+        self.players_ids: dict[s.socket, int] = {}
         self.players_names: dict[int, str] = {}
         self.player_ready: dict[int, bool] = {}
 
@@ -87,7 +87,7 @@ class Server:
                 if TELEMETRY:
                     print("Connected to:", address)
 
-                self.players_ids[address[1]] = self.player_count
+                self.players_ids[client_socket] = self.player_count
                 self.player_ready[self.player_count] = False
 
                 client_thread = threading.Thread(
@@ -121,10 +121,11 @@ class Server:
                 for client_thread in self.client_threads:
                     client_thread.join()
 
-    def client_thread(self, socket: s.socket, address):
+    def client_thread(self, socket: s.socket):
         player_connected = True
+        address = socket.getsockname()
 
-        player_id = self.players_ids[address[1]]
+        player_id = self.players_ids[socket]
         while player_connected:
             try:
                 command, data = self.receive(socket)
