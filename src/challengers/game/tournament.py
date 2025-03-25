@@ -157,15 +157,6 @@ class Tournament:
             for player in self.players:
                 player.get_starter_cards(self.trays[Level.S])
 
-            self.status = Tournament.Status.PREPARE
-
-            if DEBUG:
-                print("All players have to be ready\n")
-
-            # Wait for all players to be ready
-            while not all([player.is_ready for player in self.players]) and not self.is_ended():
-                pass
-
             self.status = Tournament.Status.ROUND
 
             if DEBUG:

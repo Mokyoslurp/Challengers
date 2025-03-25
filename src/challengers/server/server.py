@@ -159,12 +159,18 @@ class Server:
                                 reply = 1
 
                     case Command.READY:
-                        if self.tournament.status == Tournament.Status.PREPARE:
+                        if self.tournament.status == Tournament.Status.NONE:
                             if not player.is_ready:
                                 player.is_ready = True
 
                                 if TELEMETRY:
                                     print(f"{player} is ready\n")
+
+                                if (
+                                    self.tournament.check_all_players_connected()
+                                    and self.tournament.check_all_players_ready()
+                                ):
+                                    self.execution_queue.append(self.tournament.prepare)
 
                                 reply = 1
 
