@@ -1,7 +1,7 @@
 import socket as s
 import threading
 from pathlib import Path
-from typing import Union
+from typing import Union, Callable
 
 from challengers.game.data import TELEMETRY
 from challengers.game import Tournament, Player
@@ -22,6 +22,8 @@ class Server:
 
         self.tournament_thread: threading.Thread
         self.client_threads: list[threading.Thread] = []
+
+        self.execution_queue: list[Callable] = []
 
         self.is_running: bool = False
         self.is_ready: bool = False
@@ -106,7 +108,9 @@ class Server:
                 self.tournament_thread.start()
 
                 while not self.tournament.is_ended():
-                    pass
+                    if len(self.execution_queue) > 0:
+                        function_to_execute = self.execution_queue.pop()
+                        function_to_execute()
 
                 self.tournament_thread.join()
 
