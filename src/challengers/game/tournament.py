@@ -62,6 +62,9 @@ class Tournament:
         # Addition of a robot player is possible, having then number_of_players + 1 player
         return len(self.players) >= self.number_of_players
 
+    def check_all_players_ready(self):
+        return all([player.is_ready for player in self.players])
+
     def reset(self):
         self.players = []
         self.winners = [[]]
