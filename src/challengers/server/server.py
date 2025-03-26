@@ -1,14 +1,13 @@
 import socket as s
 import threading
 from pathlib import Path
-from typing import Union, Callable
+from typing import Callable
 
 from challengers.game.data import TELEMETRY
 from challengers.game import Tournament, Player
 from challengers.server import (
-    build_response,
-    decode_request,
-    REQUEST_LENGTH,
+    send_message,
+    receive_message,
     Command,
 )
 
@@ -40,33 +39,6 @@ class Server:
         self.tournament.add_player(player)
 
         return player
-
-    def send(self, socket: s.socket, data: Union[int, list[int]]):
-        if isinstance(data, list):
-            length = len(data)
-        else:
-            length = 1
-
-        try:
-            pre_response, response = build_response(data, length)
-            # Send length of packet to come
-            socket.send(pre_response)
-            # Wait for acknowledgment
-            command, data = self.receive(socket)
-            if command == Command.BLANK and data == length:
-                # Send the data
-                socket.send(response)
-            else:
-                # Send nothing if acknowledgement wrong
-                _, response = build_response(0)
-                socket.send(response)
-        except s.error as e:
-            print(e)
-
-    def receive(self, socket: s.socket) -> tuple[Command, int]:
-        request = socket.recv(REQUEST_LENGTH)
-        command, data = decode_request(request)
-        return command, data
 
     def run(self):
         try:
@@ -128,7 +100,7 @@ class Server:
         player_id = self.players_ids[socket]
         while player_connected:
             try:
-                command, data = self.receive(socket)
+                command, data = receive_message(socket)
                 reply = 0
 
                 if TELEMETRY:
@@ -267,10 +239,7 @@ class Server:
                     case _:
                         break
 
-                self.send(socket, reply)
-
-                if TELEMETRY:
-                    print("To", address, ":", reply)
+                send_message(socket, Command.RESPONSE, reply)
 
             except:  # noqa: E722
                 break

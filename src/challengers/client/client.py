@@ -1,11 +1,11 @@
 import pygame
 from pathlib import Path
 import socket as s
+from typing import Union
 
 from challengers.server import (
-    build_request,
-    decode_response,
-    RESPONSE_LENGTH,
+    send_message,
+    receive_message,
     Command,
 )
 from challengers.client.gui import MenuScreen, BattleScreen, DeckManagementScreen
@@ -51,22 +51,13 @@ class Client:
 
         self.unique_cards_list = CardList.get_unique_cards_list(CARD_DATA_FILE_PATH)
 
-    def send(self, command: Command, data: int = 0):
-        try:
-            # Send the command
-            self.socket.send(build_request(command, data))
-            # Receive the length of the packet to come
-            response_length = decode_response(self.socket.recv(RESPONSE_LENGTH))[0]
-            # Send acknowledgement of the packet length
-            self.socket.send(build_request(Command.BLANK, response_length))
-            # Receive full response
-            response = decode_response(self.socket.recv(response_length * 8))
+    def send(self, command: Command, data: Union[int, str, list[int]] = 0):
+        send_message(self.socket, command, data)
+        response_command, response = receive_message(self.socket)
 
-            if TELEMETRY:
-                print(f"Command {command.name} sent. Received {response}.")
+        if response_command == Command.RESPONSE:
             return response
-        except s.error as e:
-            print(e)
+        return 0
 
     def connect(self):
         if not self.is_connected:
@@ -196,7 +187,7 @@ class Client:
 
     def get_tournament_status(self):
         if self.is_connected:
-            return Tournament.Status(self.send(Command.GET_STATUS)[0])
+            return Tournament.Status(self.send(Command.GET_STATUS))
 
     def play_card(self):
         if self.is_connected:

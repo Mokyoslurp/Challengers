@@ -2,12 +2,8 @@
 
 from .packets import (
     Command,
-    REQUEST_LENGTH,
-    RESPONSE_LENGTH,
-    build_request,
-    build_response,
-    decode_request,
-    decode_response,
+    send_message,
+    receive_message,
 )
 
 from .server import Server

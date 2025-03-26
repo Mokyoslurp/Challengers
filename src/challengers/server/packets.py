@@ -5,12 +5,11 @@ Format of commands to send to server are described here
 
 from enum import Enum
 from typing import Union
+import socket as s
 
-REQUEST_BYTES = 2
-REQUEST_LENGTH = 8 * REQUEST_BYTES
+from challengers.game.data import TELEMETRY
 
-RESPONSE_BYTES = 1
-RESPONSE_LENGTH = 8 * RESPONSE_BYTES
+HEADER_BYTES = 3
 
 
 # Hexadecimal from 0x00 to 0xFF -> 0-255
@@ -43,45 +42,109 @@ class Command(Enum):
 
     GET_STATUS = 60
 
-    FORCE_END = 255
+    FORCE_END = 250
+
+    RESPONSE = 255
 
 
-def build_request(command: Command, data: int):
-    if data < 255:
-        message = (command.value << 8) + data
-        return message.to_bytes(REQUEST_BYTES)
-    return (0).to_bytes(REQUEST_BYTES)
+class MessageType(Enum):
+    NONE = 0
+    INT = 1
+    INT_LIST = 2
+    STR = 3
 
 
-def build_response(data: Union[int, list[int]], length: int = 1):
-    if not isinstance(data, list):
-        data = [data]
+def build_message(command: Command, data: Union[int, str, list[int]] = 0) -> tuple[bytes, bytes]:
+    if isinstance(data, int):
+        message_type = MessageType.INT
+        message_bytes = data.to_bytes()
 
-    data_bytes = b""
-    for d in list[int](data):
-        if d < 255:
-            data_bytes += d.to_bytes(RESPONSE_BYTES)
+    elif isinstance(data, str):
+        message_type = MessageType.STR
+        message_bytes = data.encode()
+
+    elif isinstance(data, list):
+        message_type = MessageType.INT_LIST
+        message_bytes = b"".join([d.to_bytes() for d in data])
+
+    else:
+        message_type = MessageType.NONE
+        message_bytes = (0).to_bytes()
+
+    message_length = len(message_bytes)
+
+    if message_length <= 255:
+        header_bytes = b"".join(
+            [
+                command.value.to_bytes(),
+                message_type.value.to_bytes(),
+                message_length.to_bytes(),
+            ]
+        )
+    else:
+        header_bytes = b"".join([Command.BLANK.value.to_bytes(), (1).to_bytes()])
+        message_bytes = (0).to_bytes()
+
+    return header_bytes, message_bytes
+
+
+def decode_header(header: bytes) -> tuple[Command, MessageType, int]:
+    try:
+        command = Command(int(header[0]))
+        message_type = MessageType(int(header[1]))
+        message_length = int(header[2])
+
+        return command, message_type, message_length
+
+    except ValueError as e:
+        print(e)
+
+
+def decode_message(data_bytes: bytes, type: MessageType) -> Union[int, str, list[int]]:
+    try:
+        if type == MessageType.INT:
+            data = int(data_bytes[0])
+
+        elif type == MessageType.INT_LIST:
+            data = [int(byte) for byte in data_bytes]
+
+        elif type == MessageType.STR:
+            data = data_bytes.decode()
+
         else:
-            data_bytes += (0).to_bytes(RESPONSE_BYTES)
+            data = 0
 
-    length_byte = length.to_bytes(RESPONSE_BYTES)
-    return length_byte, data_bytes
-
-
-def decode_request(request: bytes):
-    try:
-        data = int(request[1])
-        command = Command(int(request[0]))
-        return command, data
-    except ValueError as e:
-        return e
-
-
-def decode_response(response: bytes):
-    try:
-        data = []
-        for byte in response:
-            data.append(int(byte))
         return data
+
     except ValueError as e:
-        return e
+        print(e)
+
+
+def send_message(socket: s.socket, command: Command, data: Union[int, str, list[int]] = 0):
+    try:
+        header, message = build_message(command, data)
+        socket.send(header)
+        socket.send(message)
+
+        if TELEMETRY:
+            print(f"To {socket.getsockname()}: {command.name} sent with {data}")
+
+    except s.error as e:
+        print(e)
+
+
+def receive_message(socket: s.socket) -> tuple[Command, Union[int, str, list[int]]]:
+    try:
+        header = socket.recv(HEADER_BYTES)
+        command, message_type, message_length = decode_header(header)
+
+        message = socket.recv(message_length)
+        data = decode_message(message, message_type)
+
+        if TELEMETRY:
+            print(f"From {socket.getsockname()}: {command.name} received with {data}")
+
+        return command, data
+
+    except s.error as e:
+        print(e)
