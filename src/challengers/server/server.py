@@ -81,7 +81,7 @@ class Server:
 
                 while not self.tournament.is_ended():
                     if len(self.execution_queue) > 0:
-                        function_to_execute = self.execution_queue.pop()
+                        function_to_execute = self.execution_queue.pop(0)
                         function_to_execute()
 
                 self.tournament_thread.join()
