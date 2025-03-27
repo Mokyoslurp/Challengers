@@ -82,7 +82,13 @@ def build_message(command: Command, data: Union[int, str, list[int]] = 0) -> tup
             ]
         )
     else:
-        header_bytes = b"".join([Command.BLANK.value.to_bytes(), (1).to_bytes()])
+        header_bytes = b"".join(
+            [
+                Command.BLANK.value.to_bytes(),
+                MessageType.NONE.value.to_bytes(),
+                (1).to_bytes(),
+            ]
+        )
         message_bytes = (0).to_bytes()
 
     return header_bytes, message_bytes
