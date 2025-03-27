@@ -178,39 +178,30 @@ class Tournament:
 
     def prepare_cards_management(self):
         if self.status == Tournament.Status.DECK:
-            for player in self.players:
-                player.has_managed_cards = False
-                player.has_drawn = False
-
             self.available_draws = TournamentPlan.get_available_draws(self.round)
 
             if DEBUG:
                 print(f"Available draws : {self.available_draws}")
 
-            human_players: list[Player] = []
             for player in self.players:
                 player.reset_deck()
-                if not player.is_robot:
-                    human_players.append(player)
+                player.has_managed_cards = False
+                player.has_drawn = False
 
             if DEBUG:
                 print("Players have to manage cards !")
 
-            while not self.is_ended() and not all(
-                [player.has_managed_cards for player in human_players]
-            ):
-                pass
+    def end_card_management(self):
+        if DEBUG:
+            print("Cards management done")
 
-            for player in self.players:
-                player.shuffle_deck()
+        if self.round == NUMBER_OF_ROUNDS - 1:
+            self.status = Tournament.Status.FINAL
+        else:
+            self.status = Tournament.Status.ROUND
 
-            if DEBUG:
-                print("Cards management done")
-
-            if self.round == NUMBER_OF_ROUNDS - 1:
-                self.status = Tournament.Status.FINAL
-            else:
-                self.status = Tournament.Status.ROUND
+        for player in self.players:
+            player.shuffle_deck()
 
     def prepare_round(self):
         if self.status == Tournament.Status.ROUND:
@@ -227,7 +218,7 @@ class Tournament:
                     print(f"\nRound {self.round + 1}, duel {players[0]} VS {players[1]} started.")
 
     def get_round_winners(self):
-        if all([duel.is_ended() for duel in self.duels]):
+        if self.check_all_duels_ended():
             for duel in self.duels:
                 winner = duel.winner
                 winner.trophies.append(self.game_trophies.draw(self.round))

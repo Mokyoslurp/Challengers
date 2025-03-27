@@ -120,7 +120,11 @@ class Server:
                     if duel.attacking_player == player:
                         duel.play_card(player)
 
-                elif self.tournament.Status == Tournament.Status.DECK:
+                        if self.tournament.check_all_duels_ended():
+                            self.execution_queue.append(self.tournament.get_round_winners)
+                            self.execution_queue.append(self.tournament.prepare_cards_management)
+
+                elif self.tournament.status == Tournament.Status.DECK:
                     if not player.has_drawn:
                         # random draw choice
                         chosen_tray_level = random.choice(
@@ -136,6 +140,8 @@ class Server:
                         for card in player.deck[:]:
                             if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
                                 player.discard(card, self.tournament.trays[chosen_tray_level])
+
+                        player.has_managed_cards = True
 
     def client_thread(self, socket: s.socket):
         player_connected = True
@@ -198,6 +204,12 @@ class Server:
                                 card = duel.play_card(player)
                                 if card:
                                     reply = card.id
+
+                                if self.tournament.check_all_duels_ended():
+                                    self.execution_queue.append(self.tournament.get_round_winners)
+                                    self.execution_queue.append(
+                                        self.tournament.prepare_cards_management
+                                    )
 
                     case Command.DRAW_CARD:
                         if self.tournament.status == Tournament.Status.DECK:
@@ -273,6 +285,10 @@ class Server:
                                     print(f"Player {player} managed cards\n")
 
                                 reply = 1
+
+                                if self.tournament.check_all_players_managed_cards():
+                                    self.execution_queue.append(self.tournament.end_card_management)
+                                    self.execution_queue.append(self.tournament.prepare_round)
 
                     case Command.LEAVE:
                         player_connected = False
