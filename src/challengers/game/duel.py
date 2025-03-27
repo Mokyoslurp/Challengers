@@ -1,6 +1,5 @@
 import random
 import threading
-from time import sleep
 
 from .player import Player
 
@@ -51,60 +50,63 @@ class Duel:
             )
         self.attacking_player = self.player_1 if self.flag_owner == self.player_2 else self.player_2
 
-    def switch_flag_owner(self):
-        self.flag_owner, self.attacking_player = self.attacking_player, self.flag_owner
-
-        self.flag_owner.set_defense()
-        self.attacking_player.bench_cards()
-
-    def play(self) -> Player:
-        """
-        Plays duel
-
-        :return: the player that won the battle
-        """
-        self.choose_starting_player()
-
-        # Play initial card
         self.flag_owner.has_played = False
         self.flag_owner.play()
 
         if DEBUG:
             print(f"First card by {self.flag_owner}\n {self.flag_owner.played_cards[-1]}")
 
-        # Rest of the match
-        while (
+        self.attacking_player.has_played = False
+
+        # TODO: Put robot play at server level
+        if self.attacking_player.is_robot:
+            self.play_card(self.attacking_player)
+
+    def switch_flag_owner(self):
+        self.flag_owner, self.attacking_player = self.attacking_player, self.flag_owner
+
+        self.flag_owner.set_defense()
+        self.attacking_player.bench_cards()
+
+        if (
             len(self.attacking_player.deck) > 0
             and len(self.player_1.bench) < BENCH_SIZE
             and len(self.player_2.bench) < BENCH_SIZE
-            and not self.is_ended()
         ):
-            while (
-                len(self.attacking_player.deck) > 0
-                and self.attacking_player.get_power() < self.flag_owner.get_power()
-                and not self.is_ended()
-            ):
-                if DEBUG:
-                    print(f"\nWaiting for {self.attacking_player} to play\n")
+            self.attacking_player.has_played = False
 
-                self.attacking_player.has_played = False
-                if self.attacking_player.is_robot:
-                    sleep(1.5)
-                    self.attacking_player.play()
-                while not self.attacking_player.has_played and not self.is_ended():
-                    pass
+            if DEBUG:
+                print(f"\nWaiting for {self.attacking_player} to play\n")
 
-                if DEBUG:
-                    print(
-                        f"Player {self.attacking_player.name} played\n{self.attacking_player.played_cards[-1]}"
-                    )
+    def play_card(self, player: Player):
+        played_card = None
+        if player == self.attacking_player and not self.attacking_player.has_played:
+            played_card = self.attacking_player.play()
+
+            if DEBUG:
+                print(
+                    f"Player {self.attacking_player.name} played\n{self.attacking_player.played_cards[-1]}"
+                )
 
             if self.attacking_player.get_power() >= self.flag_owner.get_power():
                 # Switch attack and defense roles
                 self.switch_flag_owner()
+            else:
+                player.has_played = False
 
-        self.winner = self.flag_owner
-        self.ended.set()
+            # TODO: Put robot play at server level
+            if self.attacking_player.is_robot:
+                self.play_card(self.attacking_player)
 
-        if DEBUG:
-            print(f"Player {self.winner.name} won duel {self.player_1} VS {self.player_2}")
+        if (
+            len(self.attacking_player.deck) <= 0
+            or len(self.player_1.bench) >= BENCH_SIZE
+            or len(self.player_2.bench) >= BENCH_SIZE
+        ):
+            self.winner = self.flag_owner
+            self.ended.set()
+
+            if DEBUG:
+                print(f"Player {self.winner.name} won duel {self.player_1} VS {self.player_2}")
+
+        return played_card

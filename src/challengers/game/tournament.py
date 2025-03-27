@@ -228,28 +228,22 @@ class Tournament:
             else:
                 self.status = Tournament.Status.ROUND
 
-    def play_round(self):
+    def prepare_round(self):
         if self.status == Tournament.Status.ROUND:
             self.round += 1
             self.duels = []
-
-            duel_threads: list[threading.Thread] = []
 
             for duel_id in [i for i in range((self.number_of_players + 1) // 2)]:
                 players = TournamentPlan.get_players(self.round, duel_id)
                 duel = Duel(players[0], players[1])
                 self.duels.append(duel)
-
-                duel_thread = threading.Thread(target=duel.play)
-                duel_threads.append(duel_thread)
-                duel_thread.start()
+                duel.choose_starting_player()
 
                 if DEBUG:
                     print(f"\nRound {self.round + 1}, duel {players[0]} VS {players[1]} started.")
 
-            for duel_thread in duel_threads:
-                duel_thread.join()
-
+    def get_round_winners(self):
+        if all([duel.is_ended() for duel in self.duels]):
             for duel in self.duels:
                 winner = duel.winner
                 winner.trophies.append(self.game_trophies.draw(self.round))
@@ -283,7 +277,7 @@ class Tournament:
         self.prepare()
 
         while self.status != Tournament.Status.FINAL and not self.is_ended():
-            self.play_round()
+            # self.play_round()
 
             self.manage_cards()
 

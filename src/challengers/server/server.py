@@ -135,7 +135,7 @@ class Server:
                                     and self.tournament.check_all_players_ready()
                                 ):
                                     self.execution_queue.append(self.tournament.prepare)
-                                    self.execution_queue.append(self.tournament.play_round)
+                                    self.execution_queue.append(self.tournament.prepare_round)
 
                                 reply = 1
 
@@ -145,7 +145,8 @@ class Server:
                             or self.tournament.status == Tournament.Status.FINAL
                         ):
                             if not player.has_played:
-                                card = player.play()
+                                duel = self.tournament.get_duel(player)
+                                card = duel.play_card(player)
                                 if card:
                                     reply = card.id
 
