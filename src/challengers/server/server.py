@@ -138,6 +138,7 @@ class Server:
                                     and self.tournament.check_all_players_ready()
                                 ):
                                     self.execution_queue.append(self.tournament.prepare)
+                                    self.execution_queue.append(self.tournament.play_round)
 
                                 reply = 1
 
