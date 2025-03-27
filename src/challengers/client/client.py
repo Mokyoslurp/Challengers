@@ -158,17 +158,19 @@ class Client:
                 self.battle_screen.self_bench = new_self_bench
 
                 for i, data in enumerate(self.battle_screen.self_bench):
-                    self.battle_screen.park.reset_bench(1, i)
-                    card = CardFront(0, 0, card=data)
-                    self.battle_screen.park.add_bench_card(1, i, card)
+                    if i < 6:
+                        self.battle_screen.park.reset_bench(1, i)
+                        card = CardFront(0, 0, card=data)
+                        self.battle_screen.park.add_bench_card(1, i, card)
 
             if new_opponent_bench != self.battle_screen.opponent_bench:
                 self.battle_screen.opponent_bench = new_opponent_bench
 
                 for i, data in enumerate(self.battle_screen.opponent_bench):
-                    self.battle_screen.park.reset_bench(2, i)
-                    card = CardFront(0, 0, card=data)
-                    self.battle_screen.park.add_bench_card(2, i, card)
+                    if i < 6:
+                        self.battle_screen.park.reset_bench(2, i)
+                        card = CardFront(0, 0, card=data)
+                        self.battle_screen.park.add_bench_card(2, i, card)
 
         elif self.status == Tournament.Status.DECK:
             deck = self.get_self_deck()
