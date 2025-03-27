@@ -121,8 +121,13 @@ class Server:
                         duel.play_card(player)
 
                         if self.tournament.check_all_duels_ended():
-                            self.execution_queue.append(self.tournament.get_round_winners)
-                            self.execution_queue.append(self.tournament.prepare_cards_management)
+                            if self.tournament.status == Tournament.Status.ROUND:
+                                self.execution_queue.append(self.tournament.get_round_winners)
+                                self.execution_queue.append(
+                                    self.tournament.prepare_cards_management
+                                )
+                            else:
+                                self.execution_queue.append(self.tournament.end_final)
 
                 elif self.tournament.status == Tournament.Status.DECK:
                     if not player.has_drawn:
@@ -206,10 +211,15 @@ class Server:
                                     reply = card.id
 
                                 if self.tournament.check_all_duels_ended():
-                                    self.execution_queue.append(self.tournament.get_round_winners)
-                                    self.execution_queue.append(
-                                        self.tournament.prepare_cards_management
-                                    )
+                                    if self.tournament.status == Tournament.Status.ROUND:
+                                        self.execution_queue.append(
+                                            self.tournament.get_round_winners
+                                        )
+                                        self.execution_queue.append(
+                                            self.tournament.prepare_cards_management
+                                        )
+                                    else:
+                                        self.execution_queue.append(self.tournament.end_final)
 
                     case Command.DRAW_CARD:
                         if self.tournament.status == Tournament.Status.DECK:
@@ -243,21 +253,30 @@ class Server:
                                 reply = cards_ids
 
                     case Command.GET_SELF_BENCH:
-                        if self.tournament.status == Tournament.Status.ROUND:
+                        if (
+                            self.tournament.status == Tournament.Status.ROUND
+                            or self.tournament.status == Tournament.Status.FINAL
+                        ):
                             cards_ids = [card.id for card in player.bench]
 
                             if cards_ids:
                                 reply = cards_ids
 
                     case Command.GET_SELF_PLAYED_CARDS:
-                        if self.tournament.status == Tournament.Status.ROUND:
+                        if (
+                            self.tournament.status == Tournament.Status.ROUND
+                            or self.tournament.status == Tournament.Status.FINAL
+                        ):
                             cards_ids = [card.id for card in player.played_cards]
 
                             if cards_ids:
                                 reply = cards_ids
 
                     case Command.GET_OPPONENT_BENCH:
-                        if self.tournament.status == Tournament.Status.ROUND:
+                        if (
+                            self.tournament.status == Tournament.Status.ROUND
+                            or self.tournament.status == Tournament.Status.FINAL
+                        ):
                             opponent = self.tournament.get_opponent(player)
                             if opponent:
                                 cards_ids = [card.id for card in opponent.bench]
@@ -265,7 +284,10 @@ class Server:
                                     reply = cards_ids
 
                     case Command.GET_OPPONENT_PLAYED_CARDS:
-                        if self.tournament.status == Tournament.Status.ROUND:
+                        if (
+                            self.tournament.status == Tournament.Status.ROUND
+                            or self.tournament.status == Tournament.Status.FINAL
+                        ):
                             opponent = self.tournament.get_opponent(player)
                             if opponent:
                                 cards_ids = [card.id for card in opponent.played_cards]

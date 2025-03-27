@@ -12,7 +12,7 @@ from .card import CardList, CardSerializer, Card
 
 from .data import DEBUG
 
-NUMBER_OF_ROUNDS = 7
+NUMBER_OF_ROUNDS = 1
 MAX_NUMBER_OF_PLAYERS = 8
 
 
@@ -197,6 +197,7 @@ class Tournament:
 
         if self.round == NUMBER_OF_ROUNDS - 1:
             self.status = Tournament.Status.FINAL
+            self.prepare_final()
         else:
             self.status = Tournament.Status.ROUND
 
@@ -229,7 +230,7 @@ class Tournament:
 
             self.status = Tournament.Status.DECK
 
-    def play_final(self) -> Player:
+    def prepare_final(self):
         if self.status == Tournament.Status.FINAL:
             finalists = self.get_finalists()
 
@@ -238,26 +239,20 @@ class Tournament:
 
             duel = Duel(finalists[0], finalists[1])
             self.duels = [duel]
+            duel.choose_starting_player()
 
             if DEBUG:
                 print("Final started")
 
-            duel.play()
-            self.winner = duel.winner
+    def end_final(self):
+        duel = self.duels[-1]
 
-            if DEBUG:
-                print(self.winner, " won the tournament!")
+        self.winner = duel.winner
 
-    def play(self) -> Player:
-        self.prepare()
-
-        while self.status != Tournament.Status.FINAL and not self.is_ended():
-            # self.play_round()
-
-            self.manage_cards()
-
-        self.play_final()
         self.ended.set()
+
+        if DEBUG:
+            print(self.winner, " won the tournament!")
 
 
 class TournamentPlan:
