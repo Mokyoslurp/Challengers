@@ -58,10 +58,6 @@ class Duel:
 
         self.attacking_player.has_played = False
 
-        # TODO: Put robot play at server level
-        if self.attacking_player.is_robot:
-            self.play_card(self.attacking_player)
-
     def switch_flag_owner(self):
         self.flag_owner, self.attacking_player = self.attacking_player, self.flag_owner
 
@@ -93,10 +89,6 @@ class Duel:
                 self.switch_flag_owner()
             else:
                 player.has_played = False
-
-            # TODO: Put robot play at server level
-            if self.attacking_player.is_robot:
-                self.play_card(self.attacking_player)
 
         if (
             len(self.attacking_player.deck) <= 0

@@ -170,26 +170,7 @@ class Tournament:
     def make_draw(self, player: Player, level: Level) -> CardList:
         return player.draw(self.trays[level], self.available_draws[level])
 
-    def manage_robot_players_cards(self, player: Player):
-        """Randomizes the card draw and discard for the bots
-
-        :param player: The robot player
-        """
-
-        if player.is_robot:
-            # random draw choice
-            chosen_tray_level = random.choice(list(self.available_draws.keys()))
-
-            self.make_draw(player, chosen_tray_level)
-
-            player.shuffle_deck()
-
-            # Random discard
-            for card in player.deck[:]:
-                if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
-                    player.discard(card, self.trays[chosen_tray_level])
-
-    def manage_cards(self):
+    def prepare_cards_management(self):
         if self.status == Tournament.Status.DECK:
             for player in self.players:
                 player.has_managed_cards = False
@@ -203,10 +184,7 @@ class Tournament:
             human_players: list[Player] = []
             for player in self.players:
                 player.reset_deck()
-                if player.is_robot:
-                    self.manage_robot_players_cards(player)
-                    player.has_managed_cards = True
-                else:
+                if not player.is_robot:
                     human_players.append(player)
 
             if DEBUG:

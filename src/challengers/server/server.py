@@ -1,7 +1,9 @@
 import socket as s
+import random
 import threading
 from pathlib import Path
 from typing import Callable
+from time import sleep
 
 from challengers.game.data import TELEMETRY
 from challengers.game import Tournament, Player
@@ -15,12 +17,16 @@ SERVER_IP = "localhost"
 PORT = 5050
 
 
+ROBOT_DELAY = 1
+
+
 class Server:
     def __init__(self, tournament: Tournament):
         self.socket = s.socket(s.AF_INET, s.SOCK_STREAM)
 
         self.tournament_thread: threading.Thread
         self.client_threads: list[threading.Thread] = []
+        self.robot_thread: threading.Thread
 
         self.execution_queue: list[Callable] = []
 
@@ -74,8 +80,18 @@ class Server:
             if self.player_count != self.tournament.number_of_players:
                 self.is_ready = False
 
-            # TODO: PB because of robot players
-            if self.tournament.check_all_players_ready():
+            if (
+                self.tournament.check_all_players_connected()
+                and self.tournament.check_all_players_ready()
+            ):
+                # Create robot thread
+                if self.tournament.players[-1].is_robot:
+                    robot_player = self.tournament.players[-1]
+                    self.robot_thread = threading.Thread(
+                        target=self.manage_robot, args=(robot_player,)
+                    )
+                    self.robot_thread.start()
+
                 while not self.tournament.is_ended():
                     if len(self.execution_queue) > 0:
                         function_to_execute = self.execution_queue.pop(0)
@@ -85,8 +101,41 @@ class Server:
                     print(f"Winner is {self.tournament.winner}")
                     self.tournament.print_scores()
 
+                self.robot_thread.join()
+
                 for client_thread in self.client_threads:
                     client_thread.join()
+
+    def manage_robot(self, player: Player):
+        if player.is_robot:
+            while not self.tournament.is_ended():
+                sleep(ROBOT_DELAY)
+
+                if (
+                    self.tournament.status == Tournament.Status.ROUND
+                    or self.tournament.status == Tournament.Status.FINAL
+                ):
+                    # TODO: Get duel only once
+                    duel = self.tournament.get_duel(player)
+                    if duel.attacking_player == player:
+                        duel.play_card(player)
+
+                elif self.tournament.Status == Tournament.Status.DECK:
+                    if not player.has_drawn:
+                        # random draw choice
+                        chosen_tray_level = random.choice(
+                            list(self.tournament.available_draws.keys())
+                        )
+
+                        self.tournament.make_draw(player, chosen_tray_level)
+
+                    if not player.has_managed_cards:
+                        player.shuffle_deck()
+
+                        # Random discard
+                        for card in player.deck[:]:
+                            if random.uniform(0, 1) <= 1 / (40 - len(player.deck)):
+                                player.discard(card, self.tournament.trays[chosen_tray_level])
 
     def client_thread(self, socket: s.socket):
         player_connected = True
