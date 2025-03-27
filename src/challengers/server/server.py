@@ -98,9 +98,6 @@ class Server:
                 command, data = receive_message(socket)
                 reply = 0
 
-                if TELEMETRY:
-                    print(f"From {address} : {command}, {data}")
-
                 match command:
                     case Command.FORCE_END:
                         self.tournament.ended.set()
