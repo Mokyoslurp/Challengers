@@ -191,7 +191,7 @@ class Client:
 
     def play_card(self):
         if self.is_connected:
-            card_id = self.send(Command.PLAY_CARD)[0]
+            card_id = self.send(Command.PLAY_CARD)
             if card_id:
                 return self.unique_cards_list[card_id]
 
@@ -235,9 +235,10 @@ class Client:
 
     def get_cards_list_from_ids(self, cards_ids: list[int]):
         cards = []
-        for card_id in cards_ids:
-            if card_id:
-                cards.append(self.unique_cards_list[card_id])
+        if isinstance(cards_ids, list):
+            for card_id in cards_ids:
+                if card_id:
+                    cards.append(self.unique_cards_list[card_id])
         return cards
 
     def assign_functions(self):
