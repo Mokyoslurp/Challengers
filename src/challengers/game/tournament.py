@@ -119,12 +119,17 @@ class Tournament:
         for player in self.players:
             print(player, "\nScore = ", scores[player], "\n")
 
-    def get_opponent(self, player: Player) -> Player:
+    def get_duel(self, player: Player) -> Duel:
         if self.round <= NUMBER_OF_ROUNDS:
             duel_id = TournamentPlan.plans[player].duel_ids[self.round]
             duel = self.duels[duel_id]
         else:
             duel = self.duels[0]
+
+        return duel
+
+    def get_opponent(self, player: Player) -> Player:
+        duel = self.get_duel(player)
 
         if duel.player_1 and duel.player_2:
             players = [duel.player_1, duel.player_2]
