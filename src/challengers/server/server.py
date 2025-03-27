@@ -75,16 +75,11 @@ class Server:
                 self.is_ready = False
 
             # TODO: PB because of robot players
-            if len(self.tournament.players) == self.tournament.number_of_players:
-                self.tournament_thread = threading.Thread(target=self.tournament.play)
-                self.tournament_thread.start()
-
+            if self.tournament.check_all_players_ready():
                 while not self.tournament.is_ended():
                     if len(self.execution_queue) > 0:
                         function_to_execute = self.execution_queue.pop(0)
                         function_to_execute()
-
-                self.tournament_thread.join()
 
                 if TELEMETRY and self.tournament.winner:
                     print(f"Winner is {self.tournament.winner}")
