@@ -65,6 +65,12 @@ class Tournament:
     def check_all_players_ready(self):
         return all([player.is_ready for player in self.players])
 
+    def check_all_duels_ended(self):
+        return all([duel.is_ended() for duel in self.duels])
+
+    def check_all_players_managed_cards(self):
+        return all([player.has_managed_cards for player in self.players])
+
     def reset(self):
         self.players = []
         self.winners = [[]]
