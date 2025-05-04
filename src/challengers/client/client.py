@@ -269,7 +269,7 @@ class Client:
 
         self.is_running = True
         while self.is_running:
-            clock.tick(1)
+            clock.tick(120)
 
             self.update()
             self.draw()
